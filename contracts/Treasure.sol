@@ -288,12 +288,12 @@ contract Loot is ERC721Enumerable, ReentrancyGuard, Ownable {
     }
 
     function claim(uint256 tokenId) public nonReentrant {
-        require(tokenId > 0 && tokenId < 7778, "Token ID invalid");
+        require(tokenId > 0 && tokenId < 9000, "Token ID invalid");
         _safeMint(_msgSender(), tokenId);
     }
 
     function ownerClaim(uint256 tokenId) public nonReentrant onlyOwner {
-        require(tokenId > 7777 && tokenId < 8001, "Token ID invalid");
+        require(tokenId > 8999 && tokenId < 10001, "Token ID invalid");
         _safeMint(owner(), tokenId);
     }
 
