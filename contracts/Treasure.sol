@@ -8,7 +8,7 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 
 import './Base64.sol';
 
-contract Loot is ERC721Enumerable, ReentrancyGuard, Ownable {
+contract Treasure is ERC721Enumerable, ReentrancyGuard, Ownable {
 
   string[] private assetOne = [
     "Emerald",
@@ -289,5 +289,5 @@ contract Loot is ERC721Enumerable, ReentrancyGuard, Ownable {
         return string(buffer);
     }
 
-    constructor() ERC721("Loot", "LOOT") Ownable() {}
+    constructor() ERC721("Treasure", "TREASURE") Ownable() {}
 }
