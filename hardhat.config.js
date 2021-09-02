@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 require('@nomiclabs/hardhat-waffle');
+require('@nomiclabs/hardhat-etherscan');
 require('hardhat-docgen');
 require('hardhat-gas-reporter');
 require('hardhat-spdx-license-identifier');
