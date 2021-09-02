@@ -34,6 +34,10 @@ module.exports = {
     runOnCompile: true,
   },
 
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_KEY,
+  },
+
   gasReporter: {
     enabled: process.env.REPORT_GAS === 'true',
   },
