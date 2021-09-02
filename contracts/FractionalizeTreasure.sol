@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
+import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
+import '@openzeppelin/contracts/interfaces/IERC721Receiver.sol';
 
 import './ITreasure.sol';
 
@@ -12,24 +12,27 @@ abstract contract FractionalizeTreasure is ERC1155 {
     ITreasure public treasureContract = ITreasure(treasureAddress);
 
     struct Item {
-    string name;
-    uint value;
+        string name;
+        uint256 value;
     }
 
-    mapping (uint256 => string) private itemNames;
-    mapping (uint256 => uint256) private itemValues;
+    mapping(uint256 => string) private itemNames;
+    mapping(uint256 => uint256) private itemValues;
 
-    constructor (Item[] memory items) {
-    itemNames[uint256(keccak256("Red Feather""Snow White Feather"))] = "Red and White Feather";
-    itemValues[uint256(keccak256("Red Feather""Snow White Feather"))] = 100;
+    constructor(Item[] memory items) {
+        itemNames[
+            uint256(keccak256('Red Feather' 'Snow White Feather'))
+        ] = 'Red and White Feather';
+        itemValues[
+            uint256(keccak256('Red Feather' 'Snow White Feather'))
+        ] = 100;
 
-    for (uint i; i < items.length; i++) {
-        uint tokenId = _nameToId(items[i].name);
-        itemNames[tokenId] = items[i].name;
-        itemValues[tokenId] = items[i].value;
+        for (uint256 i; i < items.length; i++) {
+            uint256 tokenId = _nameToId(items[i].name);
+            itemNames[tokenId] = items[i].name;
+            itemValues[tokenId] = items[i].value;
         }
     }
-
 
     function decompose(uint256 tokenId) public returns (string[] memory) {
         // TODO: ERC721 transfer of tokenId to address(this)
@@ -58,7 +61,7 @@ abstract contract FractionalizeTreasure is ERC1155 {
         _mintBatch(msg.sender, ids, amounts, '');
     }
 
-    function _nameToId (string memory name) private pure returns (uint256) {
-      return uint256(keccak256(abi.encodePacked(name)));
+    function _nameToId(string memory name) private pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(name)));
     }
 }
