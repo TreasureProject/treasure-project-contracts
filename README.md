@@ -8,6 +8,12 @@ Install dependencies via Yarn:
 yarn install
 ```
 
+Setup Husky to format code on commit:
+
+```bash
+yarn prepare
+```
+
 Compile contracts via Hardhat:
 
 ```bash
