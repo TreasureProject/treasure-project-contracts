@@ -13,7 +13,7 @@
     "buidler",
     "wow"
   ],
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
