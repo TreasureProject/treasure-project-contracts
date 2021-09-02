@@ -28,11 +28,11 @@
     "eslint": "^7.32.0",
     "eslint-plugin-mocha": "^9.0.0",
     "ethereum-waffle": "^3.4.0",
-    "ethers": "^5.4.5",
-    "hardhat": "^2.6.0",
-    "hardhat-docgen": "^1.1.1",
+    "ethers": "^5.4.6",
+    "hardhat": "^2.6.2",
+    "hardhat-docgen": "^1.1.2",
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-spdx-license-identifier": "^2.0.3",
-    "solidity-coverage": "^0.7.16"
+    "solidity-coverage": "^0.7.17"
   }
 }
