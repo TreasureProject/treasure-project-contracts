@@ -6,9 +6,10 @@ import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 
+import './ITreasure.sol';
 import './Base64.sol';
 
-contract Treasure is ERC721Enumerable, ReentrancyGuard, Ownable {
+contract Treasure is ITreasure, ERC721Enumerable, ReentrancyGuard, Ownable {
     string[] private assetOne = [
         'Emerald',
         'Gold Coin',
@@ -166,39 +167,88 @@ contract Treasure is ERC721Enumerable, ReentrancyGuard, Ownable {
         'Cap of Invisibility'
     ];
 
+    function ownerOf(uint256 tokenId)
+        public
+        view
+        override(ITreasure, ERC721)
+        returns (address owner)
+    {
+        return super.ownerOf(tokenId);
+    }
+
     function random(string memory input) internal pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
     }
 
-    function getAsset1(uint256 tokenId) public view returns (string memory) {
+    function getAsset1(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
         return pluck(tokenId, 'ASSETONE', assetOne);
     }
 
-    function getAsset2(uint256 tokenId) public view returns (string memory) {
+    function getAsset2(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
         return pluck(tokenId, 'ASSETTWO', assetTwo);
     }
 
-    function getAsset3(uint256 tokenId) public view returns (string memory) {
+    function getAsset3(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
         return pluck(tokenId, 'ASSETTHREE', assetThree);
     }
 
-    function getAsset4(uint256 tokenId) public view returns (string memory) {
+    function getAsset4(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
         return pluck(tokenId, 'ASSETFOUR', assetFour);
     }
 
-    function getAsset5(uint256 tokenId) public view returns (string memory) {
+    function getAsset5(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
         return pluck(tokenId, 'ASSETFIVE', assetFive);
     }
 
-    function getAsset6(uint256 tokenId) public view returns (string memory) {
+    function getAsset6(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
         return pluck(tokenId, 'ASSETSIX', assetSix);
     }
 
-    function getAsset7(uint256 tokenId) public view returns (string memory) {
+    function getAsset7(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
         return pluck(tokenId, 'ASSETSEVEN', assetSeven);
     }
 
-    function getAsset8(uint256 tokenId) public view returns (string memory) {
+    function getAsset8(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
         return pluck(tokenId, 'ASSETEIGHT', assetEight);
     }
 
