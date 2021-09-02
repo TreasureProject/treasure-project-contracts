@@ -18,11 +18,14 @@ module.exports = {
   },
 
   networks: {
-    generic: {
-      url: `${ process.env.NODE_URL }`,
-      accounts: {
-        mnemonic: `${ process.env.MNEMONIC }`,
-      },
+    mainnet: {
+      url: `https://eth-mainnet.alchemyapi.io/v2/${ process.env.ALCHEMY_KEY }`,
+      accounts: [process.env.ETH_MAIN_KEY],
+    },
+
+    rinkeby: {
+      url: `https://eth-rinkeby.alchemyapi.io/v2/${ process.env.ALCHEMY_KEY }`,
+      accounts: [process.env.ETH_TEST_KEY],
     },
   },
 
