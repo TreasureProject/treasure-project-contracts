@@ -24,7 +24,7 @@ abstract contract FractionalizeTreasure is ERC1155 {
     itemValues[uint256(keccak256("Red Feather""Snow White Feather"))] = 100;
 
     for (uint i; i < items.length; i++) {
-        uint tokenId = uint256(keccak256(abi.encodePacked(items[i].name)));
+        uint tokenId = _nameToId(items[i].name);
         itemNames[tokenId] = items[i].name;
         itemValues[tokenId] = items[i].value;
         }
@@ -36,14 +36,14 @@ abstract contract FractionalizeTreasure is ERC1155 {
         // safeTransferFrom(msg.sender, this, tokenId);
 
         uint256[] memory ids = new uint256[](8);
-        ids[0] = uint256(keccak256(abi.encodePacked(treasureContract.getAsset1(tokenId))));
-        ids[1] = uint256(keccak256(abi.encodePacked(treasureContract.getAsset2(tokenId))));
-        ids[2] = uint256(keccak256(abi.encodePacked(treasureContract.getAsset3(tokenId))));
-        ids[3] = uint256(keccak256(abi.encodePacked(treasureContract.getAsset4(tokenId))));
-        ids[4] = uint256(keccak256(abi.encodePacked(treasureContract.getAsset5(tokenId))));
-        ids[5] = uint256(keccak256(abi.encodePacked(treasureContract.getAsset6(tokenId))));
-        ids[6] = uint256(keccak256(abi.encodePacked(treasureContract.getAsset7(tokenId))));
-        ids[7] = uint256(keccak256(abi.encodePacked(treasureContract.getAsset8(tokenId))));
+        ids[0] = _nameToId(treasureContract.getAsset1(tokenId));
+        ids[1] = _nameToId(treasureContract.getAsset2(tokenId));
+        ids[2] = _nameToId(treasureContract.getAsset3(tokenId));
+        ids[3] = _nameToId(treasureContract.getAsset4(tokenId));
+        ids[4] = _nameToId(treasureContract.getAsset5(tokenId));
+        ids[5] = _nameToId(treasureContract.getAsset6(tokenId));
+        ids[6] = _nameToId(treasureContract.getAsset7(tokenId));
+        ids[7] = _nameToId(treasureContract.getAsset8(tokenId));
 
         uint256[] memory amounts = new uint256[](8);
         ids[0] = 1;
@@ -56,5 +56,9 @@ abstract contract FractionalizeTreasure is ERC1155 {
         ids[7] = 1;
 
         _mintBatch(msg.sender, ids, amounts, '');
+    }
+
+    function _nameToId (string memory name) private pure returns (uint256) {
+      return uint256(keccak256(abi.encodePacked(name)));
     }
 }
