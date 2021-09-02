@@ -10,271 +10,237 @@ import './Base64.sol';
 
 contract Loot is ERC721Enumerable, ReentrancyGuard, Ownable {
 
-        string[] private weapons = [
-        "Warhammer",
-        "Quarterstaff",
-        "Maul",
-        "Mace",
-        "Club",
-        "Katana",
-        "Falchion",
-        "Scimitar",
-        "Long Sword",
-        "Short Sword",
-        "Ghost Wand",
-        "Grave Wand",
-        "Bone Wand",
-        "Wand",
-        "Grimoire",
-        "Chronicle",
-        "Tome",
-        "Book"
-    ];
+  string[] private assetOne = [
+    "Emerald",
+    "Gold Coin",
+    "Silver Penny",
+    "Half-Penny",
+    "Quarter-Penny",
+    "Pearl",
+    "Red Rupee",
+    "Diamond",
+    "Dragon Tail",
+    "Beetle-wing",
+    "Ox",
+    "Donkey",
+    "Score of Ivory",
+    "Unbreakable Pocketwatch",
+    "Grain",
+    "Lumber"
+  ];
 
-    string[] private chestArmor = [
-        "Divine Robe",
-        "Silk Robe",
-        "Linen Robe",
-        "Robe",
-        "Shirt",
-        "Demon Husk",
-        "Dragonskin Armor",
-        "Studded Leather Armor",
-        "Hard Leather Armor",
-        "Leather Armor",
-        "Holy Chestplate",
-        "Ornate Chestplate",
-        "Plate Mail",
-        "Chain Mail",
-        "Ring Mail"
-    ];
+  string[] private assetTwo = [
+    "Emerald",
+    "Gold Coin",
+    "Silver Penny",
+    "Half-Penny",
+    "Quarter-Penny",
+    "Pearl",
+    "Red Rupee",
+    "Diamond",
+    "Dragon Tail",
+    "Beetle-wing",
+    "Ox",
+    "Donkey",
+    "Common Feather",
+    "Red Feather"
+    "Snow White Feather",
+    "Thread of Divine Silk",
+    "Mollusk Shell",
+    "Grain",
+    "Lumber"
+  ];
 
-    string[] private headArmor = [
-        "Ancient Helm",
-        "Ornate Helm",
-        "Great Helm",
-        "Full Helm",
-        "Helm",
-        "Demon Crown",
-        "Dragon's Crown",
-        "War Cap",
-        "Leather Cap",
-        "Cap",
-        "Crown",
-        "Divine Hood",
-        "Silk Hood",
-        "Linen Hood",
-        "Hood"
-    ];
+  string[] private assetThree = [
+    "Emerald",
+    "Gold Coin",
+    "Silver Penny",
+    "Half-Penny",
+    "Quarter-Penny",
+    "Pearl",
+    "Red Rupee",
+    "Diamond",
+    "Dragon Tail",
+    "Beetle-wing",
+    "Ox",
+    "Donkey",
+    "Common Feather",
+    "Red Feather",
+    "Immovable Stone",
+    "Divine Hourglass",
+    "Bag of Rare Mushrooms"
+  ];
 
-    string[] private waistArmor = [
-        "Ornate Belt",
-        "War Belt",
-        "Plated Belt",
-        "Mesh Belt",
-        "Heavy Belt",
-        "Demonhide Belt",
-        "Dragonskin Belt",
-        "Studded Leather Belt",
-        "Hard Leather Belt",
-        "Leather Belt",
-        "Brightsilk Sash",
-        "Silk Sash",
-        "Wool Sash",
-        "Linen Sash",
-        "Sash"
-    ];
+  string[] private assetFour = [
+    "Emerald",
+    "Gold Coin",
+    "Silver Penny",
+    "Half-Penny",
+    "Quarter-Penny",
+    "Pearl",
+    "Red Rupee",
+    "Diamond",
+    "Dragon Tail",
+    "Beetle-wing",
+    "Ox",
+    "Donkey",
+    "Blue Rupee",
+    "Framed Butterfly",
+    "Small Bird",
+    "Common Relic"
+  ];
 
-    string[] private footArmor = [
-        "Holy Greaves",
-        "Ornate Greaves",
-        "Greaves",
-        "Chain Boots",
-        "Heavy Boots",
-        "Demonhide Boots",
-        "Dragonskin Boots",
-        "Studded Leather Boots",
-        "Hard Leather Boots",
-        "Leather Boots",
-        "Divine Slippers",
-        "Silk Slippers",
-        "Wool Shoes",
-        "Linen Shoes",
-        "Shoes"
-    ];
+  string[] private assetFive = [
+    "Emerald",
+    "Gold Coin",
+    "Silver Penny",
+    "Half-Penny",
+    "Quarter-Penny",
+    "Pearl",
+    "Red Rupee",
+    "Diamond",
+    "Dragon Tail",
+    "Beetle-wing",
+    "Donkey",
+    "Pot of Gold",
+    "Witches Broom",
+    "Divine Mask"
+  ];
 
-    string[] private handArmor = [
-        "Holy Gauntlets",
-        "Ornate Gauntlets",
-        "Gauntlets",
-        "Chain Gloves",
-        "Heavy Gloves",
-        "Demon's Hands",
-        "Dragonskin Gloves",
-        "Studded Leather Gloves",
-        "Hard Leather Gloves",
-        "Leather Gloves",
-        "Divine Gloves",
-        "Silk Gloves",
-        "Wool Gloves",
-        "Linen Gloves",
-        "Gloves"
-    ];
+  string[] private assetSix = [
+    "Emerald",
+    "Gold Coin",
+    "Silver Penny",
+    "Half-Penny",
+    "Quarter-Penny",
+    "Pearl",
+    "Red Rupee",
+    "Diamond",
+    "Dragon Tail",
+    "Beetle-wing",
+    "Blue Rupee",
+    "Jar of Fairies",
+    "Favor from the Gods",
+    "Common Bead",
+    "Cow"
+  ];
 
-    string[] private necklaces = [
-        "Necklace",
-        "Amulet",
-        "Pendant"
-    ];
+  string[] private assetSeven = [
+    "Emerald",
+    "Gold Coin",
+    "Silver Penny",
+    "Half-Penny",
+    "Quarter-Penny",
+    "Pearl",
+    "Red Rupee",
+    "Diamond",
+    "Dragon Tail",
+    "Beetle-wing",
+    "Green Rupee",
+    "Blue Rupee",
+    "Common Relic",
+    "Ivory Breastpin",
+    "Carrage",
+    "Military Stipend"
+  ];
 
-    string[] private rings = [
-        "Gold Ring",
-        "Silver Ring",
-        "Bronze Ring",
-        "Platinum Ring",
-        "Titanium Ring"
-    ];
-
-    string[] private suffixes = [
-        "of Power",
-        "of Giants",
-        "of Titans",
-        "of Skill",
-        "of Perfection",
-        "of Brilliance",
-        "of Enlightenment",
-        "of Protection",
-        "of Anger",
-        "of Rage",
-        "of Fury",
-        "of Vitriol",
-        "of the Fox",
-        "of Detection",
-        "of Reflection",
-        "of the Twins"
-    ];
-
-    string[] private namePrefixes = [
-        "Agony", "Apocalypse", "Armageddon", "Beast", "Behemoth", "Blight", "Blood", "Bramble",
-        "Brimstone", "Brood", "Carrion", "Cataclysm", "Chimeric", "Corpse", "Corruption", "Damnation",
-        "Death", "Demon", "Dire", "Dragon", "Dread", "Doom", "Dusk", "Eagle", "Empyrean", "Fate", "Foe",
-        "Gale", "Ghoul", "Gloom", "Glyph", "Golem", "Grim", "Hate", "Havoc", "Honour", "Horror", "Hypnotic",
-        "Kraken", "Loath", "Maelstrom", "Mind", "Miracle", "Morbid", "Oblivion", "Onslaught", "Pain",
-        "Pandemonium", "Phoenix", "Plague", "Rage", "Rapture", "Rune", "Skull", "Sol", "Soul", "Sorrow",
-        "Spirit", "Storm", "Tempest", "Torment", "Vengeance", "Victory", "Viper", "Vortex", "Woe", "Wrath",
-        "Light's", "Shimmering"
-    ];
-
-    string[] private nameSuffixes = [
-        "Bane",
-        "Root",
-        "Bite",
-        "Song",
-        "Roar",
-        "Grasp",
-        "Instrument",
-        "Glow",
-        "Bender",
-        "Shadow",
-        "Whisper",
-        "Shout",
-        "Growl",
-        "Tear",
-        "Peak",
-        "Form",
-        "Sun",
-        "Moon"
-    ];
+  string[] private assetEight = [
+    "Emerald",
+    "Gold Coin",
+    "Silver Penny",
+    "Half-Penny",
+    "Quarter-Penny",
+    "Pearl",
+    "Red Rupee",
+    "Diamond",
+    "Dragon Tail",
+    "Beetle-wing",
+    "Honeycomb",
+    "Green Rupee",
+    "Blue Rupee",
+    "Grin",
+    "Bait for Monsters",
+    "Castle",
+    "Bottomless Elixir",
+    "Common Relic",
+    "Ancient Relic",
+    "Cap of Invisibility"
+  ];
 
     function random(string memory input) internal pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
     }
 
-    function getWeapon(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "WEAPON", weapons);
+    function getAsset1(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "ASSETONE", assetOne);
     }
 
-    function getChest(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "CHEST", chestArmor);
+    function getAsset2(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "ASSETTWO", assetTwo);
     }
 
-    function getHead(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "HEAD", headArmor);
+    function getAsset3(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "ASSETTHREE", assetThree);
     }
 
-    function getWaist(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "WAIST", waistArmor);
+    function getAsset4(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "ASSETFOUR", assetFour);
     }
 
-    function getFoot(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "FOOT", footArmor);
+    function getAsset5(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "ASSETFIVE", assetFive);
     }
 
-    function getHand(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "HAND", handArmor);
+    function getAsset6(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "ASSETSIX", assetSix);
     }
 
-    function getNeck(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "NECK", necklaces);
+    function getAsset7(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "ASSETSEVEN", assetSeven);
     }
 
-    function getRing(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "RING", rings);
+    function getAsset8(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "ASSETEIGHT", assetEight);
     }
 
-    function pluck(uint256 tokenId, string memory keyPrefix, string[] memory sourceArray) internal view returns (string memory) {
+    function pluck(uint256 tokenId, string memory keyPrefix, string[] memory sourceArray) internal pure returns (string memory) {
         uint256 rand = random(string(abi.encodePacked(keyPrefix, toString(tokenId))));
-        string memory output = sourceArray[rand % sourceArray.length];
-        uint256 greatness = rand % 21;
-        if (greatness > 14) {
-            output = string(abi.encodePacked(output, " ", suffixes[rand % suffixes.length]));
-        }
-        if (greatness >= 19) {
-            string[2] memory name;
-            name[0] = namePrefixes[rand % namePrefixes.length];
-            name[1] = nameSuffixes[rand % nameSuffixes.length];
-            if (greatness == 19) {
-                output = string(abi.encodePacked('"', name[0], ' ', name[1], '" ', output));
-            } else {
-                output = string(abi.encodePacked('"', name[0], ' ', name[1], '" ', output, " +1"));
-            }
-        }
-        return output;
+        return sourceArray[rand % sourceArray.length];
     }
 
     function tokenURI(uint256 tokenId) override public view returns (string memory) {
         string[17] memory parts;
         parts[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
-        parts[1] = getWeapon(tokenId);
+        parts[1] = getAsset1(tokenId);
 
         parts[2] = '</text><text x="10" y="40" class="base">';
 
-        parts[3] = getChest(tokenId);
+        parts[3] = getAsset2(tokenId);
 
         parts[4] = '</text><text x="10" y="60" class="base">';
 
-        parts[5] = getHead(tokenId);
+        parts[5] = getAsset3(tokenId);
 
         parts[6] = '</text><text x="10" y="80" class="base">';
 
-        parts[7] = getWaist(tokenId);
+        parts[7] = getAsset4(tokenId);
 
         parts[8] = '</text><text x="10" y="100" class="base">';
 
-        parts[9] = getFoot(tokenId);
+        parts[9] = getAsset5(tokenId);
 
         parts[10] = '</text><text x="10" y="120" class="base">';
 
-        parts[11] = getHand(tokenId);
+        parts[11] = getAsset6(tokenId);
 
         parts[12] = '</text><text x="10" y="140" class="base">';
 
-        parts[13] = getNeck(tokenId);
+        parts[13] = getAsset7(tokenId);
 
         parts[14] = '</text><text x="10" y="160" class="base">';
 
-        parts[15] = getRing(tokenId);
+        parts[15] = getAsset8(tokenId);
 
         parts[16] = '</text></svg>';
 
