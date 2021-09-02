@@ -4,6 +4,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
+import './ITreasure.sol';
+
 interface IERC721Receiver {
     /**
      * @dev Whenever an {IERC721} `tokenId` token is transferred to this contract via {IERC721-safeTransferFrom}
@@ -22,31 +24,9 @@ interface IERC721Receiver {
     ) external returns (bytes4);
 }
 
-interface TreasureInterface {
-    function ownerOf(uint256 tokenId) external view returns (address owner);
-
-    function getAsset1(uint256 tokenId) external view returns (string memory);
-
-    function getAsset2(uint256 tokenId) external view returns (string memory);
-
-    function getAsset3(uint256 tokenId) external view returns (string memory);
-
-    function getAsset4(uint256 tokenId) external view returns (string memory);
-
-    function getAsset5(uint256 tokenId) external view returns (string memory);
-
-    function getAsset6(uint256 tokenId) external view returns (string memory);
-
-    function getAsset7(uint256 tokenId) external view returns (string memory);
-
-    function getAsset8(uint256 tokenId) external view returns (string memory);
-}
-
-
-
 abstract contract FractionalizeTreasure is ERC1155 {
     address public treasureAddress = 0xf3DFbE887D81C442557f7a59e3a0aEcf5e39F6aa;
-    TreasureInterface public treasureContract = TreasureInterface(treasureAddress);
+    ITreasure public treasureContract = ITreasure(treasureAddress);
 
     struct Item {
     string name;
