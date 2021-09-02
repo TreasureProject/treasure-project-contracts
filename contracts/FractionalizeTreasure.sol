@@ -6,6 +6,7 @@ import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/interfaces/IERC721Receiver.sol';
 
 import './ITreasure.sol';
+import './Base64.sol';
 
 abstract contract FractionalizeTreasure is ERC1155 {
     address public treasureAddress = 0xf3DFbE887D81C442557f7a59e3a0aEcf5e39F6aa;
@@ -65,19 +66,37 @@ abstract contract FractionalizeTreasure is ERC1155 {
         return uint256(keccak256(abi.encodePacked(name)));
     }
 
-    function uri(uint256 tokenId) returns (string memory) {
-        parts[3] memory parts;
-        parts[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
+    function uri(uint256 tokenId) public view override returns (string memory) {
+        string[3] memory parts;
+        parts[
+            0
+        ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
         parts[1] = itemNames[tokenId];
 
         parts[2] = '</text></svg>';
 
-        string memory output = string(abi.encodePacked(parts[0], parts[1], parts[2]));
-        
-        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "Treasure #', itemValues[tokenId], '", "description": "Treasures are fractionalized  is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,', Base64.encode(bytes(output)), '"}'))));
+        string memory output = string(
+            abi.encodePacked(parts[0], parts[1], parts[2])
+        );
 
-        output = string(abi.encodePacked('data:application/json;base64,', json));
+        string memory json = Base64.encode(
+            bytes(
+                string(
+                    abi.encodePacked(
+                        '{"name": "Treasure #',
+                        itemValues[tokenId],
+                        '", "description": "Treasures are fractionalized  is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
+                        Base64.encode(bytes(output)),
+                        '"}'
+                    )
+                )
+            )
+        );
+
+        output = string(
+            abi.encodePacked('data:application/json;base64,', json)
+        );
 
         return output;
     }
