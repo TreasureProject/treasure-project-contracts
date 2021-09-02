@@ -1,7 +1,7 @@
 {
-  "name": "TODO",
+  "name": "treasure-for-adventurers",
   "version": "0.0.0",
-  "description": "TODO",
+  "description": "Treasure (for Adventurers)",
   "keywords": [
     "hardhat",
     "waffle",
@@ -13,13 +13,8 @@
     "buidler",
     "wow"
   ],
-  "author": "TODO",
-  "license": "TODO",
+  "license": "UNLICENSED",
   "private": true,
-  "repository": {
-    "type": "git",
-    "url": "TODO"
-  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
