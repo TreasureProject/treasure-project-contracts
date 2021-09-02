@@ -262,8 +262,9 @@ contract Treasure is ERC721Enumerable, ReentrancyGuard, Ownable {
         address account = owner();
 
         for (uint i; i < tokenIds.length; i++) {
+          uint tokenId = tokenIds[i];
           require(tokenId > 8999 && tokenId < 10001, "Token ID invalid");
-          _safeMint(account, tokenIds[i]);
+          _safeMint(account, tokenId);
         }
     }
 
