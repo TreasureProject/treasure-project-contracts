@@ -15,7 +15,6 @@ contract TreasureFarm is ERC20 {
     address private immutable TREASURE_FRACTIONALIZER;
     uint256 public immutable EXPIRATION;
 
-    mapping(uint256 => string) public itemNames;
     mapping(uint256 => uint256) public itemValues;
     mapping(address => mapping(uint256 => uint256)) public depositBalances;
     mapping(address => mapping(uint256 => uint256)) public depositBlocks;
@@ -23,20 +22,10 @@ contract TreasureFarm is ERC20 {
     constructor(address fractionalizer, Item[] memory items)
         ERC20('MAGIC', 'MAGIC')
     {
-        itemNames[
-            uint256(keccak256('Red Feather' 'Snow White Feather'))
-        ] = 'Red and White Feather';
-        itemValues[
-            uint256(keccak256('Red Feather' 'Snow White Feather'))
-        ] = 100;
-        itemNames[uint256(keccak256('Carrage'))] = 'Carriage';
-        itemValues[uint256(keccak256('Carrage'))] = 100;
-
         for (uint256 i; i < items.length; i++) {
             uint256 tokenId = uint256(
                 keccak256(abi.encodePacked(items[i].name))
             );
-            itemNames[tokenId] = items[i].name;
             itemValues[tokenId] = items[i].value;
         }
 
