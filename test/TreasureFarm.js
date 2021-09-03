@@ -33,6 +33,12 @@ describe('TreasureFarm', function () {
     );
   };
 
+  const getItemValuePerBlock = function (name) {
+    return ethers.BigNumber.from(items.find((i) => i.name === name).value).mul(
+      RATE_MULTIPLIER,
+    );
+  };
+
   before(async function () {
     [signer] = await ethers.getSigners();
   });
@@ -77,9 +83,7 @@ describe('TreasureFarm', function () {
 
       const itemNames = await getItemNames(tokenId);
       const itemIds = itemNames.map(getItemId);
-      const itemValues = itemNames.map(
-        (name) => items.find((i) => i.name === name).value,
-      );
+      const itemValues = itemNames.map(getItemValuePerBlock);
 
       const depositTx = await instance
         .connect(signer)
@@ -93,9 +97,7 @@ describe('TreasureFarm', function () {
 
       expect(
         await instance.callStatic.calculateReward(signer.address, tokenId),
-      ).to.equal(
-        ethers.BigNumber.from(itemValues[0]).mul(RATE_MULTIPLIER).mul(blocks),
-      );
+      ).to.equal(itemValues[0].mul(blocks));
 
       // await expect(
       //   () => instance.connect(signer).claimReward(tokenId)
