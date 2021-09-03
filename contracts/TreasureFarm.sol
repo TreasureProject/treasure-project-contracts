@@ -54,7 +54,7 @@ contract TreasureFarm is ERC20, ERC1155Receiver {
         return IERC1155Receiver.onERC1155BatchReceived.selector;
     }
 
-    function treasureRewardOf(address account, uint256 tokenId)
+    function calculateReward(address account, uint256 tokenId)
         public
         view
         returns (uint256 reward)
@@ -66,8 +66,8 @@ contract TreasureFarm is ERC20, ERC1155Receiver {
                 depositBlocks[account][tokenId]);
     }
 
-    function claimTreasureReward(uint256 tokenId) public {
-        uint256 reward = treasureRewardOf(msg.sender, tokenId);
+    function claimReward(uint256 tokenId) public {
+        uint256 reward = calculateReward(msg.sender, tokenId);
 
         if (reward > 0) {
             _mint(msg.sender, reward);
@@ -76,8 +76,8 @@ contract TreasureFarm is ERC20, ERC1155Receiver {
         depositBlocks[msg.sender][tokenId] = Math.min(block.number, EXPIRATION);
     }
 
-    function depositTreasure(uint256 tokenId, uint256 amount) external {
-        claimTreasureReward(tokenId);
+    function deposit(uint256 tokenId, uint256 amount) external {
+        claimReward(tokenId);
         IERC1155(TREASURE_FRACTIONALIZER).safeTransferFrom(
             msg.sender,
             address(this),
@@ -88,13 +88,13 @@ contract TreasureFarm is ERC20, ERC1155Receiver {
         depositBalances[msg.sender][tokenId] += amount;
     }
 
-    function withdrawTreasure(uint256 tokenId, uint256 amount) external {
+    function withdraw(uint256 tokenId, uint256 amount) external {
         require(
             depositBalances[msg.sender][tokenId] >= amount,
             'TreasureFarm: insufficient balance'
         );
 
-        claimTreasureReward(tokenId);
+        claimReward(tokenId);
 
         unchecked {
             depositBalances[msg.sender][tokenId] -= amount;
