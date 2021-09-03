@@ -8,6 +8,7 @@ require('hardhat-spdx-license-identifier');
 require('solidity-coverage');
 
 require('./tasks/deploy');
+require('./tasks/deploy_fractionalizer');
 require('./tasks/claim');
 
 module.exports = {
