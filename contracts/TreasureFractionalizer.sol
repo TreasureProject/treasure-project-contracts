@@ -27,7 +27,6 @@ contract TreasureFractionalizer is ERC1155 {
     }
 
     function fractionalize(uint256 tokenId) public returns (string[] memory) {
-
         ITreasure(TREASURE).safeTransferFrom(
             msg.sender,
             address(this),
