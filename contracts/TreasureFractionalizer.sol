@@ -8,7 +8,7 @@ import '@openzeppelin/contracts/interfaces/IERC721Receiver.sol';
 import './ITreasure.sol';
 import './Base64.sol';
 
-abstract contract FractionalizeTreasure is ERC1155 {
+abstract contract TreasureFractionalizer is ERC1155 {
     address public constant TREASURE =
         0xf3DFbE887D81C442557f7a59e3a0aEcf5e39F6aa;
 
