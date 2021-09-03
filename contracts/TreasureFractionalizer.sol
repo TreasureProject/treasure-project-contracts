@@ -17,6 +17,11 @@ contract TreasureFractionalizer is ERC1155 {
         itemNames[
             uint256(keccak256('Red Feather' 'Snow White Feather'))
         ] = 'Red and White Feather';
+        itemValues[
+            uint256(keccak256('Red Feather' 'Snow White Feather'))
+        ] = 100;
+        itemNames[uint256(keccak256('Carrage'))] = 'Carriage';
+        itemValues[uint256(keccak256('Carrage'))] = 'Carriage';
 
         for (uint256 i; i < names.length; i++) {
             uint256 tokenId = _nameToId(names[i]);
