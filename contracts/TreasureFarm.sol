@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import '@openzeppelin/contracts/interfaces/IERC1155.sol';
+import '@openzeppelin/contracts/utils/math/Math.sol';
 
 contract TreasureFarm is ERC20 {
     struct Item {
@@ -12,6 +13,7 @@ contract TreasureFarm is ERC20 {
     }
 
     address private immutable TREASURE_FRACTIONALIZER;
+    uint256 public immutable EXPIRATION;
 
     mapping(uint256 => string) public itemNames;
     mapping(uint256 => uint256) public itemValues;
@@ -37,6 +39,7 @@ contract TreasureFarm is ERC20 {
         }
 
         TREASURE_FRACTIONALIZER = fractionalizer;
+        EXPIRATION = block.number + 6000 * 30;
     }
 
     function calculateReward(address account, uint256 tokenId)
@@ -47,7 +50,8 @@ contract TreasureFarm is ERC20 {
         reward =
             itemValues[tokenId] *
             depositBalances[account][tokenId] *
-            (block.number - depositBlocks[account][tokenId]);
+            (Math.min(block.number, EXPIRATION) -
+                depositBlocks[account][tokenId]);
     }
 
     function claimReward(uint256 tokenId) public {
@@ -57,7 +61,7 @@ contract TreasureFarm is ERC20 {
             _mint(msg.sender, reward);
         }
 
-        depositBlocks[msg.sender][tokenId] = block.number;
+        depositBlocks[msg.sender][tokenId] = Math.min(block.number, EXPIRATION);
     }
 
     function deposit(uint256 tokenId, uint256 amount) external {
