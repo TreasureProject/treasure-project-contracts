@@ -9,7 +9,29 @@ const RATE_MULTIPLIER = ethers.utils
 
 describe('TreasureFarm', function () {
   let signer;
+
+  let treasure;
+  let treasureFractionalizer;
   let instance;
+
+  const getItemNames = async function (tokenId) {
+    return [
+      await treasure.callStatic.getAsset1(tokenId),
+      await treasure.callStatic.getAsset2(tokenId),
+      await treasure.callStatic.getAsset3(tokenId),
+      await treasure.callStatic.getAsset4(tokenId),
+      await treasure.callStatic.getAsset5(tokenId),
+      await treasure.callStatic.getAsset6(tokenId),
+      await treasure.callStatic.getAsset7(tokenId),
+      await treasure.callStatic.getAsset8(tokenId),
+    ];
+  };
+
+  const getItemId = function (name) {
+    return ethers.BigNumber.from(
+      ethers.utils.solidityKeccak256(['string'], [name]),
+    );
+  };
 
   before(async function () {
     [signer] = await ethers.getSigners();
@@ -17,13 +39,13 @@ describe('TreasureFarm', function () {
 
   beforeEach(async function () {
     const treasureFactory = await ethers.getContractFactory('Treasure');
-    let treasure = await treasureFactory.deploy();
+    treasure = await treasureFactory.deploy();
     await treasure.deployed();
 
     const treasureFractionalizerFactory = await ethers.getContractFactory(
       'TreasureFractionalizer',
     );
-    let treasureFractionalizer = await treasureFractionalizerFactory.deploy(
+    treasureFractionalizer = await treasureFractionalizerFactory.deploy(
       treasure.address,
       items.map((i) => i.name),
     );
@@ -41,7 +63,48 @@ describe('TreasureFarm', function () {
   });
 
   describe('#calculateReward', function () {
-    it('returns pending rewards for given user and token');
+    it('returns pending rewards for given user and token', async function () {
+      const tokenId = ethers.constants.One;
+
+      await treasure.connect(signer).claim(tokenId);
+      await treasure
+        .connect(signer)
+        .setApprovalForAll(treasureFractionalizer.address, true);
+      await treasureFractionalizer.connect(signer).fractionalize(tokenId);
+      await treasureFractionalizer
+        .connect(signer)
+        .setApprovalForAll(instance.address, true);
+
+      const itemNames = await getItemNames(tokenId);
+      const itemIds = itemNames.map(getItemId);
+      const itemValues = itemNames.map(
+        (name) => items.find((i) => i.name === name).value,
+      );
+
+      const depositTx = await instance
+        .connect(signer)
+        .deposit(itemIds[0], ethers.constants.One);
+
+      const blocks = ethers.BigNumber.from('7');
+
+      for (let i = 0; i < blocks.toNumber(); i++) {
+        await ethers.provider.send('evm_mine', []);
+      }
+
+      expect(
+        await instance.callStatic.calculateReward(signer.address, tokenId),
+      ).to.equal(
+        ethers.BigNumber.from(itemValues[0]).mul(RATE_MULTIPLIER).mul(blocks),
+      );
+
+      // await expect(
+      //   () => instance.connect(signer).claimReward(tokenId)
+      // ).to.changeTokenBalance(
+      //   instance,
+      //   signer,
+      //   expected
+      // );
+    });
   });
 
   describe('#claimReward', function () {
