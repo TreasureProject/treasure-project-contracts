@@ -2,30 +2,38 @@
 
 pragma solidity ^0.8.0;
 
+import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 import './IMagic.sol';
 
-contract Magic is IMagic, ERC20 {
-    address private owner;
+contract Magic is IMagic, ERC20, Ownable {
+    uint256 public teamMintAmount;
     mapping(address => bool) private whitelist;
 
-    constructor() ERC20('MAGIC', 'MAGIC') {
-        owner = msg.sender;
-    }
+    constructor() ERC20('MAGIC', 'MAGIC') {}
 
-    function setWhitelist(address[] calldata minters) external {
-        require(msg.sender == owner, 'Magic: sender must be owner');
-
-        owner = address(0);
+    function setWhitelist(address[] calldata minters) external onlyOwner {
+        require(!whitelist[address(this)], 'Magic: whitelist already set');
 
         for (uint256 i; i < minters.length; i++) {
             whitelist[minters[i]] = true;
         }
+
+        whitelist[address(this)] = true;
     }
 
     function mint(address account, uint256 amount) external override {
         require(whitelist[msg.sender], 'Magic: sender must be whitelisted');
         _mint(account, amount);
+    }
+
+    function teamMint(address account, uint256 amount) external onlyOwner {
+        require(
+            (totalSupply() + amount) / (teamMintAmount + amount) >= 10,
+            'Magic: excessive mint'
+        );
+        _mint(account, amount);
+        teamMintAmount += amount;
     }
 }

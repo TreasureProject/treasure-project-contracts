@@ -43,10 +43,10 @@ describe('Magic', function () {
     });
 
     describe('reverts if', function () {
-      it('sender is not deployer', async function () {
+      it('sender is not owner', async function () {
         await expect(
           instance.connect(nobody).setWhitelist([]),
-        ).to.be.revertedWith('Magic: sender must be owner');
+        ).to.be.revertedWith('Ownable: caller is not the owner');
       });
 
       it('function has already been called', async function () {
@@ -54,7 +54,7 @@ describe('Magic', function () {
 
         await expect(
           instance.connect(signer).setWhitelist([]),
-        ).to.be.revertedWith('Magic: sender must be owner');
+        ).to.be.revertedWith('Magic: whitelist already set');
       });
     });
   });
@@ -73,6 +73,64 @@ describe('Magic', function () {
         await expect(
           instance.connect(nobody).mint(nobody.address, ethers.constants.One),
         ).to.be.revertedWith('Magic: sender must be whitelisted');
+      });
+    });
+  });
+
+  describe('#teamMint', function () {
+    it('mints given quantity of tokens for given account', async function () {
+      await instance.connect(signer).setWhitelist([signer.address]);
+
+      await instance
+        .connect(signer)
+        .mint(nobody.address, ethers.BigNumber.from('10'));
+
+      await expect(() =>
+        instance.connect(signer).teamMint(nobody.address, ethers.constants.One),
+      ).to.changeTokenBalance(instance, nobody, ethers.constants.One);
+    });
+
+    describe('reverts if', function () {
+      it('sender is not owner', async function () {
+        await expect(
+          instance
+            .connect(nobody)
+            .teamMint(nobody.address, ethers.constants.One),
+        ).to.be.revertedWith('Ownable: caller is not the owner');
+      });
+
+      it('total team mint amount exceeds 10% of supply', async function () {
+        await instance.connect(signer).setWhitelist([signer.address]);
+
+        await instance
+          .connect(signer)
+          .mint(nobody.address, ethers.BigNumber.from('8'));
+
+        await expect(
+          instance
+            .connect(signer)
+            .teamMint(nobody.address, ethers.constants.One),
+        ).to.be.revertedWith('Magic: excessive mint');
+
+        await instance
+          .connect(signer)
+          .mint(nobody.address, ethers.constants.One);
+
+        // total supply has changed, minting is enabled
+
+        await expect(
+          instance
+            .connect(signer)
+            .teamMint(nobody.address, ethers.constants.One),
+        ).not.to.be.reverted;
+
+        // team mint amount has increased, minting is disabled
+
+        await expect(
+          instance
+            .connect(signer)
+            .teamMint(nobody.address, ethers.constants.One),
+        ).to.be.revertedWith('Magic: excessive mint');
       });
     });
   });
