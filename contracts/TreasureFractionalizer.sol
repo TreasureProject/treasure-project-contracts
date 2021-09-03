@@ -37,70 +37,6 @@ contract TreasureFractionalizer is ERC1155, IERC721Receiver {
         return IERC721Receiver.onERC721Received.selector;
     }
 
-    function fractionalize(uint256 tokenId) public returns (string[] memory) {
-        ITreasure(TREASURE).safeTransferFrom(
-            msg.sender,
-            address(this),
-            tokenId,
-            ''
-        );
-
-        _mint(
-            msg.sender,
-            _nameToId(ITreasure(TREASURE).getAsset1(tokenId)),
-            1,
-            ''
-        );
-        _mint(
-            msg.sender,
-            _nameToId(ITreasure(TREASURE).getAsset2(tokenId)),
-            1,
-            ''
-        );
-        _mint(
-            msg.sender,
-            _nameToId(ITreasure(TREASURE).getAsset3(tokenId)),
-            1,
-            ''
-        );
-        _mint(
-            msg.sender,
-            _nameToId(ITreasure(TREASURE).getAsset4(tokenId)),
-            1,
-            ''
-        );
-        _mint(
-            msg.sender,
-            _nameToId(ITreasure(TREASURE).getAsset5(tokenId)),
-            1,
-            ''
-        );
-        _mint(
-            msg.sender,
-            _nameToId(ITreasure(TREASURE).getAsset6(tokenId)),
-            1,
-            ''
-        );
-        _mint(
-            msg.sender,
-            _nameToId(ITreasure(TREASURE).getAsset7(tokenId)),
-            1,
-            ''
-        );
-        _mint(
-            msg.sender,
-            _nameToId(ITreasure(TREASURE).getAsset8(tokenId)),
-            1,
-            ''
-        );
-    }
-
-    function _nameToId(string memory name) private pure returns (uint256 id) {
-        id = uint256(keccak256(abi.encodePacked(name)));
-        if (id == ERR_1) id = FIX_1;
-        if (id == ERR_2) id = FIX_2;
-    }
-
     function uri(uint256 tokenId) public view override returns (string memory) {
         string[3] memory parts;
         parts[
@@ -134,5 +70,33 @@ contract TreasureFractionalizer is ERC1155, IERC721Receiver {
         );
 
         return output;
+    }
+
+    function fractionalize(uint256 tokenId) public returns (string[] memory) {
+        ITreasure(TREASURE).safeTransferFrom(
+            msg.sender,
+            address(this),
+            tokenId,
+            ''
+        );
+
+        _mintForSenderByAttribute(ITreasure(TREASURE).getAsset1(tokenId));
+        _mintForSenderByAttribute(ITreasure(TREASURE).getAsset2(tokenId));
+        _mintForSenderByAttribute(ITreasure(TREASURE).getAsset3(tokenId));
+        _mintForSenderByAttribute(ITreasure(TREASURE).getAsset4(tokenId));
+        _mintForSenderByAttribute(ITreasure(TREASURE).getAsset5(tokenId));
+        _mintForSenderByAttribute(ITreasure(TREASURE).getAsset6(tokenId));
+        _mintForSenderByAttribute(ITreasure(TREASURE).getAsset7(tokenId));
+        _mintForSenderByAttribute(ITreasure(TREASURE).getAsset8(tokenId));
+    }
+
+    function _nameToId(string memory name) private pure returns (uint256 id) {
+        id = uint256(keccak256(abi.encodePacked(name)));
+        if (id == ERR_1) id = FIX_1;
+        if (id == ERR_2) id = FIX_2;
+    }
+
+    function _mintForSenderByAttribute(string memory name) private {
+        _mint(msg.sender, _nameToId(name), 1, '');
     }
 }
