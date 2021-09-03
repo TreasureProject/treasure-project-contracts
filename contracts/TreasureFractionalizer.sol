@@ -11,26 +11,16 @@ import './Base64.sol';
 contract TreasureFractionalizer is ERC1155 {
     address public immutable TREASURE;
 
-    struct Item {
-        string name;
-        uint256 value;
-    }
-
     mapping(uint256 => string) private itemNames;
-    mapping(uint256 => uint256) private itemValues;
 
-    constructor(address treasure, Item[] memory items) ERC1155('') {
+    constructor(address treasure, string[] memory names) ERC1155('') {
         itemNames[
             uint256(keccak256('Red Feather' 'Snow White Feather'))
         ] = 'Red and White Feather';
-        itemValues[
-            uint256(keccak256('Red Feather' 'Snow White Feather'))
-        ] = 100;
 
-        for (uint256 i; i < items.length; i++) {
-            uint256 tokenId = _nameToId(items[i].name);
-            itemNames[tokenId] = items[i].name;
-            itemValues[tokenId] = items[i].value;
+        for (uint256 i; i < names.length; i++) {
+            uint256 tokenId = _nameToId(names[i]);
+            itemNames[tokenId] = names[i];
         }
 
         TREASURE = treasure;
@@ -90,8 +80,8 @@ contract TreasureFractionalizer is ERC1155 {
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Treasure #',
-                        itemValues[tokenId],
+                        '{"name": "',
+                        itemNames[tokenId],
                         '", "description": "Treasures are fractionalized  is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
                         Base64.encode(bytes(output)),
                         '"}'
