@@ -2,8 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-interface ITreasure {
-    function ownerOf(uint256 tokenId) external view returns (address owner);
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+
+interface ITreasure is IERC721 {
+    function ownerOf(uint256 tokenId) external override view returns (address owner);
 
     function getAsset1(uint256 tokenId) external view returns (string memory);
 
