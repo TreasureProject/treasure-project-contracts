@@ -1,3 +1,6 @@
+const fs = require('fs');
+const deployments = require('../data/deployments');
+
 task('deploy').setAction(async function () {
   const [deployer] = await ethers.getSigners();
 
@@ -5,5 +8,11 @@ task('deploy').setAction(async function () {
   const instance = await factory.deploy();
   await instance.deployed();
 
-  console.log(instance.address);
+  console.log(`Deployed to: ${instance.address}`);
+  deployments.treasure = instance.address;
+
+  const json = JSON.stringify(deployments, null, 2);
+  fs.writeFileSync(`${__dirname}/../data/deployments.json`, `${json}\n`, {
+    flag: 'w',
+  });
 });
