@@ -40,6 +40,8 @@
   { "name": "Pot of Gold", "value": 175 },
   { "name": "Score of Ivory", "value": 175 },
   { "name": "Small Bird", "value": 10 },
+  { "name": "Red Feather", "value": 15 },
+  { "name": "Snow White Feather", "value": 80 },
   { "name": "Red and White Feather", "value": 150 },
   { "name": "Thread of Divine Silk", "value": 200 },
   { "name": "Unbreakable Pocketwatch", "value": 175 },
