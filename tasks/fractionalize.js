@@ -1,8 +1,8 @@
 const deployments = require('../data/deployments');
 
 task('fractionalize')
-  .addParam('name')
-  .setAction(async function ({ name }) {
+  .addParam('id')
+  .setAction(async function ({ id }) {
     const [sender] = await ethers.getSigners();
 
     const treasure = await ethers.getContractAt(
@@ -21,11 +21,12 @@ task('fractionalize')
         instance.address,
       ))
     ) {
-      await treasure.connect(sender).setApprovalForAll(instance.address);
+      const approveTx = await treasure
+        .connect(sender)
+        .setApprovalForAll(instance.address, true);
+      await approveTx.wait();
     }
 
-    const tx = await instance
-      .connect(sender)
-      .fractionalize(ethers.utils.solidityKeccak256(['string'], [name]));
+    const tx = await instance.connect(sender).fractionalize(id);
     await tx.wait();
   });
