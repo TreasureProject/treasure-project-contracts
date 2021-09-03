@@ -85,9 +85,7 @@ describe('TreasureFarm', function () {
       const itemIds = itemNames.map(getItemId);
       const itemValues = itemNames.map(getItemValuePerBlock);
 
-      const depositTx = await instance
-        .connect(signer)
-        .deposit(itemIds[0], ethers.constants.One);
+      await instance.connect(signer).deposit(itemIds[0], ethers.constants.One);
 
       const blocks = ethers.BigNumber.from('7');
 
@@ -96,16 +94,8 @@ describe('TreasureFarm', function () {
       }
 
       expect(
-        await instance.callStatic.calculateReward(signer.address, tokenId),
+        await instance.callStatic.calculateReward(signer.address, itemIds[0]),
       ).to.equal(itemValues[0].mul(blocks));
-
-      // await expect(
-      //   () => instance.connect(signer).claimReward(tokenId)
-      // ).to.changeTokenBalance(
-      //   instance,
-      //   signer,
-      //   expected
-      // );
     });
   });
 
