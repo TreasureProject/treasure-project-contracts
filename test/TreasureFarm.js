@@ -10,6 +10,7 @@ const RATE_MULTIPLIER = ethers.utils
 describe('TreasureFarm', function () {
   let signer;
 
+  let magic;
   let treasure;
   let treasureFractionalizer;
   let instance;
@@ -55,6 +56,10 @@ describe('TreasureFarm', function () {
   });
 
   beforeEach(async function () {
+    const magicFactory = await ethers.getContractFactory('Magic');
+    magic = await magicFactory.deploy();
+    await magic.deployed();
+
     const treasureFactory = await ethers.getContractFactory('Treasure');
     treasure = await treasureFactory.deploy();
     await treasure.deployed();
@@ -70,6 +75,7 @@ describe('TreasureFarm', function () {
 
     const factory = await ethers.getContractFactory('TreasureFarm');
     instance = await factory.deploy(
+      magic.address,
       treasureFractionalizer.address,
       items.map((i) => [
         i.name,
@@ -124,7 +130,7 @@ describe('TreasureFarm', function () {
 
       await expect(() =>
         instance.connect(signer).claimReward(itemId),
-      ).to.changeTokenBalance(instance, signer, expected);
+      ).to.changeTokenBalance(magic, signer, expected);
     });
 
     it('resets pending rewards to zero', async function () {
@@ -186,7 +192,7 @@ describe('TreasureFarm', function () {
 
       await expect(() =>
         instance.connect(signer).deposit(itemId, ethers.constants.Zero),
-      ).to.changeTokenBalance(instance, signer, expected);
+      ).to.changeTokenBalance(magic, signer, expected);
     });
 
     describe('reverts if', function () {
@@ -257,7 +263,7 @@ describe('TreasureFarm', function () {
 
         await expect(() =>
           instance.connect(signer).withdraw(itemId, ethers.constants.One),
-        ).to.changeTokenBalance(instance, signer, expected);
+        ).to.changeTokenBalance(magic, signer, expected);
       });
     });
 

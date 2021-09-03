@@ -2,17 +2,19 @@
 
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import '@openzeppelin/contracts/interfaces/IERC1155.sol';
 import '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
 
-contract TreasureFarm is ERC20, ERC1155Receiver {
+import './IMagic.sol';
+
+contract TreasureFarm is ERC1155Receiver {
     struct Item {
         string name;
         uint256 value;
     }
 
+    address private immutable MAGIC;
     address private immutable TREASURE_FRACTIONALIZER;
     uint256 public immutable EXPIRATION;
 
@@ -20,9 +22,11 @@ contract TreasureFarm is ERC20, ERC1155Receiver {
     mapping(address => mapping(uint256 => uint256)) public depositBalances;
     mapping(address => mapping(uint256 => uint256)) public depositBlocks;
 
-    constructor(address fractionalizer, Item[] memory items)
-        ERC20('MAGIC', 'MAGIC')
-    {
+    constructor(
+        address magic,
+        address fractionalizer,
+        Item[] memory items
+    ) {
         for (uint256 i; i < items.length; i++) {
             uint256 tokenId = uint256(
                 keccak256(abi.encodePacked(items[i].name))
@@ -30,6 +34,7 @@ contract TreasureFarm is ERC20, ERC1155Receiver {
             itemValues[tokenId] = items[i].value;
         }
 
+        MAGIC = magic;
         TREASURE_FRACTIONALIZER = fractionalizer;
         EXPIRATION = block.number + 6000 * 30;
     }
@@ -70,7 +75,7 @@ contract TreasureFarm is ERC20, ERC1155Receiver {
         uint256 reward = calculateReward(msg.sender, tokenId);
 
         if (reward > 0) {
-            _mint(msg.sender, reward);
+            IMagic(MAGIC).mint(msg.sender, reward);
         }
 
         depositBlocks[msg.sender][tokenId] = Math.min(block.number, EXPIRATION);
