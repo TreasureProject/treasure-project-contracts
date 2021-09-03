@@ -39,10 +39,19 @@ contract TreasureFarm is ERC20 {
         TREASURE_FRACTIONALIZER = fractionalizer;
     }
 
-    function claimReward(uint256 tokenId) public {
-        uint256 reward = itemValues[tokenId] *
+    function calculateReward(address account, uint256 tokenId)
+        public
+        view
+        returns (uint256 reward)
+    {
+        reward =
+            itemValues[tokenId] *
             depositBalances[account][tokenId] *
             (block.number - depositBlocks[account][tokenId]);
+    }
+
+    function claimReward(uint256 tokenId) public {
+        uint256 reward = calculateReward(msg.sender, tokenId);
 
         if (reward > 0) {
             _mint(msg.sender, reward);
