@@ -94,57 +94,63 @@ describe('TreasureFarm', function () {
     itemValues = itemNames.map(getItemValuePerBlock);
   });
 
-  describe('#calculateReward', function () {
+  describe('#treasureRewardOf', function () {
     it('returns pending rewards for given user and token', async function () {
       const [itemId] = itemIds;
       const [itemValue] = itemValues;
 
-      await instance.connect(signer).deposit(itemId, ethers.constants.One);
+      await instance
+        .connect(signer)
+        .depositTreasure(itemId, ethers.constants.One);
 
       await mineBlocks(7);
 
       expect(
-        await instance.callStatic.calculateReward(signer.address, itemId),
+        await instance.callStatic.treasureRewardOf(signer.address, itemId),
       ).to.equal(itemValue.mul(ethers.BigNumber.from('7')));
     });
   });
 
-  describe('#claimReward', function () {
+  describe('#claimTreasureReward', function () {
     it('transfers pending rewards to sender', async function () {
       const [itemId] = itemIds;
       const [itemValue] = itemValues;
 
-      await instance.connect(signer).deposit(itemId, ethers.constants.One);
+      await instance
+        .connect(signer)
+        .depositTreasure(itemId, ethers.constants.One);
 
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateReward(signer.address, itemId)
+        await instance.callStatic.treasureRewardOf(signer.address, itemId)
       ).add(itemValue);
 
       await expect(() =>
-        instance.connect(signer).claimReward(itemId),
+        instance.connect(signer).claimTreasureReward(itemId),
       ).to.changeTokenBalance(instance, signer, expected);
     });
 
     it('resets pending rewards to zero', async function () {
       const [itemId] = itemIds;
 
-      await instance.connect(signer).deposit(itemId, ethers.constants.One);
+      await instance
+        .connect(signer)
+        .depositTreasure(itemId, ethers.constants.One);
 
       await mineBlocks(1);
 
       expect(
-        await instance.callStatic.calculateReward(signer.address, itemId),
+        await instance.callStatic.treasureRewardOf(signer.address, itemId),
       ).not.to.equal(ethers.constants.Zero);
-      await instance.connect(signer).claimReward(itemId);
+      await instance.connect(signer).claimTreasureReward(itemId);
       expect(
-        await instance.callStatic.calculateReward(signer.address, itemId),
+        await instance.callStatic.treasureRewardOf(signer.address, itemId),
       ).to.equal(ethers.constants.Zero);
     });
   });
 
-  describe('#deposit', function () {
+  describe('#depositTreasure', function () {
     it('transfers token from sender to contract', async function () {
       const [itemId] = itemIds;
 
@@ -157,7 +163,9 @@ describe('TreasureFarm', function () {
         itemId,
       );
 
-      await instance.connect(signer).deposit(itemId, ethers.constants.One);
+      await instance
+        .connect(signer)
+        .depositTreasure(itemId, ethers.constants.One);
 
       const newFarmBalance = await treasureFractionalizer.callStatic.balanceOf(
         instance.address,
@@ -176,16 +184,18 @@ describe('TreasureFarm', function () {
       const [itemId] = itemIds;
       const [itemValue] = itemValues;
 
-      await instance.connect(signer).deposit(itemId, ethers.constants.One);
+      await instance
+        .connect(signer)
+        .depositTreasure(itemId, ethers.constants.One);
 
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateReward(signer.address, itemId)
+        await instance.callStatic.treasureRewardOf(signer.address, itemId)
       ).add(itemValue);
 
       await expect(() =>
-        instance.connect(signer).deposit(itemId, ethers.constants.Zero),
+        instance.connect(signer).depositTreasure(itemId, ethers.constants.Zero),
       ).to.changeTokenBalance(instance, signer, expected);
     });
 
@@ -194,7 +204,9 @@ describe('TreasureFarm', function () {
         const [itemId] = itemIds;
 
         await expect(
-          instance.connect(signer).deposit(itemId, ethers.BigNumber.from('10')),
+          instance
+            .connect(signer)
+            .depositTreasure(itemId, ethers.BigNumber.from('10')),
         ).to.be.revertedWith('ERC1155: insufficient balance for transfer');
       });
 
@@ -206,17 +218,21 @@ describe('TreasureFarm', function () {
           .setApprovalForAll(treasureFractionalizer.address, false);
 
         await expect(
-          instance.connect(signer).deposit(itemId, ethers.BigNumber.from('10')),
+          instance
+            .connect(signer)
+            .depositTreasure(itemId, ethers.BigNumber.from('10')),
         ).to.be.revertedWith('ERC1155: insufficient balance for transfer');
       });
     });
   });
 
-  describe('#withdraw', function () {
+  describe('#withdrawTreasure', function () {
     it('transfers token from contract to sender', async function () {
       const [itemId] = itemIds;
 
-      await instance.connect(signer).deposit(itemId, ethers.constants.One);
+      await instance
+        .connect(signer)
+        .depositTreasure(itemId, ethers.constants.One);
 
       const oldFarmBalance = await treasureFractionalizer.callStatic.balanceOf(
         instance.address,
@@ -227,7 +243,9 @@ describe('TreasureFarm', function () {
         itemId,
       );
 
-      await instance.connect(signer).withdraw(itemId, ethers.constants.One);
+      await instance
+        .connect(signer)
+        .withdrawTreasure(itemId, ethers.constants.One);
 
       const newFarmBalance = await treasureFractionalizer.callStatic.balanceOf(
         instance.address,
@@ -247,16 +265,20 @@ describe('TreasureFarm', function () {
         const [itemId] = itemIds;
         const [itemValue] = itemValues;
 
-        await instance.connect(signer).deposit(itemId, ethers.constants.One);
+        await instance
+          .connect(signer)
+          .depositTreasure(itemId, ethers.constants.One);
 
         await mineBlocks(7);
 
         const expected = (
-          await instance.callStatic.calculateReward(signer.address, itemId)
+          await instance.callStatic.treasureRewardOf(signer.address, itemId)
         ).add(itemValue);
 
         await expect(() =>
-          instance.connect(signer).withdraw(itemId, ethers.constants.One),
+          instance
+            .connect(signer)
+            .withdrawTreasure(itemId, ethers.constants.One),
         ).to.changeTokenBalance(instance, signer, expected);
       });
     });
@@ -266,13 +288,19 @@ describe('TreasureFarm', function () {
         const [itemId] = itemIds;
 
         await expect(
-          instance.connect(signer).withdraw(itemId, ethers.constants.One),
+          instance
+            .connect(signer)
+            .withdrawTreasure(itemId, ethers.constants.One),
         ).to.be.revertedWith('TreasureFarm: insufficient balance');
 
-        await instance.connect(signer).deposit(itemId, ethers.constants.One);
+        await instance
+          .connect(signer)
+          .depositTreasure(itemId, ethers.constants.One);
 
         await expect(
-          instance.connect(signer).withdraw(itemId, ethers.constants.Two),
+          instance
+            .connect(signer)
+            .withdrawTreasure(itemId, ethers.constants.Two),
         ).to.be.revertedWith('TreasureFarm: insufficient balance');
       });
     });
