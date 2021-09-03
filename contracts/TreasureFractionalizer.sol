@@ -45,27 +45,54 @@ contract TreasureFractionalizer is ERC1155, IERC721Receiver {
             ''
         );
 
-        uint256[] memory ids = new uint256[](8);
-        ids[0] = _nameToId(ITreasure(TREASURE).getAsset1(tokenId));
-        ids[1] = _nameToId(ITreasure(TREASURE).getAsset2(tokenId));
-        ids[2] = _nameToId(ITreasure(TREASURE).getAsset3(tokenId));
-        ids[3] = _nameToId(ITreasure(TREASURE).getAsset4(tokenId));
-        ids[4] = _nameToId(ITreasure(TREASURE).getAsset5(tokenId));
-        ids[5] = _nameToId(ITreasure(TREASURE).getAsset6(tokenId));
-        ids[6] = _nameToId(ITreasure(TREASURE).getAsset7(tokenId));
-        ids[7] = _nameToId(ITreasure(TREASURE).getAsset8(tokenId));
-
-        uint256[] memory amounts = new uint256[](8);
-        ids[0] = 1;
-        ids[1] = 1;
-        ids[2] = 1;
-        ids[3] = 1;
-        ids[4] = 1;
-        ids[5] = 1;
-        ids[6] = 1;
-        ids[7] = 1;
-
-        _mintBatch(msg.sender, ids, amounts, '');
+        _mint(
+            msg.sender,
+            _nameToId(ITreasure(TREASURE).getAsset1(tokenId)),
+            1,
+            ''
+        );
+        _mint(
+            msg.sender,
+            _nameToId(ITreasure(TREASURE).getAsset2(tokenId)),
+            1,
+            ''
+        );
+        _mint(
+            msg.sender,
+            _nameToId(ITreasure(TREASURE).getAsset3(tokenId)),
+            1,
+            ''
+        );
+        _mint(
+            msg.sender,
+            _nameToId(ITreasure(TREASURE).getAsset4(tokenId)),
+            1,
+            ''
+        );
+        _mint(
+            msg.sender,
+            _nameToId(ITreasure(TREASURE).getAsset5(tokenId)),
+            1,
+            ''
+        );
+        _mint(
+            msg.sender,
+            _nameToId(ITreasure(TREASURE).getAsset6(tokenId)),
+            1,
+            ''
+        );
+        _mint(
+            msg.sender,
+            _nameToId(ITreasure(TREASURE).getAsset7(tokenId)),
+            1,
+            ''
+        );
+        _mint(
+            msg.sender,
+            _nameToId(ITreasure(TREASURE).getAsset8(tokenId)),
+            1,
+            ''
+        );
     }
 
     function _nameToId(string memory name) private pure returns (uint256 id) {
