@@ -29,12 +29,12 @@ contract TreasureFractionalizer is ERC1155, IERC721Receiver {
     }
 
     function onERC721Received(
-        address operator,
-        address from,
-        uint256 tokenId,
-        bytes calldata data
-    ) external returns (bytes4) {
-        return IERC721.onERC721Received.selector;
+        address,
+        address,
+        uint256,
+        bytes calldata
+    ) external pure override returns (bytes4) {
+        return IERC721Receiver.onERC721Received.selector;
     }
 
     function fractionalize(uint256 tokenId) public returns (string[] memory) {
