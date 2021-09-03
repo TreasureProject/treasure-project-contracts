@@ -29,6 +29,8 @@ contract TreasureFarm is ERC20 {
         itemValues[
             uint256(keccak256('Red Feather' 'Snow White Feather'))
         ] = 100;
+        itemNames[uint256(keccak256('Carrage'))] = 'Carriage';
+        itemValues[uint256(keccak256('Carrage'))] = 'Carriage';
 
         for (uint256 i; i < items.length; i++) {
             uint256 tokenId = uint256(
