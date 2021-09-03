@@ -36,7 +36,7 @@ contract TreasureFractionalizer is ERC1155 {
         TREASURE = treasure;
     }
 
-    function decompose(uint256 tokenId) public returns (string[] memory) {
+    function fractionalize(uint256 tokenId) public returns (string[] memory) {
         // TODO: ERC721 transfer of tokenId to address(this)
         // safeTransferFrom(msg.sender, this, tokenId);
 
