@@ -8,6 +8,7 @@ require('hardhat-spdx-license-identifier');
 require('solidity-coverage');
 
 require('./tasks/deploy');
+require('./tasks/claim');
 
 module.exports = {
   solidity: {
@@ -22,12 +23,12 @@ module.exports = {
 
   networks: {
     mainnet: {
-      url: `https://eth-mainnet.alchemyapi.io/v2/${ process.env.ALCHEMY_KEY }`,
+      url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.ETH_MAIN_KEY],
     },
 
     rinkeby: {
-      url: `https://eth-rinkeby.alchemyapi.io/v2/${ process.env.ALCHEMY_KEY }`,
+      url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.ETH_TEST_KEY],
     },
   },
