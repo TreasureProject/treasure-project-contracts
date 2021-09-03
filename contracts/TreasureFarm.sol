@@ -19,7 +19,7 @@ contract TreasureFarm is ERC20 {
     mapping(address => mapping(uint256 => uint256)) public depositBlocks;
 
     constructor(address fractionalizer, Item[] memory items)
-        ERC20('TODO', 'TODO')
+        ERC20('MAGIC', 'MAGIC')
     {
         itemNames[
             uint256(keccak256('Red Feather' 'Snow White Feather'))
