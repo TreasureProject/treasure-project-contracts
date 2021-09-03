@@ -89,8 +89,17 @@ contract TreasureFarm is ERC20, ERC1155Receiver {
     }
 
     function withdraw(uint256 tokenId, uint256 amount) external {
+        require(
+            depositBalances[msg.sender][tokenId] >= amount,
+            'TreasureFarm: insufficient balance'
+        );
+
         claimReward(tokenId);
-        depositBalances[msg.sender][tokenId] -= amount;
+
+        unchecked {
+            depositBalances[msg.sender][tokenId] -= amount;
+        }
+
         IERC1155(TREASURE_FRACTIONALIZER).safeTransferFrom(
             address(this),
             msg.sender,
