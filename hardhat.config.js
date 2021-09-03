@@ -22,6 +22,18 @@ module.exports = {
   },
 
   networks: {
+    hardhat: {
+      ...(process.env.FORK_MODE
+        ? {
+            forking: {
+              url: `https://eth-${
+                process.env.FORK_NETWORK || 'mainnet'
+              }.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
+            },
+          }
+        : {}),
+    },
+
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.ETH_MAIN_KEY],

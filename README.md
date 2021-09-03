@@ -22,13 +22,7 @@ yarn run hardhat compile
 
 ### Networks
 
-By default, Hardhat uses the Hardhat Network in-process.
-
-To use an external network via URL, set the `NODE_URL` environment variable and append commands with `--network generic`:
-
-```bash
-NODE_URL="[NODE_URL]" yarn run hardhat test --network generic
-```
+Configurations are defined for `mainnet` and `rinkeby` networks.  Network forking is also available, and can be utilized by setting the `FORK_MODE` environment variable to `true` and `FORK_NETWORK` to either `mainnet` or `rinkeby`.
 
 ### Testing
 
