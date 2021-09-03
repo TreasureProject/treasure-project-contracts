@@ -64,7 +64,7 @@ contract AGLDFarm {
     function withdraw(uint256 amount) external {
         require(
             depositBalances[msg.sender] >= amount,
-            'TreasureFarm: insufficient balance'
+            'AGLDFarm: insufficient balance'
         );
 
         claimReward();
@@ -73,10 +73,6 @@ contract AGLDFarm {
             depositBalances[msg.sender] -= amount;
         }
 
-        IERC20(ADVENTURE_GOLD).safeTransferFrom(
-            address(this),
-            msg.sender,
-            amount
-        );
+        IERC20(ADVENTURE_GOLD).safeTransfer(msg.sender, amount);
     }
 }
