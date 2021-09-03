@@ -4,9 +4,10 @@ pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import '@openzeppelin/contracts/interfaces/IERC1155.sol';
+import '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
 
-contract TreasureFarm is ERC20 {
+contract TreasureFarm is ERC20, ERC1155Receiver {
     struct Item {
         string name;
         uint256 value;
@@ -31,6 +32,26 @@ contract TreasureFarm is ERC20 {
 
         TREASURE_FRACTIONALIZER = fractionalizer;
         EXPIRATION = block.number + 6000 * 30;
+    }
+
+    function onERC1155Received(
+        address,
+        address,
+        uint256,
+        uint256,
+        bytes calldata
+    ) external pure override returns (bytes4) {
+        return IERC1155Receiver.onERC1155Received.selector;
+    }
+
+    function onERC1155BatchReceived(
+        address,
+        address,
+        uint256[] calldata,
+        uint256[] calldata,
+        bytes calldata
+    ) external pure override returns (bytes4) {
+        return IERC1155Receiver.onERC1155BatchReceived.selector;
     }
 
     function calculateReward(address account, uint256 tokenId)
