@@ -9,8 +9,8 @@ import './ITreasure.sol';
 import './Base64.sol';
 
 abstract contract FractionalizeTreasure is ERC1155 {
-    address public treasureAddress = 0xf3DFbE887D81C442557f7a59e3a0aEcf5e39F6aa;
-    ITreasure public treasureContract = ITreasure(treasureAddress);
+    address public constant TREASURE =
+        0xf3DFbE887D81C442557f7a59e3a0aEcf5e39F6aa;
 
     struct Item {
         string name;
@@ -40,14 +40,14 @@ abstract contract FractionalizeTreasure is ERC1155 {
         // safeTransferFrom(msg.sender, this, tokenId);
 
         uint256[] memory ids = new uint256[](8);
-        ids[0] = _nameToId(treasureContract.getAsset1(tokenId));
-        ids[1] = _nameToId(treasureContract.getAsset2(tokenId));
-        ids[2] = _nameToId(treasureContract.getAsset3(tokenId));
-        ids[3] = _nameToId(treasureContract.getAsset4(tokenId));
-        ids[4] = _nameToId(treasureContract.getAsset5(tokenId));
-        ids[5] = _nameToId(treasureContract.getAsset6(tokenId));
-        ids[6] = _nameToId(treasureContract.getAsset7(tokenId));
-        ids[7] = _nameToId(treasureContract.getAsset8(tokenId));
+        ids[0] = _nameToId(ITreasure(TREASURE).getAsset1(tokenId));
+        ids[1] = _nameToId(ITreasure(TREASURE).getAsset2(tokenId));
+        ids[2] = _nameToId(ITreasure(TREASURE).getAsset3(tokenId));
+        ids[3] = _nameToId(ITreasure(TREASURE).getAsset4(tokenId));
+        ids[4] = _nameToId(ITreasure(TREASURE).getAsset5(tokenId));
+        ids[5] = _nameToId(ITreasure(TREASURE).getAsset6(tokenId));
+        ids[6] = _nameToId(ITreasure(TREASURE).getAsset7(tokenId));
+        ids[7] = _nameToId(ITreasure(TREASURE).getAsset8(tokenId));
 
         uint256[] memory amounts = new uint256[](8);
         ids[0] = 1;
