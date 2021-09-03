@@ -84,6 +84,8 @@ describe('TreasureFarm', function () {
     );
     await instance.deployed();
 
+    await magic.connect(signer).setWhitelist([instance.address]);
+
     tokenId = ethers.constants.One;
 
     await treasure.connect(signer).claim(tokenId);

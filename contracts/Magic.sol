@@ -7,9 +7,18 @@ import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import './IMagic.sol';
 
 contract Magic is IMagic, ERC20 {
-    mapping(address => bool) whitelist;
+    address private owner;
+    mapping(address => bool) private whitelist;
 
-    constructor(address[] memory minters) ERC20('MAGIC', 'MAGIC') {
+    constructor() ERC20('MAGIC', 'MAGIC') {
+        owner = msg.sender;
+    }
+
+    function setWhitelist(address[] calldata minters) external {
+        require(msg.sender == owner, 'Magic: sender must be owner');
+
+        owner = address(0);
+
         for (uint256 i; i < minters.length; i++) {
             whitelist[minters[i]] = true;
         }
