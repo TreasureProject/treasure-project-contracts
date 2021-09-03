@@ -1,4 +1,4 @@
-# Treasure (for Adventurers)
+# Treasure (for Loot)
 
 ## Development
 
