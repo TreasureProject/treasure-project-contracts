@@ -8,7 +8,7 @@ import '@openzeppelin/contracts/interfaces/IERC721Receiver.sol';
 import './ITreasure.sol';
 import './Base64.sol';
 
-abstract contract TreasureFractionalizer is ERC1155 {
+contract TreasureFractionalizer is ERC1155 {
     address public immutable TREASURE;
 
     struct Item {
@@ -19,7 +19,7 @@ abstract contract TreasureFractionalizer is ERC1155 {
     mapping(uint256 => string) private itemNames;
     mapping(uint256 => uint256) private itemValues;
 
-    constructor(address treasure, Item[] memory items) {
+    constructor(address treasure, Item[] memory items) ERC1155('') {
         itemNames[
             uint256(keccak256('Red Feather' 'Snow White Feather'))
         ] = 'Red and White Feather';
