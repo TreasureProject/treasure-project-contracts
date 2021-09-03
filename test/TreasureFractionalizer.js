@@ -57,7 +57,23 @@ describe('TreasureFractionalizer', function () {
   });
 
   describe('#uri', function () {
-    it('todo');
+    it('generates encoded JSON with embedded SVG', async function () {
+      for (let itemName of itemNames) {
+        const itemId = getItemId(itemName);
+
+        const uri = await instance.callStatic.uri(itemId);
+
+        const [, jsonBase64] = uri.split(',');
+        const json = JSON.parse(
+          Buffer.from(jsonBase64, 'base64').toString('utf8'),
+        );
+
+        const [, svgBase64] = json.image.split(',');
+        const svg = Buffer.from(svgBase64, 'base64').toString('utf8');
+
+        expect(svg.includes(itemName)).to.be.true;
+      }
+    });
   });
 
   describe('#fractionalize', function () {
@@ -93,6 +109,42 @@ describe('TreasureFractionalizer', function () {
           await instance.callStatic.balanceOf(signer.address, itemId),
         ).to.equal(ethers.constants.One);
       }
+    });
+
+    it('corrects for Treasure spelling errors', async function () {
+      const errTokenId1 = ethers.BigNumber.from('4');
+      await treasure.connect(signer).claim(errTokenId1);
+      await instance.connect(signer).fractionalize(errTokenId1);
+
+      const errTokenId2 = ethers.BigNumber.from('10');
+      await treasure.connect(signer).claim(errTokenId2);
+      await instance.connect(signer).fractionalize(errTokenId2);
+
+      expect(
+        await instance.callStatic.balanceOf(
+          signer.address,
+          getItemId('Red FeatherSnow White Feather'),
+        ),
+      ).to.equal(ethers.constants.Zero);
+      expect(
+        await instance.callStatic.balanceOf(
+          signer.address,
+          getItemId('Red and White Feather'),
+        ),
+      ).to.equal(ethers.constants.One);
+
+      expect(
+        await instance.callStatic.balanceOf(
+          signer.address,
+          getItemId('Carrage'),
+        ),
+      ).to.equal(ethers.constants.Zero);
+      expect(
+        await instance.callStatic.balanceOf(
+          signer.address,
+          getItemId('Carriage'),
+        ),
+      ).to.equal(ethers.constants.One);
     });
 
     describe('reverts if', function () {
