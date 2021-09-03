@@ -8,7 +8,7 @@ import '@openzeppelin/contracts/interfaces/IERC721Receiver.sol';
 import './ITreasure.sol';
 import './Base64.sol';
 
-contract TreasureFractionalizer is ERC1155 {
+contract TreasureFractionalizer is ERC1155, IERC721Receiver {
     uint256 private constant ERR_1 =
         uint256(keccak256('Red Feather' 'Snow White Feather'));
     uint256 private constant FIX_1 =
@@ -26,6 +26,15 @@ contract TreasureFractionalizer is ERC1155 {
         }
 
         TREASURE = treasure;
+    }
+
+    function onERC721Received(
+        address operator,
+        address from,
+        uint256 tokenId,
+        bytes calldata data
+    ) external returns (bytes4) {
+        return IERC721.onERC721Received.selector;
     }
 
     function fractionalize(uint256 tokenId) public returns (string[] memory) {
