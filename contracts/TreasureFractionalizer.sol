@@ -9,8 +9,7 @@ import './ITreasure.sol';
 import './Base64.sol';
 
 abstract contract TreasureFractionalizer is ERC1155 {
-    address public constant TREASURE =
-        0xf3DFbE887D81C442557f7a59e3a0aEcf5e39F6aa;
+    address public immutable TREASURE;
 
     struct Item {
         string name;
@@ -20,7 +19,7 @@ abstract contract TreasureFractionalizer is ERC1155 {
     mapping(uint256 => string) private itemNames;
     mapping(uint256 => uint256) private itemValues;
 
-    constructor(Item[] memory items) {
+    constructor(address treasure, Item[] memory items) {
         itemNames[
             uint256(keccak256('Red Feather' 'Snow White Feather'))
         ] = 'Red and White Feather';
@@ -33,6 +32,8 @@ abstract contract TreasureFractionalizer is ERC1155 {
             itemNames[tokenId] = items[i].name;
             itemValues[tokenId] = items[i].value;
         }
+
+        TREASURE = treasure;
     }
 
     function decompose(uint256 tokenId) public returns (string[] memory) {
