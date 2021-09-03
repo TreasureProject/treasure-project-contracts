@@ -11,14 +11,16 @@ contract TreasureFarm is ERC20 {
         uint256 value;
     }
 
-    address private immutable TREASURE_FRACTIONS;
+    address private immutable TREASURE_FRACTIONALIZER;
 
     mapping(uint256 => string) public itemNames;
     mapping(uint256 => uint256) public itemValues;
     mapping(address => mapping(uint256 => uint256)) public depositBalances;
     mapping(address => mapping(uint256 => uint256)) public depositBlocks;
 
-    constructor(address fractions, Item[] memory items) ERC20('TODO', 'TODO') {
+    constructor(address fractionalizer, Item[] memory items)
+        ERC20('TODO', 'TODO')
+    {
         itemNames[
             uint256(keccak256('Red Feather' 'Snow White Feather'))
         ] = 'Red and White Feather';
@@ -34,16 +36,16 @@ contract TreasureFarm is ERC20 {
             itemValues[tokenId] = items[i].value;
         }
 
-        TREASURE_FRACTIONS = fractions;
+        TREASURE_FRACTIONALIZER = fractionalizer;
     }
 
     function claimReward(uint256 tokenId) public {
-        uint256 amount = itemValues[tokenId] *
-            depositBalances[msg.sender][tokenId] *
-            (block.number - depositBlocks[msg.sender][tokenId]);
+        uint256 reward = itemValues[tokenId] *
+            depositBalances[account][tokenId] *
+            (block.number - depositBlocks[account][tokenId]);
 
-        if (amount > 0) {
-            _mint(msg.sender, amount);
+        if (reward > 0) {
+            _mint(msg.sender, reward);
         }
 
         depositBlocks[msg.sender][tokenId] = block.number;
@@ -51,7 +53,7 @@ contract TreasureFarm is ERC20 {
 
     function deposit(uint256 tokenId, uint256 amount) external {
         claimReward(tokenId);
-        IERC1155(TREASURE_FRACTIONS).safeTransferFrom(
+        IERC1155(TREASURE_FRACTIONALIZER).safeTransferFrom(
             msg.sender,
             address(this),
             tokenId,
@@ -64,7 +66,7 @@ contract TreasureFarm is ERC20 {
     function withdraw(uint256 tokenId, uint256 amount) external {
         claimReward(tokenId);
         depositBalances[msg.sender][tokenId] -= amount;
-        IERC1155(TREASURE_FRACTIONS).safeTransferFrom(
+        IERC1155(TREASURE_FRACTIONALIZER).safeTransferFrom(
             address(this),
             msg.sender,
             tokenId,
