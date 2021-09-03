@@ -12,6 +12,7 @@ require('./tasks/deploy_fractionalizer');
 require('./tasks/deploy_farm');
 require('./tasks/claim');
 require('./tasks/fractionalize');
+require('./tasks/read');
 
 module.exports = {
   solidity: {
