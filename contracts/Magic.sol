@@ -7,10 +7,16 @@ import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import './IMagic.sol';
 
 contract Magic is IMagic, ERC20 {
-    constructor() ERC20('MAGIC', 'MAGIC') {}
+    mapping(address => bool) whitelist;
+
+    constructor(address[] memory minters) ERC20('MAGIC', 'MAGIC') {
+        for (uint256 i; i < minters.length; i++) {
+            whitelist[minters[i]] = true;
+        }
+    }
 
     function mint(address account, uint256 amount) external override {
-        // TODO: permissions
+        require(whitelist[msg.sender], 'Magic: sender must be whitelisted');
         _mint(account, amount);
     }
 }
