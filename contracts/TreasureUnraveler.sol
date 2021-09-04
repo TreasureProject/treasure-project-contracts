@@ -57,7 +57,7 @@ contract TreasureUnraveler is ERC1155, IERC721Receiver {
                     abi.encodePacked(
                         '{"name": "',
                         itemNames[tokenId],
-                        '", "description": "Treasures are unraveled adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
+                        '", "description": "Unraveled Treasures are adventurer gear sourced from Treasures (for Loot) NFTs. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Treasures in any way you want.", "image": "data:image/svg+xml;base64,',
                         Base64.encode(bytes(output)),
                         '"}'
                     )
