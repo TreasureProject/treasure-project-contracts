@@ -57,7 +57,7 @@ contract TreasureFractionalizer is ERC1155, IERC721Receiver {
                     abi.encodePacked(
                         '{"name": "',
                         itemNames[tokenId],
-                        '", "description": "Treasures are fractionalized  is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
+                        '", "description": "Treasures are fractionalized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
                         Base64.encode(bytes(output)),
                         '"}'
                     )
@@ -72,7 +72,7 @@ contract TreasureFractionalizer is ERC1155, IERC721Receiver {
         return output;
     }
 
-    function fractionalize(uint256 tokenId) public returns (string[] memory) {
+    function fractionalize(uint256 tokenId) public {
         ITreasure(TREASURE).safeTransferFrom(
             msg.sender,
             address(this),
