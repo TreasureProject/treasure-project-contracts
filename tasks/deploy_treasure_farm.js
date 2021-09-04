@@ -21,7 +21,7 @@ task('deploy-treasure-farm').setAction(async function () {
   );
   await instance.deployed();
 
-  console.log(`Deployed to: ${instance.address}`);
+  console.log(`Deployed TreasureFarm to: ${instance.address}`);
   deployments.treasureFarm = instance.address;
 
   const json = JSON.stringify(deployments, null, 2);

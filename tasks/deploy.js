@@ -8,7 +8,7 @@ task('deploy').setAction(async function () {
   const instance = await factory.deploy();
   await instance.deployed();
 
-  console.log(`Deployed to: ${instance.address}`);
+  console.log(`Deployed Treasure to: ${instance.address}`);
   deployments.treasure = instance.address;
 
   const json = JSON.stringify(deployments, null, 2);

@@ -17,7 +17,7 @@ task('deploy-agld-farm').setAction(async function () {
   );
   await instance.deployed();
 
-  console.log(`Deployed to: ${instance.address}`);
+  console.log(`Deployed AGLDFarm to: ${instance.address}`);
   deployments.agldFarm = instance.address;
 
   const json = JSON.stringify(deployments, null, 2);

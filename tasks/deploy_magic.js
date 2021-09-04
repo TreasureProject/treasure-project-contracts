@@ -8,7 +8,7 @@ task('deploy-magic').setAction(async function () {
   const instance = await factory.deploy();
   await instance.deployed();
 
-  console.log(`Deployed to: ${instance.address}`);
+  console.log(`Deployed Magic to: ${instance.address}`);
   deployments.magic = instance.address;
 
   const json = JSON.stringify(deployments, null, 2);

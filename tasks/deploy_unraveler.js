@@ -15,7 +15,7 @@ task('deploy-unraveler').setAction(async function () {
   );
   await instance.deployed();
 
-  console.log(`Deployed to: ${instance.address}`);
+  console.log(`Deployed TreasureUnraveler to: ${instance.address}`);
   deployments.treasureUnraveler = instance.address;
 
   const json = JSON.stringify(deployments, null, 2);

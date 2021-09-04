@@ -17,7 +17,7 @@ task('deploy-loot-farm').setAction(async function () {
   );
   await instance.deployed();
 
-  console.log(`Deployed to: ${instance.address}`);
+  console.log(`Deployed LOOTFarm to: ${instance.address}`);
   deployments.lootFarm = instance.address;
 
   const json = JSON.stringify(deployments, null, 2);
