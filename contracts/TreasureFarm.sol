@@ -81,7 +81,7 @@ contract TreasureFarm is ERC1155Receiver {
         depositBlocks[msg.sender][tokenId] = Math.min(block.number, EXPIRATION);
     }
 
-    function deposit(uint256 tokenId, uint256 amount) external {
+    function deposit(uint256 tokenId, uint256 amount) public {
         claimReward(tokenId);
         IERC1155(TREASURE_UNRAVELER).safeTransferFrom(
             msg.sender,
@@ -93,7 +93,21 @@ contract TreasureFarm is ERC1155Receiver {
         depositBalances[msg.sender][tokenId] += amount;
     }
 
-    function withdraw(uint256 tokenId, uint256 amount) external {
+    function depositBatch(
+        uint256[] calldata tokenIds,
+        uint256[] calldata amounts
+    ) external {
+        require(
+            tokenIds.length == amounts.length,
+            'TreasureFarm: array length mismatch'
+        );
+
+        for (uint256 i; i < tokenIds.length; i++) {
+            deposit(tokenIds[i], amounts[i]);
+        }
+    }
+
+    function withdraw(uint256 tokenId, uint256 amount) public {
         require(
             depositBalances[msg.sender][tokenId] >= amount,
             'TreasureFarm: insufficient balance'
@@ -112,5 +126,19 @@ contract TreasureFarm is ERC1155Receiver {
             amount,
             ''
         );
+    }
+
+    function withdrawBatch(
+        uint256[] calldata tokenIds,
+        uint256[] calldata amounts
+    ) external {
+        require(
+            tokenIds.length == amounts.length,
+            'TreasureFarm: array length mismatch'
+        );
+
+        for (uint256 i; i < tokenIds.length; i++) {
+            withdraw(tokenIds[i], amounts[i]);
+        }
     }
 }

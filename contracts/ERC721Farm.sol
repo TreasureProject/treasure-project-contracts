@@ -59,7 +59,7 @@ contract ERC721Farm is IERC721Receiver {
         depositBlocks[msg.sender][tokenId] = Math.min(block.number, EXPIRATION);
     }
 
-    function deposit(uint256 tokenId) external {
+    function deposit(uint256 tokenId) public {
         claimReward(tokenId);
         IERC721(ERC721_CONTRACT).safeTransferFrom(
             msg.sender,
@@ -70,7 +70,13 @@ contract ERC721Farm is IERC721Receiver {
         deposits[msg.sender][tokenId] = true;
     }
 
-    function withdraw(uint256 tokenId) external {
+    function depositBatch(uint256[] calldata tokenIds) external {
+        for (uint256 i; i < tokenIds.length; i++) {
+            deposit(tokenIds[i]);
+        }
+    }
+
+    function withdraw(uint256 tokenId) public {
         require(
             deposits[msg.sender][tokenId],
             'ERC721Farm: token not deposited'
@@ -86,5 +92,11 @@ contract ERC721Farm is IERC721Receiver {
             tokenId,
             ''
         );
+    }
+
+    function withdrawBatch(uint256[] calldata tokenIds) external {
+        for (uint256 i; i < tokenIds.length; i++) {
+            withdraw(tokenIds[i]);
+        }
     }
 }
