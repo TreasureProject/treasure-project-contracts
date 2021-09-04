@@ -2,7 +2,7 @@ const fs = require('fs');
 const deployments = require('../data/deployments');
 const items = require('../data/items');
 
-task('deploy-farm').setAction(async function () {
+task('deploy-treasure-farm').setAction(async function () {
   const [deployer] = await ethers.getSigners();
 
   // approximately 6000 blocks per day
@@ -12,6 +12,7 @@ task('deploy-farm').setAction(async function () {
 
   const factory = await ethers.getContractFactory('TreasureFarm', deployer);
   const instance = await factory.deploy(
+    deployments.magic,
     deployments.treasureFractionalizer,
     items.map((i) => [
       i.name,
