@@ -16,6 +16,7 @@ require('./tasks/deploy_treasure_farm');
 require('./tasks/claim');
 require('./tasks/fractionalize');
 require('./tasks/read');
+require('./tasks/magic_set_whitelist');
 
 module.exports = {
   solidity: {
