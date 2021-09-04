@@ -8,6 +8,7 @@ contract LOOTFarm is ERC721Farm {
     constructor(
         address magic,
         address loot,
-        uint256 rate
-    ) ERC721Farm(magic, loot, rate) {}
+        uint256 rate,
+        uint256 expiration
+    ) ERC721Farm(magic, loot, rate, expiration) {}
 }

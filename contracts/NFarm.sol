@@ -8,6 +8,7 @@ contract NFarm is ERC721Farm {
     constructor(
         address magic,
         address n,
-        uint256 rate
-    ) ERC721Farm(magic, n, rate) {}
+        uint256 rate,
+        uint256 expiration
+    ) ERC721Farm(magic, n, rate, expiration) {}
 }

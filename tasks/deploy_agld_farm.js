@@ -9,11 +9,14 @@ task('deploy-agld-farm').setAction(async function () {
     .parseUnits('0.1', 18)
     .div(ethers.BigNumber.from('6000'));
 
+  const EXPIRATION = ethers.BigNumber.from('180000');
+
   const factory = await ethers.getContractFactory('AGLDFarm', deployer);
   const instance = await factory.deploy(
     deployments.magic,
     deployments.adventureGold,
     RATE,
+    EXPIRATION
   );
   await instance.deployed();
 
