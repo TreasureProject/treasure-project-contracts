@@ -6,12 +6,12 @@
   "function TREASURE() view returns (address)",
   "function balanceOf(address account, uint256 id) view returns (uint256)",
   "function balanceOfBatch(address[] accounts, uint256[] ids) view returns (uint256[])",
-  "function fractionalize(uint256 tokenId)",
   "function isApprovedForAll(address account, address operator) view returns (bool)",
   "function onERC721Received(address, address, uint256, bytes) pure returns (bytes4)",
   "function safeBatchTransferFrom(address from, address to, uint256[] ids, uint256[] amounts, bytes data)",
   "function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data)",
   "function setApprovalForAll(address operator, bool approved)",
   "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+  "function unravel(uint256 tokenId)",
   "function uri(uint256 tokenId) view returns (string)"
 ]

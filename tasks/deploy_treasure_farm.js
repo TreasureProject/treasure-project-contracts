@@ -13,7 +13,7 @@ task('deploy-treasure-farm').setAction(async function () {
   const factory = await ethers.getContractFactory('TreasureFarm', deployer);
   const instance = await factory.deploy(
     deployments.magic,
-    deployments.treasureFractionalizer,
+    deployments.treasureUnraveler,
     items.map((i) => [
       i.name,
       ethers.BigNumber.from(i.value).mul(RATE_MULTIPLIER),

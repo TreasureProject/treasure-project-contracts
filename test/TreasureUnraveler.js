@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 const items = require('../data/items');
 
-describe('TreasureFractionalizer', function () {
+describe('TreasureUnraveler', function () {
   let signer;
 
   let treasure;
@@ -40,7 +40,7 @@ describe('TreasureFractionalizer', function () {
     treasure = await treasureFactory.deploy();
     await treasure.deployed();
 
-    const factory = await ethers.getContractFactory('TreasureFractionalizer');
+    const factory = await ethers.getContractFactory('TreasureUnraveler');
     instance = await factory.deploy(
       treasure.address,
       items.map((i) => i.name),
@@ -76,14 +76,14 @@ describe('TreasureFractionalizer', function () {
     });
   });
 
-  describe('#fractionalize', function () {
+  describe('#unravel', function () {
     it('transfers Treasure ERC721 token from sender to contract', async function () {
       expect(await treasure.callStatic.ownerOf(tokenId)).to.equal(
         signer.address,
       );
 
       await expect(() =>
-        instance.connect(signer).fractionalize(tokenId),
+        instance.connect(signer).unravel(tokenId),
       ).to.changeTokenBalances(
         treasure,
         [signer, instance],
@@ -102,7 +102,7 @@ describe('TreasureFractionalizer', function () {
         ).to.equal(ethers.constants.Zero);
       }
 
-      await instance.connect(signer).fractionalize(tokenId);
+      await instance.connect(signer).unravel(tokenId);
 
       for (let itemId of itemIds) {
         expect(
@@ -114,11 +114,11 @@ describe('TreasureFractionalizer', function () {
     it('corrects for Treasure spelling errors', async function () {
       const errTokenId1 = ethers.BigNumber.from('4');
       await treasure.connect(signer).claim(errTokenId1);
-      await instance.connect(signer).fractionalize(errTokenId1);
+      await instance.connect(signer).unravel(errTokenId1);
 
       const errTokenId2 = ethers.BigNumber.from('10');
       await treasure.connect(signer).claim(errTokenId2);
-      await instance.connect(signer).fractionalize(errTokenId2);
+      await instance.connect(signer).unravel(errTokenId2);
 
       expect(
         await instance.callStatic.balanceOf(
@@ -154,7 +154,7 @@ describe('TreasureFractionalizer', function () {
           .transferFrom(signer.address, instance.address, tokenId);
 
         await expect(
-          instance.connect(signer).fractionalize(tokenId),
+          instance.connect(signer).unravel(tokenId),
         ).to.be.revertedWith('ERC721: transfer of token that is not own');
       });
 
@@ -164,7 +164,7 @@ describe('TreasureFractionalizer', function () {
           .setApprovalForAll(instance.address, false);
 
         await expect(
-          instance.connect(signer).fractionalize(tokenId),
+          instance.connect(signer).unravel(tokenId),
         ).to.be.revertedWith(
           'ERC721: transfer caller is not owner nor approved',
         );

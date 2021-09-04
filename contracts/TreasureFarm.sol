@@ -15,7 +15,7 @@ contract TreasureFarm is ERC1155Receiver {
     }
 
     address private immutable MAGIC;
-    address private immutable TREASURE_FRACTIONALIZER;
+    address private immutable TREASURE_UNRAVELER;
     uint256 public immutable EXPIRATION;
 
     mapping(uint256 => uint256) public itemValues;
@@ -24,7 +24,7 @@ contract TreasureFarm is ERC1155Receiver {
 
     constructor(
         address magic,
-        address fractionalizer,
+        address unraveler,
         Item[] memory items
     ) {
         for (uint256 i; i < items.length; i++) {
@@ -35,7 +35,7 @@ contract TreasureFarm is ERC1155Receiver {
         }
 
         MAGIC = magic;
-        TREASURE_FRACTIONALIZER = fractionalizer;
+        TREASURE_UNRAVELER = unraveler;
         EXPIRATION = block.number + 6000 * 30;
     }
 
@@ -83,7 +83,7 @@ contract TreasureFarm is ERC1155Receiver {
 
     function deposit(uint256 tokenId, uint256 amount) external {
         claimReward(tokenId);
-        IERC1155(TREASURE_FRACTIONALIZER).safeTransferFrom(
+        IERC1155(TREASURE_UNRAVELER).safeTransferFrom(
             msg.sender,
             address(this),
             tokenId,
@@ -105,7 +105,7 @@ contract TreasureFarm is ERC1155Receiver {
             depositBalances[msg.sender][tokenId] -= amount;
         }
 
-        IERC1155(TREASURE_FRACTIONALIZER).safeTransferFrom(
+        IERC1155(TREASURE_UNRAVELER).safeTransferFrom(
             address(this),
             msg.sender,
             tokenId,

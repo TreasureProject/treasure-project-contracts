@@ -12,7 +12,7 @@ describe('TreasureFarm', function () {
 
   let magic;
   let treasure;
-  let treasureFractionalizer;
+  let treasureUnraveler;
   let instance;
 
   let tokenId;
@@ -64,19 +64,19 @@ describe('TreasureFarm', function () {
     treasure = await treasureFactory.deploy();
     await treasure.deployed();
 
-    const treasureFractionalizerFactory = await ethers.getContractFactory(
-      'TreasureFractionalizer',
+    const treasureUnravelerFactory = await ethers.getContractFactory(
+      'TreasureUnraveler',
     );
-    treasureFractionalizer = await treasureFractionalizerFactory.deploy(
+    treasureUnraveler = await treasureUnravelerFactory.deploy(
       treasure.address,
       items.map((i) => i.name),
     );
-    await treasureFractionalizer.deployed();
+    await treasureUnraveler.deployed();
 
     const factory = await ethers.getContractFactory('TreasureFarm');
     instance = await factory.deploy(
       magic.address,
-      treasureFractionalizer.address,
+      treasureUnraveler.address,
       items.map((i) => [
         i.name,
         ethers.BigNumber.from(i.value).mul(RATE_MULTIPLIER),
@@ -91,9 +91,9 @@ describe('TreasureFarm', function () {
     await treasure.connect(signer).claim(tokenId);
     await treasure
       .connect(signer)
-      .setApprovalForAll(treasureFractionalizer.address, true);
-    await treasureFractionalizer.connect(signer).fractionalize(tokenId);
-    await treasureFractionalizer
+      .setApprovalForAll(treasureUnraveler.address, true);
+    await treasureUnraveler.connect(signer).unravel(tokenId);
+    await treasureUnraveler
       .connect(signer)
       .setApprovalForAll(instance.address, true);
 
@@ -160,22 +160,22 @@ describe('TreasureFarm', function () {
     it('transfers token from sender to contract', async function () {
       const [itemId] = itemIds;
 
-      const oldFarmBalance = await treasureFractionalizer.callStatic.balanceOf(
+      const oldFarmBalance = await treasureUnraveler.callStatic.balanceOf(
         instance.address,
         itemId,
       );
-      const oldUserBalance = await treasureFractionalizer.callStatic.balanceOf(
+      const oldUserBalance = await treasureUnraveler.callStatic.balanceOf(
         signer.address,
         itemId,
       );
 
       await instance.connect(signer).deposit(itemId, ethers.constants.One);
 
-      const newFarmBalance = await treasureFractionalizer.callStatic.balanceOf(
+      const newFarmBalance = await treasureUnraveler.callStatic.balanceOf(
         instance.address,
         itemId,
       );
-      const newUserBalance = await treasureFractionalizer.callStatic.balanceOf(
+      const newUserBalance = await treasureUnraveler.callStatic.balanceOf(
         signer.address,
         itemId,
       );
@@ -213,7 +213,7 @@ describe('TreasureFarm', function () {
       it('contract is not approved for transfer', async function () {
         const [itemId] = itemIds;
 
-        await treasureFractionalizer
+        await treasureUnraveler
           .connect(signer)
           .setApprovalForAll(instance.address, false);
 
@@ -230,22 +230,22 @@ describe('TreasureFarm', function () {
 
       await instance.connect(signer).deposit(itemId, ethers.constants.One);
 
-      const oldFarmBalance = await treasureFractionalizer.callStatic.balanceOf(
+      const oldFarmBalance = await treasureUnraveler.callStatic.balanceOf(
         instance.address,
         itemId,
       );
-      const oldUserBalance = await treasureFractionalizer.callStatic.balanceOf(
+      const oldUserBalance = await treasureUnraveler.callStatic.balanceOf(
         signer.address,
         itemId,
       );
 
       await instance.connect(signer).withdraw(itemId, ethers.constants.One);
 
-      const newFarmBalance = await treasureFractionalizer.callStatic.balanceOf(
+      const newFarmBalance = await treasureUnraveler.callStatic.balanceOf(
         instance.address,
         itemId,
       );
-      const newUserBalance = await treasureFractionalizer.callStatic.balanceOf(
+      const newUserBalance = await treasureUnraveler.callStatic.balanceOf(
         signer.address,
         itemId,
       );
