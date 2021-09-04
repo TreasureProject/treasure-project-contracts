@@ -9,7 +9,10 @@ require('solidity-coverage');
 
 require('./tasks/deploy');
 require('./tasks/deploy_fractionalizer');
-require('./tasks/deploy_farm');
+require('./tasks/deploy_magic');
+require('./tasks/deploy_agld_farm');
+require('./tasks/deploy_loot_farm');
+require('./tasks/deploy_treasure_farm');
 require('./tasks/claim');
 require('./tasks/fractionalize');
 require('./tasks/read');

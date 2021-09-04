@@ -84,6 +84,8 @@ describe('TreasureFarm', function () {
     );
     await instance.deployed();
 
+    await magic.connect(signer).setWhitelist([instance.address]);
+
     tokenId = ethers.constants.One;
 
     await treasure.connect(signer).claim(tokenId);
@@ -104,6 +106,10 @@ describe('TreasureFarm', function () {
     it('returns pending rewards for given user and token', async function () {
       const [itemId] = itemIds;
       const [itemValue] = itemValues;
+
+      expect(
+        await instance.callStatic.calculateReward(signer.address, itemId),
+      ).to.equal(ethers.constants.Zero);
 
       await instance.connect(signer).deposit(itemId, ethers.constants.One);
 
@@ -207,13 +213,13 @@ describe('TreasureFarm', function () {
       it('contract is not approved for transfer', async function () {
         const [itemId] = itemIds;
 
-        await treasure
+        await treasureFractionalizer
           .connect(signer)
-          .setApprovalForAll(treasureFractionalizer.address, false);
+          .setApprovalForAll(instance.address, false);
 
         await expect(
           instance.connect(signer).deposit(itemId, ethers.BigNumber.from('10')),
-        ).to.be.revertedWith('ERC1155: insufficient balance for transfer');
+        ).to.be.revertedWith('ERC1155: caller is not owner nor approved');
       });
     });
   });
