@@ -37,9 +37,10 @@ contract AGLDFarm {
         returns (uint256 reward)
     {
         reward =
-            RATE *
-            depositBalances[account] *
-            (Math.min(block.number, EXPIRATION) - depositBlocks[account]);
+            (RATE *
+                depositBalances[account] *
+                (Math.min(block.number, EXPIRATION) - depositBlocks[account])) /
+            (1 ether);
     }
 
     function claimRewards() public {

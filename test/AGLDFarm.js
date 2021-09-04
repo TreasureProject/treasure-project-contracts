@@ -5,7 +5,7 @@ const RATE = ethers.utils
   .parseUnits('0.1', 18)
   .div(ethers.BigNumber.from('6000'));
 
-const EXPIRATION = ethers.BigNumber.from('180000');
+const EXPIRATION = ethers.BigNumber.from('15');
 
 describe('AGLDFarm', function () {
   let signer;
@@ -13,6 +13,8 @@ describe('AGLDFarm', function () {
   let agld;
   let magic;
   let instance;
+
+  let deploymentBlock;
 
   const mineBlocks = async function (number) {
     for (let i = 0; i < number; i++) {
@@ -40,7 +42,9 @@ describe('AGLDFarm', function () {
       RATE,
       EXPIRATION,
     );
-    await instance.deployed();
+    const deployTx = await instance.deployed();
+    const { blockNumber } = await deployTx.deployTransaction.wait();
+    deploymentBlock = blockNumber;
 
     await magic.connect(signer).setWhitelist([instance.address]);
 
@@ -58,19 +62,34 @@ describe('AGLDFarm', function () {
         await instance.callStatic.calculateRewards(signer.address),
       ).to.equal(ethers.constants.Zero);
 
-      await instance.connect(signer).deposit(ethers.constants.One);
+      const tx = await instance
+        .connect(signer)
+        .deposit(ethers.utils.parseUnits('1', 18));
+      const { blockNumber } = await tx.wait();
 
       await mineBlocks(7);
 
       expect(
         await instance.callStatic.calculateRewards(signer.address),
       ).to.equal(RATE.mul(ethers.BigNumber.from('7')));
+
+      await mineBlocks(10);
+
+      expect(
+        await instance.callStatic.calculateRewards(signer.address),
+      ).to.equal(
+        RATE.mul(
+          EXPIRATION.sub(
+            ethers.BigNumber.from((blockNumber - deploymentBlock).toString()),
+          ),
+        ),
+      );
     });
   });
 
   describe('#claimRewards', function () {
     it('transfers pending rewards to sender', async function () {
-      await instance.connect(signer).deposit(ethers.constants.One);
+      await instance.connect(signer).deposit(ethers.utils.parseUnits('1', 18));
 
       await mineBlocks(7);
 
@@ -84,7 +103,7 @@ describe('AGLDFarm', function () {
     });
 
     it('resets pending rewards to zero', async function () {
-      await instance.connect(signer).deposit(ethers.constants.One);
+      await instance.connect(signer).deposit(ethers.utils.parseUnits('1', 18));
 
       await mineBlocks(1);
 
@@ -110,7 +129,7 @@ describe('AGLDFarm', function () {
     });
 
     it('transfers pending rewards to sender', async function () {
-      await instance.connect(signer).deposit(ethers.constants.One);
+      await instance.connect(signer).deposit(ethers.utils.parseUnits('1', 18));
 
       await mineBlocks(7);
 
@@ -130,7 +149,7 @@ describe('AGLDFarm', function () {
           .transfer(agld.address, ethers.constants.MaxUint256);
 
         await expect(
-          instance.connect(signer).deposit(ethers.constants.One),
+          instance.connect(signer).deposit(ethers.utils.parseUnits('1', 18)),
         ).to.be.revertedWith('ERC20: transfer amount exceeds balance');
       });
 
@@ -140,7 +159,7 @@ describe('AGLDFarm', function () {
           .approve(instance.address, ethers.constants.Zero);
 
         await expect(
-          instance.connect(signer).deposit(ethers.constants.One),
+          instance.connect(signer).deposit(ethers.utils.parseUnits('1', 18)),
         ).to.be.revertedWith('ERC20: transfer amount exceeds allowance');
       });
     });
@@ -148,7 +167,7 @@ describe('AGLDFarm', function () {
 
   describe('#withdraw', function () {
     it('transfers token from contract to sender', async function () {
-      await instance.connect(signer).deposit(ethers.constants.One);
+      await instance.connect(signer).deposit(ethers.utils.parseUnits('1', 18));
 
       await expect(() =>
         instance.connect(signer).withdraw(ethers.constants.One),
@@ -160,7 +179,7 @@ describe('AGLDFarm', function () {
     });
 
     it('transfers pending rewards to sender', async function () {
-      await instance.connect(signer).deposit(ethers.constants.One);
+      await instance.connect(signer).deposit(ethers.utils.parseUnits('1', 18));
 
       await mineBlocks(7);
 

@@ -5,7 +5,7 @@ const RATE = ethers.utils
   .parseUnits('1000', 18)
   .div(ethers.BigNumber.from('6000'));
 
-const EXPIRATION = ethers.BigNumber.from('180000');
+const EXPIRATION = ethers.BigNumber.from('15');
 
 describe('ERC721Farm', function () {
   let signer;
@@ -13,6 +13,8 @@ describe('ERC721Farm', function () {
   let erc721;
   let magic;
   let instance;
+
+  let deploymentBlock;
 
   let tokenId;
 
@@ -42,7 +44,9 @@ describe('ERC721Farm', function () {
       RATE,
       EXPIRATION,
     );
-    await instance.deployed();
+    const deployTx = await instance.deployed();
+    const { blockNumber } = await deployTx.deployTransaction.wait();
+    deploymentBlock = blockNumber;
 
     await magic.connect(signer).setWhitelist([instance.address]);
 
@@ -82,13 +86,26 @@ describe('ERC721Farm', function () {
         await instance.callStatic.calculateRewards(signer.address, [tokenId]),
       ).to.deep.have.members([ethers.constants.Zero]);
 
-      await instance.connect(signer).deposit([tokenId]);
+      const tx = await instance.connect(signer).deposit([tokenId]);
+      const { blockNumber } = await tx.wait();
 
       await mineBlocks(7);
 
       expect(
         await instance.callStatic.calculateRewards(signer.address, [tokenId]),
       ).to.deep.have.members([RATE.mul(ethers.BigNumber.from('7'))]);
+
+      await mineBlocks(10);
+
+      expect(
+        await instance.callStatic.calculateRewards(signer.address, [tokenId]),
+      ).to.deep.have.members([
+        RATE.mul(
+          EXPIRATION.sub(
+            ethers.BigNumber.from((blockNumber - deploymentBlock).toString()),
+          ),
+        ),
+      ]);
     });
   });
 

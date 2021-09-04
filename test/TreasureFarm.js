@@ -7,7 +7,7 @@ const RATE_MULTIPLIER = ethers.utils
   .parseUnits('1', 18)
   .div(ethers.BigNumber.from('6000'));
 
-const EXPIRATION = ethers.BigNumber.from('180000');
+const EXPIRATION = ethers.BigNumber.from('15');
 
 describe('TreasureFarm', function () {
   let signer;
@@ -16,6 +16,8 @@ describe('TreasureFarm', function () {
   let treasure;
   let treasureUnraveler;
   let instance;
+
+  let deploymentBlock;
 
   let tokenId;
   let itemNames;
@@ -85,7 +87,9 @@ describe('TreasureFarm', function () {
         ethers.BigNumber.from(i.value).mul(RATE_MULTIPLIER),
       ]),
     );
-    await instance.deployed();
+    const deployTx = await instance.deployed();
+    const { blockNumber } = await deployTx.deployTransaction.wait();
+    deploymentBlock = blockNumber;
 
     await magic.connect(signer).setWhitelist([instance.address]);
 
@@ -140,13 +144,28 @@ describe('TreasureFarm', function () {
         await instance.callStatic.calculateRewards(signer.address, [itemId]),
       ).to.deep.have.members([ethers.constants.Zero]);
 
-      await instance.connect(signer).deposit([itemId], [ethers.constants.One]);
+      const tx = await instance
+        .connect(signer)
+        .deposit([itemId], [ethers.constants.One]);
+      const { blockNumber } = await tx.wait();
 
       await mineBlocks(7);
 
       expect(
         await instance.callStatic.calculateRewards(signer.address, [itemId]),
       ).to.deep.have.members([itemValue.mul(ethers.BigNumber.from('7'))]);
+
+      await mineBlocks(10);
+
+      expect(
+        await instance.callStatic.calculateRewards(signer.address, [itemId]),
+      ).to.deep.have.members([
+        itemValue.mul(
+          EXPIRATION.sub(
+            ethers.BigNumber.from((blockNumber - deploymentBlock).toString()),
+          ),
+        ),
+      ]);
     });
   });
 
