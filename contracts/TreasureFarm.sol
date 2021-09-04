@@ -64,7 +64,7 @@ contract TreasureFarm is ERC1155Receiver {
         return IERC1155Receiver.onERC1155BatchReceived.selector;
     }
 
-    function deposits(address account)
+    function depositsOf(address account)
         external
         view
         returns (uint256[] memory)

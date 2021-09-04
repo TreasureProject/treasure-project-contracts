@@ -45,22 +45,22 @@ describe('LOOTFarm', function () {
     await loot.connect(signer).setApprovalForAll(instance.address, true);
   });
 
-  describe('#deposits', function () {
+  describe('#depositsOf', function () {
     it('returns list of deposited token ids for given user', async function () {
       expect(
-        await instance.callStatic.deposits(signer.address),
+        await instance.callStatic.depositsOf(signer.address),
       ).to.deep.have.members([]);
 
       await instance.connect(signer).deposit(tokenId);
 
       expect(
-        await instance.callStatic.deposits(signer.address),
+        await instance.callStatic.depositsOf(signer.address),
       ).to.deep.have.members([tokenId]);
 
       await instance.connect(signer).withdraw(tokenId);
 
       expect(
-        await instance.callStatic.deposits(signer.address),
+        await instance.callStatic.depositsOf(signer.address),
       ).to.deep.have.members([]);
     });
   });

@@ -40,7 +40,7 @@ contract ERC721Farm is IERC721Receiver {
         return IERC721Receiver.onERC721Received.selector;
     }
 
-    function deposits(address account)
+    function depositsOf(address account)
         external
         view
         returns (uint256[] memory)
