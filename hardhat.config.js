@@ -45,17 +45,13 @@ module.exports = {
     },
 
     mainnet: {
-      url: `https://eth-mainnet.alchemyapi.io/v2/cT--tfMgLAyODIWTnAv7QLgGjYfuQc7I`,
-      accounts: [
-        'd8ca267069fc7aabcd6101bc55c85f9f6fbc2bea482636f28061624410590af9',
-      ],
+      url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
+      accounts: [process.env.ETH_MAIN_KEY],
     },
 
     rinkeby: {
-      url: `https://eth-rinkeby.alchemyapi.io/v2/SsKAptbQoQHMfvEx9kfAYb39Y24EoXZm`,
-      accounts: [
-        'd8ca267069fc7aabcd6101bc55c85f9f6fbc2bea482636f28061624410590af9',
-      ],
+      url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
+      accounts: [process.env.ETH_TEST_KEY],
     },
   },
 
