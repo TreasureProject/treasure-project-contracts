@@ -107,6 +107,10 @@ describe('TreasureFarm', function () {
       const [itemId] = itemIds;
       const [itemValue] = itemValues;
 
+      expect(
+        await instance.callStatic.calculateReward(signer.address, itemId),
+      ).to.equal(ethers.constants.Zero);
+
       await instance.connect(signer).deposit(itemId, ethers.constants.One);
 
       await mineBlocks(7);

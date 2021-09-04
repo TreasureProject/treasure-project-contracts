@@ -47,6 +47,10 @@ describe('AGLDFarm', function () {
 
   describe('#calculateReward', function () {
     it('returns pending rewards for given user and token', async function () {
+      expect(
+        await instance.callStatic.calculateReward(signer.address),
+      ).to.equal(ethers.constants.Zero);
+
       await instance.connect(signer).deposit(ethers.constants.One);
 
       await mineBlocks(7);

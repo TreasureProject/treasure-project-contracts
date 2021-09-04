@@ -47,6 +47,10 @@ describe('LOOTFarm', function () {
 
   describe('#calculateReward', function () {
     it('returns pending rewards for given user and token', async function () {
+      expect(
+        await instance.callStatic.calculateReward(signer.address, tokenId),
+      ).to.equal(ethers.constants.Zero);
+
       await instance.connect(signer).deposit(tokenId);
 
       await mineBlocks(7);

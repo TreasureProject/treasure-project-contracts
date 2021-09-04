@@ -44,6 +44,7 @@ contract LOOTFarm is IERC721Receiver {
     {
         reward =
             RATE *
+            (deposits[msg.sender][tokenId] ? 1 : 0) *
             (Math.min(block.number, EXPIRATION) -
                 depositBlocks[account][tokenId]);
     }
@@ -59,7 +60,7 @@ contract LOOTFarm is IERC721Receiver {
     }
 
     function deposit(uint256 tokenId) external {
-        depositBlocks[msg.sender][tokenId] = Math.min(block.number, EXPIRATION);
+        claimReward(tokenId);
         IERC721(LOOT).safeTransferFrom(msg.sender, address(this), tokenId, '');
         deposits[msg.sender][tokenId] = true;
     }
