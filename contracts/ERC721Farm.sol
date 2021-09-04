@@ -5,16 +5,19 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts/utils/math/Math.sol';
 import '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import '@openzeppelin/contracts/interfaces/IERC721Receiver.sol';
+import '@openzeppelin/contracts/utils/structs/EnumerableSet.sol';
 
 import './IMagic.sol';
 
 contract ERC721Farm is IERC721Receiver {
+    using EnumerableSet for EnumerableSet.UintSet;
+
     address private immutable MAGIC;
     address private immutable ERC721_CONTRACT;
     uint256 public immutable EXPIRATION;
     uint256 private immutable RATE;
 
-    mapping(address => mapping(uint256 => bool)) public deposits;
+    mapping(address => EnumerableSet.UintSet) private _deposits;
     mapping(address => mapping(uint256 => uint256)) public depositBlocks;
 
     constructor(
@@ -37,6 +40,21 @@ contract ERC721Farm is IERC721Receiver {
         return IERC721Receiver.onERC721Received.selector;
     }
 
+    function deposits(address account)
+        external
+        view
+        returns (uint256[] memory)
+    {
+        EnumerableSet.UintSet storage depositSet = _deposits[account];
+        uint256[] memory tokenIds = new uint256[](depositSet.length());
+
+        for (uint256 i; i < depositSet.length(); i++) {
+            tokenIds[i] = depositSet.at(i);
+        }
+
+        return tokenIds;
+    }
+
     function calculateReward(address account, uint256 tokenId)
         public
         view
@@ -44,7 +62,7 @@ contract ERC721Farm is IERC721Receiver {
     {
         reward =
             RATE *
-            (deposits[msg.sender][tokenId] ? 1 : 0) *
+            (_deposits[msg.sender].contains(tokenId) ? 1 : 0) *
             (Math.min(block.number, EXPIRATION) -
                 depositBlocks[account][tokenId]);
     }
@@ -67,7 +85,8 @@ contract ERC721Farm is IERC721Receiver {
             tokenId,
             ''
         );
-        deposits[msg.sender][tokenId] = true;
+
+        _deposits[msg.sender].add(tokenId);
     }
 
     function depositBatch(uint256[] calldata tokenIds) external {
@@ -78,13 +97,13 @@ contract ERC721Farm is IERC721Receiver {
 
     function withdraw(uint256 tokenId) public {
         require(
-            deposits[msg.sender][tokenId],
+            _deposits[msg.sender].contains(tokenId),
             'ERC721Farm: token not deposited'
         );
 
         claimReward(tokenId);
 
-        deposits[msg.sender][tokenId] = false;
+        _deposits[msg.sender].remove(tokenId);
 
         IERC721(ERC721_CONTRACT).safeTransferFrom(
             address(this),

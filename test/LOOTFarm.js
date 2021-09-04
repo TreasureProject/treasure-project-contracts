@@ -45,6 +45,20 @@ describe('LOOTFarm', function () {
     await loot.connect(signer).setApprovalForAll(instance.address, true);
   });
 
+  describe('#deposits', function () {
+    it('returns list of deposited token ids for given user', async function () {
+      expect(
+        await instance.callStatic.deposits(signer.address),
+      ).to.deep.have.members([]);
+
+      await instance.connect(signer).deposit(tokenId);
+
+      expect(
+        await instance.callStatic.deposits(signer.address),
+      ).to.deep.have.members([tokenId]);
+    });
+  });
+
   describe('#calculateReward', function () {
     it('returns pending rewards for given user and token', async function () {
       expect(
