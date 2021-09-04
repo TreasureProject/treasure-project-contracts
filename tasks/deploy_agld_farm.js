@@ -4,11 +4,10 @@ const deployments = require('../data/deployments');
 task('deploy-agld-farm').setAction(async function () {
   const [deployer] = await ethers.getSigners();
 
-  // TODO: set rate
   // approximately 6000 blocks per day
-  // const RATE = ethers.utils
-  //   .parseUnits('1', 18)
-  //   .div(ethers.BigNumber.from('6000'));
+  const RATE = ethers.utils
+    .parseUnits('0.1', 18)
+    .div(ethers.BigNumber.from('6000'));
 
   const factory = await ethers.getContractFactory('AGLDFarm', deployer);
   const instance = await factory.deploy(

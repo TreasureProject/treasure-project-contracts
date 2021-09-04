@@ -6,7 +6,7 @@ task('deploy-loot-farm').setAction(async function () {
 
   // approximately 6000 blocks per day
   const RATE = ethers.utils
-    .parseUnits('1', 18)
+    .parseUnits('1000', 18)
     .div(ethers.BigNumber.from('6000'));
 
   const factory = await ethers.getContractFactory('LOOTFarm', deployer);

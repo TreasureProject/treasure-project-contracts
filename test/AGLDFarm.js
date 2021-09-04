@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 // approximately 6000 blocks per day
 const RATE = ethers.utils
-  .parseUnits('1', 18)
+  .parseUnits('0.1', 18)
   .div(ethers.BigNumber.from('6000'));
 
 describe('AGLDFarm', function () {
