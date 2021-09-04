@@ -5,6 +5,8 @@ const RATE = ethers.utils
   .parseUnits('0.1', 18)
   .div(ethers.BigNumber.from('6000'));
 
+const EXPIRATION = ethers.BigNumber.from('180000');
+
 describe('AGLDFarm', function () {
   let signer;
 
@@ -32,7 +34,12 @@ describe('AGLDFarm', function () {
     await magic.deployed();
 
     const factory = await ethers.getContractFactory('AGLDFarm');
-    instance = await factory.deploy(magic.address, agld.address, RATE);
+    instance = await factory.deploy(
+      magic.address,
+      agld.address,
+      RATE,
+      EXPIRATION,
+    );
     await instance.deployed();
 
     await magic.connect(signer).setWhitelist([instance.address]);

@@ -5,6 +5,8 @@ const RATE = ethers.utils
   .parseUnits('1000', 18)
   .div(ethers.BigNumber.from('6000'));
 
+const EXPIRATION = ethers.BigNumber.from('180000');
+
 describe('ERC721Farm', function () {
   let signer;
 
@@ -34,7 +36,12 @@ describe('ERC721Farm', function () {
     await magic.deployed();
 
     const factory = await ethers.getContractFactory('ERC721Farm');
-    instance = await factory.deploy(magic.address, erc721.address, RATE);
+    instance = await factory.deploy(
+      magic.address,
+      erc721.address,
+      RATE,
+      EXPIRATION,
+    );
     await instance.deployed();
 
     await magic.connect(signer).setWhitelist([instance.address]);

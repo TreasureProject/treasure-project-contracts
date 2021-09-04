@@ -7,6 +7,8 @@ const RATE_MULTIPLIER = ethers.utils
   .parseUnits('1', 18)
   .div(ethers.BigNumber.from('6000'));
 
+const EXPIRATION = ethers.BigNumber.from('180000');
+
 describe('TreasureFarm', function () {
   let signer;
 
@@ -77,6 +79,7 @@ describe('TreasureFarm', function () {
     instance = await factory.deploy(
       magic.address,
       treasureUnraveler.address,
+      EXPIRATION,
       items.map((i) => [
         i.name,
         ethers.BigNumber.from(i.value).mul(RATE_MULTIPLIER),
