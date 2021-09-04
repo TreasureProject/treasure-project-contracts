@@ -9,11 +9,14 @@ task('deploy-n-farm').setAction(async function () {
     .parseUnits('1000', 18)
     .div(ethers.BigNumber.from('6000'));
 
+  const EXPIRATOIN = ethers.BigNumber.from('180000');
+
   const factory = await ethers.getContractFactory('LOOTFarm', deployer);
   const instance = await factory.deploy(
     deployments.magic,
     deployments.loot,
     RATE,
+    EXPIRATOIN,
   );
   await instance.deployed();
 
