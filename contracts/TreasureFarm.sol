@@ -80,25 +80,44 @@ contract TreasureFarm is ERC1155Receiver {
         return tokenIds;
     }
 
-    function calculateReward(address account, uint256 tokenId)
-        public
+    function calculateTotalReward(address account, uint256[] calldata tokenIds)
+        external
         view
         returns (uint256 reward)
     {
-        reward =
-            itemValues[tokenId] *
-            depositBalances[account][tokenId] *
-            (Math.min(block.number, EXPIRATION) -
-                depositBlocks[account][tokenId]);
+        uint256[] memory rewards = calculateReward(account, tokenIds);
+
+        for (uint256 i; i < rewards.length; i++) {
+            reward += rewards[i];
+        }
+    }
+
+    function calculateReward(address account, uint256[] memory tokenIds)
+        public
+        view
+        returns (uint256[] memory rewards)
+    {
+        rewards = new uint256[](tokenIds.length);
+
+        for (uint256 i; i < tokenIds.length; i++) {
+            uint256 tokenId = tokenIds[i];
+
+            rewards[i] =
+                itemValues[tokenId] *
+                depositBalances[account][tokenId] *
+                (Math.min(block.number, EXPIRATION) -
+                    depositBlocks[account][tokenId]);
+        }
     }
 
     function claimRewards(uint256[] calldata tokenIds) public {
         uint256 reward;
         uint256 block = Math.min(block.number, EXPIRATION);
 
-        for (uint256 i; i < tokenIds.length; i++) {
-            reward += calculateReward(msg.sender, tokenIds[i]);
+        uint256[] memory rewards = calculateReward(msg.sender, tokenIds);
 
+        for (uint256 i; i < tokenIds.length; i++) {
+            reward += rewards[i];
             depositBlocks[msg.sender][tokenIds[i]] = block;
         }
 

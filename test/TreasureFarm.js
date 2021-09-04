@@ -127,22 +127,26 @@ describe('TreasureFarm', function () {
     });
   });
 
+  describe('#calculateTotalReward', function () {
+    it('returns total pending rewards for given user and tokens');
+  });
+
   describe('#calculateReward', function () {
     it('returns pending rewards for given user and token', async function () {
       const [itemId] = itemIds;
       const [itemValue] = itemValues;
 
       expect(
-        await instance.callStatic.calculateReward(signer.address, itemId),
-      ).to.equal(ethers.constants.Zero);
+        await instance.callStatic.calculateReward(signer.address, [itemId]),
+      ).to.deep.have.members([ethers.constants.Zero]);
 
       await instance.connect(signer).deposit([itemId], [ethers.constants.One]);
 
       await mineBlocks(7);
 
       expect(
-        await instance.callStatic.calculateReward(signer.address, itemId),
-      ).to.equal(itemValue.mul(ethers.BigNumber.from('7')));
+        await instance.callStatic.calculateReward(signer.address, [itemId]),
+      ).to.deep.have.members([itemValue.mul(ethers.BigNumber.from('7'))]);
     });
   });
 
@@ -156,7 +160,7 @@ describe('TreasureFarm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateReward(signer.address, itemId)
+        await instance.callStatic.calculateTotalReward(signer.address, [itemId])
       ).add(itemValue);
 
       await expect(() =>
@@ -172,11 +176,15 @@ describe('TreasureFarm', function () {
       await mineBlocks(1);
 
       expect(
-        await instance.callStatic.calculateReward(signer.address, itemId),
+        await instance.callStatic.calculateTotalReward(signer.address, [
+          itemId,
+        ]),
       ).not.to.equal(ethers.constants.Zero);
       await instance.connect(signer).claimRewards([itemId]);
       expect(
-        await instance.callStatic.calculateReward(signer.address, itemId),
+        await instance.callStatic.calculateTotalReward(signer.address, [
+          itemId,
+        ]),
       ).to.equal(ethers.constants.Zero);
     });
   });
@@ -218,7 +226,7 @@ describe('TreasureFarm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateReward(signer.address, itemId)
+        await instance.callStatic.calculateTotalReward(signer.address, [itemId])
       ).add(itemValue);
 
       await expect(() =>
@@ -292,7 +300,7 @@ describe('TreasureFarm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateReward(signer.address, itemId)
+        await instance.callStatic.calculateTotalReward(signer.address, [itemId])
       ).add(itemValue);
 
       await expect(() =>
