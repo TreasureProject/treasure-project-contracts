@@ -59,16 +59,13 @@ contract LOOTFarm is IERC721Receiver {
     }
 
     function deposit(uint256 tokenId) external {
-        claimReward(tokenId);
+        depositBlocks[msg.sender][tokenId] = Math.min(block.number, EXPIRATION);
         IERC721(LOOT).safeTransferFrom(msg.sender, address(this), tokenId, '');
         deposits[msg.sender][tokenId] = true;
     }
 
     function withdraw(uint256 tokenId) external {
-        require(
-            deposits[msg.sender][tokenId],
-            'LOOTFarm: token not desposited'
-        );
+        require(deposits[msg.sender][tokenId], 'LOOTFarm: token not deposited');
 
         claimReward(tokenId);
 
