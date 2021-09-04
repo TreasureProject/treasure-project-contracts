@@ -56,6 +56,12 @@ describe('LOOTFarm', function () {
       expect(
         await instance.callStatic.deposits(signer.address),
       ).to.deep.have.members([tokenId]);
+
+      await instance.connect(signer).withdraw(tokenId);
+
+      expect(
+        await instance.callStatic.deposits(signer.address),
+      ).to.deep.have.members([]);
     });
   });
 

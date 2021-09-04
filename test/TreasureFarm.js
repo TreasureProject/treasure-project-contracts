@@ -102,6 +102,28 @@ describe('TreasureFarm', function () {
     itemValues = itemNames.map(getItemValuePerBlock);
   });
 
+  describe('#deposits', function () {
+    it('returns list of deposited token ids for given user', async function () {
+      const [itemId] = itemIds;
+
+      expect(
+        await instance.callStatic.deposits(signer.address),
+      ).to.deep.have.members([]);
+
+      await instance.connect(signer).deposit(itemId, ethers.constants.One);
+
+      expect(
+        await instance.callStatic.deposits(signer.address),
+      ).to.deep.have.members([itemId]);
+
+      await instance.connect(signer).withdraw(itemId, ethers.constants.One);
+
+      expect(
+        await instance.callStatic.deposits(signer.address),
+      ).to.deep.have.members([]);
+    });
+  });
+
   describe('#calculateReward', function () {
     it('returns pending rewards for given user and token', async function () {
       const [itemId] = itemIds;

@@ -5,10 +5,13 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts/interfaces/IERC1155.sol';
 import '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
+import '@openzeppelin/contracts/utils/structs/EnumerableSet.sol';
 
 import './IMagic.sol';
 
 contract TreasureFarm is ERC1155Receiver {
+    using EnumerableSet for EnumerableSet.UintSet;
+
     struct Item {
         string name;
         uint256 value;
@@ -19,6 +22,8 @@ contract TreasureFarm is ERC1155Receiver {
     uint256 public immutable EXPIRATION;
 
     mapping(uint256 => uint256) public itemValues;
+
+    mapping(address => EnumerableSet.UintSet) private _deposits;
     mapping(address => mapping(uint256 => uint256)) public depositBalances;
     mapping(address => mapping(uint256 => uint256)) public depositBlocks;
 
@@ -59,6 +64,21 @@ contract TreasureFarm is ERC1155Receiver {
         return IERC1155Receiver.onERC1155BatchReceived.selector;
     }
 
+    function deposits(address account)
+        external
+        view
+        returns (uint256[] memory)
+    {
+        EnumerableSet.UintSet storage depositSet = _deposits[account];
+        uint256[] memory tokenIds = new uint256[](depositSet.length());
+
+        for (uint256 i; i < depositSet.length(); i++) {
+            tokenIds[i] = depositSet.at(i);
+        }
+
+        return tokenIds;
+    }
+
     function calculateReward(address account, uint256 tokenId)
         public
         view
@@ -90,6 +110,7 @@ contract TreasureFarm is ERC1155Receiver {
             amount,
             ''
         );
+        _deposits[msg.sender].add(tokenId);
         depositBalances[msg.sender][tokenId] += amount;
     }
 
@@ -117,6 +138,10 @@ contract TreasureFarm is ERC1155Receiver {
 
         unchecked {
             depositBalances[msg.sender][tokenId] -= amount;
+        }
+
+        if (depositBalances[msg.sender][tokenId] == 0) {
+            _deposits[msg.sender].remove(tokenId);
         }
 
         IERC1155(TREASURE_UNRAVELER).safeTransferFrom(
