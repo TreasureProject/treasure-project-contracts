@@ -1,0 +1,18 @@
+[
+  "event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId)",
+  "event ApprovalForAll(address indexed owner, address indexed operator, bool approved)",
+  "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
+  "function approve(address to, uint256 tokenId)",
+  "function balanceOf(address owner) view returns (uint256 balance)",
+  "function getApproved(uint256 tokenId) view returns (address operator)",
+  "function isApprovedForAll(address owner, address operator) view returns (bool)",
+  "function ownerOf(uint256 tokenId) view returns (address owner)",
+  "function safeTransferFrom(address from, address to, uint256 tokenId)",
+  "function safeTransferFrom(address from, address to, uint256 tokenId, bytes data)",
+  "function setApprovalForAll(address operator, bool _approved)",
+  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+  "function tokenByIndex(uint256 index) view returns (uint256)",
+  "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256 tokenId)",
+  "function totalSupply() view returns (uint256)",
+  "function transferFrom(address from, address to, uint256 tokenId)"
+]

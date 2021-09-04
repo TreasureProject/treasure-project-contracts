@@ -33,6 +33,7 @@
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.4.6",
     "hardhat": "^2.6.2",
+    "hardhat-abi-exporter": "^2.3.0",
     "hardhat-docgen": "^1.1.2",
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-spdx-license-identifier": "^2.0.3",

@@ -1,0 +1,14 @@
+[
+  "event ApprovalForAll(address indexed account, address indexed operator, bool approved)",
+  "event TransferBatch(address indexed operator, address indexed from, address indexed to, uint256[] ids, uint256[] values)",
+  "event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)",
+  "event URI(string value, uint256 indexed id)",
+  "function balanceOf(address account, uint256 id) view returns (uint256)",
+  "function balanceOfBatch(address[] accounts, uint256[] ids) view returns (uint256[])",
+  "function isApprovedForAll(address account, address operator) view returns (bool)",
+  "function safeBatchTransferFrom(address from, address to, uint256[] ids, uint256[] amounts, bytes data)",
+  "function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data)",
+  "function setApprovalForAll(address operator, bool approved)",
+  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+  "function uri(uint256) view returns (string)"
+]

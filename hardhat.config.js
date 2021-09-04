@@ -2,6 +2,7 @@ require('dotenv').config();
 
 require('@nomiclabs/hardhat-waffle');
 require('@nomiclabs/hardhat-etherscan');
+require('hardhat-abi-exporter');
 require('hardhat-docgen');
 require('hardhat-gas-reporter');
 require('hardhat-spdx-license-identifier');
@@ -51,6 +52,12 @@ module.exports = {
       url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.ETH_TEST_KEY],
     },
+  },
+
+  abiExporter: {
+    clear: true,
+    flat: true,
+    pretty: true,
   },
 
   docgen: {
