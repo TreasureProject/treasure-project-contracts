@@ -10,13 +10,10 @@ task('deploy-treasure-farm').setAction(async function () {
     .parseUnits('1', 18)
     .div(ethers.BigNumber.from('6000'));
 
-  const EXPIRATION = ethers.BigNumber.from('180000');
-
   const factory = await ethers.getContractFactory('TreasureFarm', deployer);
   const instance = await factory.deploy(
     deployments.magic,
     deployments.treasureUnraveler,
-    EXPIRATION,
     items.map((i) => [
       i.name,
       ethers.BigNumber.from(i.value).mul(RATE_MULTIPLIER),

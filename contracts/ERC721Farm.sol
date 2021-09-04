@@ -20,13 +20,12 @@ contract ERC721Farm is IERC721Receiver {
     constructor(
         address magic,
         address erc721,
-        uint256 rate,
-        uint256 expiration
+        uint256 rate
     ) {
         MAGIC = magic;
         ERC721_CONTRACT = erc721;
         RATE = rate;
-        EXPIRATION = block.number + expiration;
+        EXPIRATION = block.number + 6000 * 30;
     }
 
     function onERC721Received(
