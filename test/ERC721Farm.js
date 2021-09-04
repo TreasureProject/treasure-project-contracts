@@ -5,10 +5,10 @@ const RATE = ethers.utils
   .parseUnits('1000', 18)
   .div(ethers.BigNumber.from('6000'));
 
-describe('LOOTFarm', function () {
+describe('ERC721Farm', function () {
   let signer;
 
-  let loot;
+  let erc721;
   let magic;
   let instance;
 
@@ -25,24 +25,24 @@ describe('LOOTFarm', function () {
   });
 
   beforeEach(async function () {
-    const lootFactory = await ethers.getContractFactory('Treasure');
-    loot = await lootFactory.deploy();
-    await loot.deployed();
+    const erc721Factory = await ethers.getContractFactory('Treasure');
+    erc721 = await erc721Factory.deploy();
+    await erc721.deployed();
 
     const magicFactory = await ethers.getContractFactory('Magic');
     magic = await magicFactory.deploy();
     await magic.deployed();
 
-    const factory = await ethers.getContractFactory('LOOTFarm');
-    instance = await factory.deploy(magic.address, loot.address, RATE);
+    const factory = await ethers.getContractFactory('ERC721Farm');
+    instance = await factory.deploy(magic.address, erc721.address, RATE);
     await instance.deployed();
 
     await magic.connect(signer).setWhitelist([instance.address]);
 
     tokenId = ethers.constants.One;
 
-    await loot.connect(signer).claim(tokenId);
-    await loot.connect(signer).setApprovalForAll(instance.address, true);
+    await erc721.connect(signer).claim(tokenId);
+    await erc721.connect(signer).setApprovalForAll(instance.address, true);
   });
 
   describe('#depositsOf', function () {
@@ -116,7 +116,7 @@ describe('LOOTFarm', function () {
       await expect(() =>
         instance.connect(signer).deposit(tokenId),
       ).to.changeTokenBalances(
-        loot,
+        erc721,
         [signer, instance],
         [ethers.constants.NegativeOne, ethers.constants.One],
       );
@@ -124,7 +124,7 @@ describe('LOOTFarm', function () {
 
     describe('reverts if', function () {
       it('deposit amount exceeds balance', async function () {
-        await loot
+        await erc721
           .connect(signer)
           ['safeTransferFrom(address,address,uint256)'](
             signer.address,
@@ -138,7 +138,7 @@ describe('LOOTFarm', function () {
       });
 
       it('contract is not approved for transfer', async function () {
-        await loot.connect(signer).setApprovalForAll(instance.address, false);
+        await erc721.connect(signer).setApprovalForAll(instance.address, false);
 
         await expect(
           instance.connect(signer).deposit(tokenId),
@@ -154,7 +154,7 @@ describe('LOOTFarm', function () {
       await expect(() =>
         instance.connect(signer).depositBatch([tokenId]),
       ).to.changeTokenBalances(
-        loot,
+        erc721,
         [signer, instance],
         [ethers.constants.NegativeOne, ethers.constants.One],
       );
@@ -162,7 +162,7 @@ describe('LOOTFarm', function () {
 
     describe('reverts if', function () {
       it('deposit amount exceeds balance', async function () {
-        await loot
+        await erc721
           .connect(signer)
           ['safeTransferFrom(address,address,uint256)'](
             signer.address,
@@ -176,7 +176,7 @@ describe('LOOTFarm', function () {
       });
 
       it('contract is not approved for transfer', async function () {
-        await loot.connect(signer).setApprovalForAll(instance.address, false);
+        await erc721.connect(signer).setApprovalForAll(instance.address, false);
 
         await expect(
           instance.connect(signer).depositBatch([tokenId]),
@@ -194,7 +194,7 @@ describe('LOOTFarm', function () {
       await expect(() =>
         instance.connect(signer).withdraw(tokenId),
       ).to.changeTokenBalances(
-        loot,
+        erc721,
         [signer, instance],
         [ethers.constants.One, ethers.constants.NegativeOne],
       );
@@ -236,7 +236,7 @@ describe('LOOTFarm', function () {
       await expect(() =>
         instance.connect(signer).withdrawBatch([tokenId]),
       ).to.changeTokenBalances(
-        loot,
+        erc721,
         [signer, instance],
         [ethers.constants.One, ethers.constants.NegativeOne],
       );
