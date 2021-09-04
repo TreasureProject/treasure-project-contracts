@@ -42,7 +42,7 @@ contract TreasureFarm is ERC1155Receiver {
 
         MAGIC = magic;
         TREASURE_UNRAVELER = unraveler;
-        EXPIRATION = expiration + block.timestamp;
+        EXPIRATION = block.number + expiration;
     }
 
     function onERC1155Received(

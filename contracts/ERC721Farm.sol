@@ -29,7 +29,7 @@ contract ERC721Farm is IERC721Receiver {
         MAGIC = magic;
         ERC721_CONTRACT = erc721;
         RATE = rate;
-        EXPIRATION = expiration + block.number;
+        EXPIRATION = block.number + expiration;
     }
 
     function onERC721Received(

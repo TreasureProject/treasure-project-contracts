@@ -9,6 +9,6 @@ contract NFarm is ERC721Farm {
         address magic,
         address n,
         uint256 rate,
-        uint256 deadline
-    ) ERC721Farm(magic, n, rate, deadline) {}
+        uint256 expiration
+    ) ERC721Farm(magic, n, rate, expiration) {}
 }
