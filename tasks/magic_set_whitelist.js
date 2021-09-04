@@ -2,7 +2,7 @@ const fs = require('fs');
 const deployments = require('../data/deployments');
 
 task('magic-set-whitelist').setAction(async function () {
-  const [deployer] = await ethers.getSigners();
+  const [sender] = await ethers.getSigners();
 
   const instance = await ethers.getContractAt('Magic', deployments.magic);
 
