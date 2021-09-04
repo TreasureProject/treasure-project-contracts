@@ -38,7 +38,7 @@ module.exports = {
             forking: {
               url: `https://eth-${
                 process.env.FORK_NETWORK || 'mainnet'
-              }.alchemyapi.io/v2/cT--tfMgLAyODIWTnAv7QLgGjYfuQc7I`,
+              }.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
             },
           }
         : {}),
