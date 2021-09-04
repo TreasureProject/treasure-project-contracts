@@ -72,7 +72,7 @@ contract TreasureFractionalizer is ERC1155, IERC721Receiver {
         return output;
     }
 
-    function fractionalize(uint256 tokenId) public {
+    function fractionalize(uint256 tokenId) public returns (string[] memory) {
         ITreasure(TREASURE).safeTransferFrom(
             msg.sender,
             address(this),
