@@ -23,12 +23,12 @@ contract AGLDFarm {
         address magic,
         address adventureGold,
         uint256 rate,
-        uint256 _EXPIRATION
+        uint256 expiraton
     ) {
         MAGIC = magic;
         ADVENTURE_GOLD = adventureGold;
         RATE = rate;
-        EXPIRATION = _EXPIRATION;
+        EXPIRATION = expiraton + block.timestamp;
     }
 
     function calculateReward(address account)

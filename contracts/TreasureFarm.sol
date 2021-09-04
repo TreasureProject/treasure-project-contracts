@@ -30,7 +30,7 @@ contract TreasureFarm is ERC1155Receiver {
     constructor(
         address magic,
         address unraveler,
-        uint256 _EXPIRATION,
+        uint256 expiration,
         Item[] memory items
     ) {
         for (uint256 i; i < items.length; i++) {
@@ -42,7 +42,7 @@ contract TreasureFarm is ERC1155Receiver {
 
         MAGIC = magic;
         TREASURE_UNRAVELER = unraveler;
-        EXPIRATION = _EXPIRATION;
+        EXPIRATION = expiration + block.timestamp;
     }
 
     function onERC1155Received(

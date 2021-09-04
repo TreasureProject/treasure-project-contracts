@@ -10,5 +10,5 @@ contract LOOTFarm is ERC721Farm {
         address loot,
         uint256 rate,
         uint256 deadline
-    ) ERC721Farm(magic, loot, rate, deadline) {}
+    ) ERC721Farm(magic, loot, rate, dead) {}
 }
