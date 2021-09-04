@@ -129,6 +129,44 @@ describe('LOOTFarm', function () {
     });
   });
 
+  describe('#depositBatch', function () {
+    it('transfers tokens from sender to contract', async function () {
+      await expect(() =>
+        instance.connect(signer).depositBatch([tokenId]),
+      ).to.changeTokenBalances(
+        loot,
+        [signer, instance],
+        [ethers.constants.NegativeOne, ethers.constants.One],
+      );
+    });
+
+    describe('reverts if', function () {
+      it('deposit amount exceeds balance', async function () {
+        await loot
+          .connect(signer)
+          ['safeTransferFrom(address,address,uint256)'](
+            signer.address,
+            instance.address,
+            tokenId,
+          );
+
+        await expect(
+          instance.connect(signer).depositBatch([tokenId]),
+        ).to.be.revertedWith('ERC721: transfer of token that is not own');
+      });
+
+      it('contract is not approved for transfer', async function () {
+        await loot.connect(signer).setApprovalForAll(instance.address, false);
+
+        await expect(
+          instance.connect(signer).depositBatch([tokenId]),
+        ).to.be.revertedWith(
+          'ERC721: transfer caller is not owner nor approved',
+        );
+      });
+    });
+  });
+
   describe('#withdraw', function () {
     it('transfers token from contract to sender', async function () {
       await instance.connect(signer).deposit(tokenId);
@@ -142,20 +180,18 @@ describe('LOOTFarm', function () {
       );
     });
 
-    it('claims pending rewards', async function () {
-      it('transfers pending rewards to sender', async function () {
-        await instance.connect(signer).deposit(tokenId);
+    it('transfers pending rewards to sender', async function () {
+      await instance.connect(signer).deposit(tokenId);
 
-        await mineBlocks(7);
+      await mineBlocks(7);
 
-        const expected = (
-          await instance.callStatic.calculateReward(signer.address, tokenId)
-        ).add(RATE);
+      const expected = (
+        await instance.callStatic.calculateReward(signer.address, tokenId)
+      ).add(RATE);
 
-        await expect(() =>
-          instance.connect(signer).withdraw(tokenId),
-        ).to.changeTokenBalance(magic, signer, expected);
-      });
+      await expect(() =>
+        instance.connect(signer).withdraw(tokenId),
+      ).to.changeTokenBalance(magic, signer, expected);
     });
 
     describe('reverts if', function () {
@@ -168,6 +204,48 @@ describe('LOOTFarm', function () {
 
         await expect(
           instance.connect(signer).withdraw(ethers.constants.Two),
+        ).to.be.revertedWith('ERC721Farm: token not deposited');
+      });
+    });
+  });
+
+  describe('#withdrawBatch', function () {
+    it('transfers token from contract to sender', async function () {
+      await instance.connect(signer).deposit(tokenId);
+
+      await expect(() =>
+        instance.connect(signer).withdrawBatch([tokenId]),
+      ).to.changeTokenBalances(
+        loot,
+        [signer, instance],
+        [ethers.constants.One, ethers.constants.NegativeOne],
+      );
+    });
+
+    it('transfers pending rewards to sender', async function () {
+      await instance.connect(signer).deposit(tokenId);
+
+      await mineBlocks(7);
+
+      const expected = (
+        await instance.callStatic.calculateReward(signer.address, tokenId)
+      ).add(RATE);
+
+      await expect(() =>
+        instance.connect(signer).withdrawBatch([tokenId]),
+      ).to.changeTokenBalance(magic, signer, expected);
+    });
+
+    describe('reverts if', function () {
+      it('token has not been deposited by sender', async function () {
+        await expect(
+          instance.connect(signer).withdrawBatch([tokenId]),
+        ).to.be.revertedWith('ERC721Farm: token not deposited');
+
+        await instance.connect(signer).deposit(tokenId);
+
+        await expect(
+          instance.connect(signer).withdrawBatch([ethers.constants.Two]),
         ).to.be.revertedWith('ERC721Farm: token not deposited');
       });
     });

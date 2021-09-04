@@ -102,7 +102,7 @@ describe('AGLDFarm', function () {
       );
     });
 
-    it('claims pending rewards', async function () {
+    it('transfers pending rewards to sender', async function () {
       await instance.connect(signer).deposit(ethers.constants.One);
 
       await mineBlocks(7);
@@ -152,20 +152,18 @@ describe('AGLDFarm', function () {
       );
     });
 
-    it('claims pending rewards', async function () {
-      it('transfers pending rewards to sender', async function () {
-        await instance.connect(signer).deposit(ethers.constants.One);
+    it('transfers pending rewards to sender', async function () {
+      await instance.connect(signer).deposit(ethers.constants.One);
 
-        await mineBlocks(7);
+      await mineBlocks(7);
 
-        const expected = (
-          await instance.callStatic.calculateReward(signer.address)
-        ).add(RATE);
+      const expected = (
+        await instance.callStatic.calculateReward(signer.address)
+      ).add(RATE);
 
-        await expect(() =>
-          instance.connect(signer).withdraw(ethers.constants.One),
-        ).to.changeTokenBalance(magic, signer, expected);
-      });
+      await expect(() =>
+        instance.connect(signer).withdraw(ethers.constants.One),
+      ).to.changeTokenBalance(magic, signer, expected);
     });
 
     describe('reverts if', function () {
