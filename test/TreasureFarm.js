@@ -146,7 +146,7 @@ describe('TreasureFarm', function () {
     });
   });
 
-  describe('#claimReward', function () {
+  describe('#claimRewards', function () {
     it('transfers pending rewards to sender', async function () {
       const [itemId] = itemIds;
       const [itemValue] = itemValues;
@@ -160,7 +160,7 @@ describe('TreasureFarm', function () {
       ).add(itemValue);
 
       await expect(() =>
-        instance.connect(signer).claimReward([itemId]),
+        instance.connect(signer).claimRewards([itemId]),
       ).to.changeTokenBalance(magic, signer, expected);
     });
 
@@ -174,7 +174,7 @@ describe('TreasureFarm', function () {
       expect(
         await instance.callStatic.calculateReward(signer.address, itemId),
       ).not.to.equal(ethers.constants.Zero);
-      await instance.connect(signer).claimReward([itemId]);
+      await instance.connect(signer).claimRewards([itemId]);
       expect(
         await instance.callStatic.calculateReward(signer.address, itemId),
       ).to.equal(ethers.constants.Zero);

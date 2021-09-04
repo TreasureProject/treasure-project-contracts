@@ -68,7 +68,7 @@ describe('AGLDFarm', function () {
     });
   });
 
-  describe('#claimReward', function () {
+  describe('#claimRewards', function () {
     it('transfers pending rewards to sender', async function () {
       await instance.connect(signer).deposit(ethers.constants.One);
 
@@ -79,7 +79,7 @@ describe('AGLDFarm', function () {
       ).add(RATE);
 
       await expect(() =>
-        instance.connect(signer).claimReward(),
+        instance.connect(signer).claimRewards(),
       ).to.changeTokenBalance(magic, signer, expected);
     });
 
@@ -91,7 +91,7 @@ describe('AGLDFarm', function () {
       expect(
         await instance.callStatic.calculateReward(signer.address),
       ).not.to.equal(ethers.constants.Zero);
-      await instance.connect(signer).claimReward();
+      await instance.connect(signer).claimRewards();
       expect(
         await instance.callStatic.calculateReward(signer.address),
       ).to.equal(ethers.constants.Zero);

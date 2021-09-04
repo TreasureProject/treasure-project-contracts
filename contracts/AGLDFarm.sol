@@ -42,7 +42,7 @@ contract AGLDFarm {
             (Math.min(block.number, EXPIRATION) - depositBlocks[account]);
     }
 
-    function claimReward() public {
+    function claimRewards() public {
         uint256 reward = calculateReward(msg.sender);
 
         if (reward > 0) {
@@ -53,7 +53,7 @@ contract AGLDFarm {
     }
 
     function deposit(uint256 amount) external {
-        claimReward();
+        claimRewards();
         IERC20(ADVENTURE_GOLD).safeTransferFrom(
             msg.sender,
             address(this),
@@ -68,7 +68,7 @@ contract AGLDFarm {
             'AGLDFarm: insufficient balance'
         );
 
-        claimReward();
+        claimRewards();
 
         unchecked {
             depositBalances[msg.sender] -= amount;

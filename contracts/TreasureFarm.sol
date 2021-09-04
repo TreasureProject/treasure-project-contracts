@@ -92,7 +92,7 @@ contract TreasureFarm is ERC1155Receiver {
                 depositBlocks[account][tokenId]);
     }
 
-    function claimReward(uint256[] calldata tokenIds) public {
+    function claimRewards(uint256[] calldata tokenIds) public {
         uint256 reward;
         uint256 block = Math.min(block.number, EXPIRATION);
 
@@ -115,7 +115,7 @@ contract TreasureFarm is ERC1155Receiver {
             'TreasureFarm: array length mismatch'
         );
 
-        claimReward(tokenIds);
+        claimRewards(tokenIds);
 
         for (uint256 i; i < tokenIds.length; i++) {
             uint256 tokenId = tokenIds[i];
@@ -142,7 +142,7 @@ contract TreasureFarm is ERC1155Receiver {
             'TreasureFarm: array length mismatch'
         );
 
-        claimReward(tokenIds);
+        claimRewards(tokenIds);
 
         for (uint256 i; i < tokenIds.length; i++) {
             uint256 tokenId = tokenIds[i];

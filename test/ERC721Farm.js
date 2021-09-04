@@ -88,7 +88,7 @@ describe('ERC721Farm', function () {
     });
   });
 
-  describe('#claimReward', function () {
+  describe('#claimRewards', function () {
     it('transfers pending rewards to sender', async function () {
       await instance.connect(signer).deposit([tokenId]);
 
@@ -99,7 +99,7 @@ describe('ERC721Farm', function () {
       ).add(RATE);
 
       await expect(() =>
-        instance.connect(signer).claimReward([tokenId]),
+        instance.connect(signer).claimRewards([tokenId]),
       ).to.changeTokenBalance(magic, signer, expected);
     });
 
@@ -111,7 +111,7 @@ describe('ERC721Farm', function () {
       expect(
         await instance.callStatic.calculateReward(signer.address, tokenId),
       ).not.to.equal(ethers.constants.Zero);
-      await instance.connect(signer).claimReward([tokenId]);
+      await instance.connect(signer).claimRewards([tokenId]);
       expect(
         await instance.callStatic.calculateReward(signer.address, tokenId),
       ).to.equal(ethers.constants.Zero);
