@@ -92,79 +92,82 @@ contract TreasureFarm is ERC1155Receiver {
                 depositBlocks[account][tokenId]);
     }
 
-    function claimReward(uint256 tokenId) public {
-        uint256 reward = calculateReward(msg.sender, tokenId);
+    function claimReward(uint256[] calldata tokenIds) public {
+        uint256 reward;
+        uint256 block = Math.min(block.number, EXPIRATION);
+
+        for (uint256 i; i < tokenIds.length; i++) {
+            reward += calculateReward(msg.sender, tokenIds[i]);
+
+            depositBlocks[msg.sender][tokenIds[i]] = block;
+        }
 
         if (reward > 0) {
             IMagic(MAGIC).mint(msg.sender, reward);
         }
-
-        depositBlocks[msg.sender][tokenId] = Math.min(block.number, EXPIRATION);
     }
 
-    function deposit(uint256 tokenId, uint256 amount) public {
-        claimReward(tokenId);
-        IERC1155(TREASURE_UNRAVELER).safeTransferFrom(
-            msg.sender,
-            address(this),
-            tokenId,
-            amount,
-            ''
-        );
-        _deposits[msg.sender].add(tokenId);
-        depositBalances[msg.sender][tokenId] += amount;
-    }
-
-    function depositBatch(
-        uint256[] calldata tokenIds,
-        uint256[] calldata amounts
-    ) external {
+    function deposit(uint256[] calldata tokenIds, uint256[] calldata amounts)
+        external
+    {
         require(
             tokenIds.length == amounts.length,
             'TreasureFarm: array length mismatch'
         );
 
+        claimReward(tokenIds);
+
         for (uint256 i; i < tokenIds.length; i++) {
-            deposit(tokenIds[i], amounts[i]);
+            uint256 tokenId = tokenIds[i];
+            uint256 amount = amounts[i];
+
+            IERC1155(TREASURE_UNRAVELER).safeTransferFrom(
+                msg.sender,
+                address(this),
+                tokenId,
+                amount,
+                ''
+            );
+
+            _deposits[msg.sender].add(tokenId);
+            depositBalances[msg.sender][tokenId] += amount;
         }
     }
 
-    function withdraw(uint256 tokenId, uint256 amount) public {
-        require(
-            depositBalances[msg.sender][tokenId] >= amount,
-            'TreasureFarm: insufficient balance'
-        );
-
-        claimReward(tokenId);
-
-        unchecked {
-            depositBalances[msg.sender][tokenId] -= amount;
-        }
-
-        if (depositBalances[msg.sender][tokenId] == 0) {
-            _deposits[msg.sender].remove(tokenId);
-        }
-
-        IERC1155(TREASURE_UNRAVELER).safeTransferFrom(
-            address(this),
-            msg.sender,
-            tokenId,
-            amount,
-            ''
-        );
-    }
-
-    function withdrawBatch(
-        uint256[] calldata tokenIds,
-        uint256[] calldata amounts
-    ) external {
+    function withdraw(uint256[] calldata tokenIds, uint256[] calldata amounts)
+        external
+    {
         require(
             tokenIds.length == amounts.length,
             'TreasureFarm: array length mismatch'
         );
 
+        claimReward(tokenIds);
+
         for (uint256 i; i < tokenIds.length; i++) {
-            withdraw(tokenIds[i], amounts[i]);
+            uint256 tokenId = tokenIds[i];
+            uint256 amount = amounts[0];
+
+            require(
+                depositBalances[msg.sender][tokenId] >= amount,
+                'TreasureFarm: insufficient balance'
+            );
+
+            unchecked {
+                depositBalances[msg.sender][tokenId] -= amount;
+            }
+
+            if (depositBalances[msg.sender][tokenId] == 0) {
+                _deposits[msg.sender].remove(tokenId);
+            }
+
+            IERC1155(TREASURE_UNRAVELER).safeTransferFrom(
+                address(this),
+                msg.sender,
+                tokenId,
+                amount,
+                ''
+            );
         }
     }
 }

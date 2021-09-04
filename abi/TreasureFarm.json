@@ -1,16 +1,14 @@
 [
   "function EXPIRATION() view returns (uint256)",
   "function calculateReward(address account, uint256 tokenId) view returns (uint256 reward)",
-  "function claimReward(uint256 tokenId)",
-  "function deposit(uint256 tokenId, uint256 amount)",
+  "function claimReward(uint256[] tokenIds)",
+  "function deposit(uint256[] tokenIds, uint256[] amounts)",
   "function depositBalances(address, uint256) view returns (uint256)",
-  "function depositBatch(uint256[] tokenIds, uint256[] amounts)",
   "function depositBlocks(address, uint256) view returns (uint256)",
   "function depositsOf(address account) view returns (uint256[])",
   "function itemValues(uint256) view returns (uint256)",
   "function onERC1155BatchReceived(address, address, uint256[], uint256[], bytes) pure returns (bytes4)",
   "function onERC1155Received(address, address, uint256, uint256, bytes) pure returns (bytes4)",
   "function supportsInterface(bytes4 interfaceId) view returns (bool)",
-  "function withdraw(uint256 tokenId, uint256 amount)",
-  "function withdrawBatch(uint256[] tokenIds, uint256[] amounts)"
+  "function withdraw(uint256[] tokenIds, uint256[] amounts)"
 ]

@@ -68,55 +68,53 @@ contract ERC721Farm is IERC721Receiver {
                 depositBlocks[account][tokenId]);
     }
 
-    function claimReward(uint256 tokenId) public {
-        uint256 reward = calculateReward(msg.sender, tokenId);
+    function claimReward(uint256[] calldata tokenIds) public {
+        uint256 reward;
+        uint256 block = Math.min(block.number, EXPIRATION);
+
+        for (uint256 i; i < tokenIds.length; i++) {
+            reward += calculateReward(msg.sender, tokenIds[i]);
+
+            depositBlocks[msg.sender][tokenIds[i]] = block;
+        }
 
         if (reward > 0) {
             IMagic(MAGIC).mint(msg.sender, reward);
         }
-
-        depositBlocks[msg.sender][tokenId] = Math.min(block.number, EXPIRATION);
     }
 
-    function deposit(uint256 tokenId) public {
-        claimReward(tokenId);
-        IERC721(ERC721_CONTRACT).safeTransferFrom(
-            msg.sender,
-            address(this),
-            tokenId,
-            ''
-        );
+    function deposit(uint256[] calldata tokenIds) external {
+        claimReward(tokenIds);
 
-        _deposits[msg.sender].add(tokenId);
-    }
-
-    function depositBatch(uint256[] calldata tokenIds) external {
         for (uint256 i; i < tokenIds.length; i++) {
-            deposit(tokenIds[i]);
+            IERC721(ERC721_CONTRACT).safeTransferFrom(
+                msg.sender,
+                address(this),
+                tokenIds[i],
+                ''
+            );
+
+            _deposits[msg.sender].add(tokenIds[i]);
         }
     }
 
-    function withdraw(uint256 tokenId) public {
-        require(
-            _deposits[msg.sender].contains(tokenId),
-            'ERC721Farm: token not deposited'
-        );
+    function withdraw(uint256[] calldata tokenIds) external {
+        claimReward(tokenIds);
 
-        claimReward(tokenId);
-
-        _deposits[msg.sender].remove(tokenId);
-
-        IERC721(ERC721_CONTRACT).safeTransferFrom(
-            address(this),
-            msg.sender,
-            tokenId,
-            ''
-        );
-    }
-
-    function withdrawBatch(uint256[] calldata tokenIds) external {
         for (uint256 i; i < tokenIds.length; i++) {
-            withdraw(tokenIds[i]);
+            require(
+                _deposits[msg.sender].contains(tokenIds[i]),
+                'ERC721Farm: token not deposited'
+            );
+
+            _deposits[msg.sender].remove(tokenIds[i]);
+
+            IERC721(ERC721_CONTRACT).safeTransferFrom(
+                address(this),
+                msg.sender,
+                tokenIds[i],
+                ''
+            );
         }
     }
 }

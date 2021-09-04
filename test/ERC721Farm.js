@@ -58,13 +58,13 @@ describe('ERC721Farm', function () {
         await instance.callStatic.depositsOf(signer.address),
       ).to.deep.have.members([]);
 
-      await instance.connect(signer).deposit(tokenId);
+      await instance.connect(signer).deposit([tokenId]);
 
       expect(
         await instance.callStatic.depositsOf(signer.address),
       ).to.deep.have.members([tokenId]);
 
-      await instance.connect(signer).withdraw(tokenId);
+      await instance.connect(signer).withdraw([tokenId]);
 
       expect(
         await instance.callStatic.depositsOf(signer.address),
@@ -78,7 +78,7 @@ describe('ERC721Farm', function () {
         await instance.callStatic.calculateReward(signer.address, tokenId),
       ).to.equal(ethers.constants.Zero);
 
-      await instance.connect(signer).deposit(tokenId);
+      await instance.connect(signer).deposit([tokenId]);
 
       await mineBlocks(7);
 
@@ -90,7 +90,7 @@ describe('ERC721Farm', function () {
 
   describe('#claimReward', function () {
     it('transfers pending rewards to sender', async function () {
-      await instance.connect(signer).deposit(tokenId);
+      await instance.connect(signer).deposit([tokenId]);
 
       await mineBlocks(7);
 
@@ -99,19 +99,19 @@ describe('ERC721Farm', function () {
       ).add(RATE);
 
       await expect(() =>
-        instance.connect(signer).claimReward(tokenId),
+        instance.connect(signer).claimReward([tokenId]),
       ).to.changeTokenBalance(magic, signer, expected);
     });
 
     it('resets pending rewards to zero', async function () {
-      await instance.connect(signer).deposit(tokenId);
+      await instance.connect(signer).deposit([tokenId]);
 
       await mineBlocks(1);
 
       expect(
         await instance.callStatic.calculateReward(signer.address, tokenId),
       ).not.to.equal(ethers.constants.Zero);
-      await instance.connect(signer).claimReward(tokenId);
+      await instance.connect(signer).claimReward([tokenId]);
       expect(
         await instance.callStatic.calculateReward(signer.address, tokenId),
       ).to.equal(ethers.constants.Zero);
@@ -121,7 +121,7 @@ describe('ERC721Farm', function () {
   describe('#deposit', function () {
     it('transfers tokens from sender to contract', async function () {
       await expect(() =>
-        instance.connect(signer).deposit(tokenId),
+        instance.connect(signer).deposit([tokenId]),
       ).to.changeTokenBalances(
         erc721,
         [signer, instance],
@@ -140,7 +140,7 @@ describe('ERC721Farm', function () {
           );
 
         await expect(
-          instance.connect(signer).deposit(tokenId),
+          instance.connect(signer).deposit([tokenId]),
         ).to.be.revertedWith('ERC721: transfer of token that is not own');
       });
 
@@ -148,45 +148,7 @@ describe('ERC721Farm', function () {
         await erc721.connect(signer).setApprovalForAll(instance.address, false);
 
         await expect(
-          instance.connect(signer).deposit(tokenId),
-        ).to.be.revertedWith(
-          'ERC721: transfer caller is not owner nor approved',
-        );
-      });
-    });
-  });
-
-  describe('#depositBatch', function () {
-    it('transfers tokens from sender to contract', async function () {
-      await expect(() =>
-        instance.connect(signer).depositBatch([tokenId]),
-      ).to.changeTokenBalances(
-        erc721,
-        [signer, instance],
-        [ethers.constants.NegativeOne, ethers.constants.One],
-      );
-    });
-
-    describe('reverts if', function () {
-      it('deposit amount exceeds balance', async function () {
-        await erc721
-          .connect(signer)
-          ['safeTransferFrom(address,address,uint256)'](
-            signer.address,
-            instance.address,
-            tokenId,
-          );
-
-        await expect(
-          instance.connect(signer).depositBatch([tokenId]),
-        ).to.be.revertedWith('ERC721: transfer of token that is not own');
-      });
-
-      it('contract is not approved for transfer', async function () {
-        await erc721.connect(signer).setApprovalForAll(instance.address, false);
-
-        await expect(
-          instance.connect(signer).depositBatch([tokenId]),
+          instance.connect(signer).deposit([tokenId]),
         ).to.be.revertedWith(
           'ERC721: transfer caller is not owner nor approved',
         );
@@ -196,10 +158,10 @@ describe('ERC721Farm', function () {
 
   describe('#withdraw', function () {
     it('transfers token from contract to sender', async function () {
-      await instance.connect(signer).deposit(tokenId);
+      await instance.connect(signer).deposit([tokenId]);
 
       await expect(() =>
-        instance.connect(signer).withdraw(tokenId),
+        instance.connect(signer).withdraw([tokenId]),
       ).to.changeTokenBalances(
         erc721,
         [signer, instance],
@@ -208,7 +170,7 @@ describe('ERC721Farm', function () {
     });
 
     it('transfers pending rewards to sender', async function () {
-      await instance.connect(signer).deposit(tokenId);
+      await instance.connect(signer).deposit([tokenId]);
 
       await mineBlocks(7);
 
@@ -217,62 +179,20 @@ describe('ERC721Farm', function () {
       ).add(RATE);
 
       await expect(() =>
-        instance.connect(signer).withdraw(tokenId),
+        instance.connect(signer).withdraw([tokenId]),
       ).to.changeTokenBalance(magic, signer, expected);
     });
 
     describe('reverts if', function () {
       it('token has not been deposited by sender', async function () {
         await expect(
-          instance.connect(signer).withdraw(tokenId),
+          instance.connect(signer).withdraw([tokenId]),
         ).to.be.revertedWith('ERC721Farm: token not deposited');
 
-        await instance.connect(signer).deposit(tokenId);
+        await instance.connect(signer).deposit([tokenId]);
 
         await expect(
-          instance.connect(signer).withdraw(ethers.constants.Two),
-        ).to.be.revertedWith('ERC721Farm: token not deposited');
-      });
-    });
-  });
-
-  describe('#withdrawBatch', function () {
-    it('transfers token from contract to sender', async function () {
-      await instance.connect(signer).deposit(tokenId);
-
-      await expect(() =>
-        instance.connect(signer).withdrawBatch([tokenId]),
-      ).to.changeTokenBalances(
-        erc721,
-        [signer, instance],
-        [ethers.constants.One, ethers.constants.NegativeOne],
-      );
-    });
-
-    it('transfers pending rewards to sender', async function () {
-      await instance.connect(signer).deposit(tokenId);
-
-      await mineBlocks(7);
-
-      const expected = (
-        await instance.callStatic.calculateReward(signer.address, tokenId)
-      ).add(RATE);
-
-      await expect(() =>
-        instance.connect(signer).withdrawBatch([tokenId]),
-      ).to.changeTokenBalance(magic, signer, expected);
-    });
-
-    describe('reverts if', function () {
-      it('token has not been deposited by sender', async function () {
-        await expect(
-          instance.connect(signer).withdrawBatch([tokenId]),
-        ).to.be.revertedWith('ERC721Farm: token not deposited');
-
-        await instance.connect(signer).deposit(tokenId);
-
-        await expect(
-          instance.connect(signer).withdrawBatch([ethers.constants.Two]),
+          instance.connect(signer).withdraw([ethers.constants.Two]),
         ).to.be.revertedWith('ERC721Farm: token not deposited');
       });
     });
