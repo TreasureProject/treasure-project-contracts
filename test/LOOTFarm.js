@@ -162,13 +162,13 @@ describe('LOOTFarm', function () {
       it('token has not been deposited by sender', async function () {
         await expect(
           instance.connect(signer).withdraw(tokenId),
-        ).to.be.revertedWith('LOOTFarm: token not deposited');
+        ).to.be.revertedWith('ERC721Farm: token not deposited');
 
         await instance.connect(signer).deposit(tokenId);
 
         await expect(
           instance.connect(signer).withdraw(ethers.constants.Two),
-        ).to.be.revertedWith('LOOTFarm: token not deposited');
+        ).to.be.revertedWith('ERC721Farm: token not deposited');
       });
     });
   });
