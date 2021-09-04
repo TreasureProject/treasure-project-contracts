@@ -8,7 +8,7 @@ import '@openzeppelin/contracts/interfaces/IERC721Receiver.sol';
 import './ITreasure.sol';
 import './Base64.sol';
 
-contract TreasureFractionalizer is ERC1155, IERC721Receiver {
+contract TreasureUnraveler is ERC1155, IERC721Receiver {
     uint256 private constant ERR_1 =
         uint256(keccak256('Red Feather' 'Snow White Feather'));
     uint256 private constant FIX_1 =
@@ -57,7 +57,7 @@ contract TreasureFractionalizer is ERC1155, IERC721Receiver {
                     abi.encodePacked(
                         '{"name": "',
                         itemNames[tokenId],
-                        '", "description": "Treasures are fractionalized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
+                        '", "description": "Unraveled Treasures are adventurer gear sourced from Treasures (for Loot) NFTs. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Treasures in any way you want.", "image": "data:image/svg+xml;base64,',
                         Base64.encode(bytes(output)),
                         '"}'
                     )
@@ -72,7 +72,7 @@ contract TreasureFractionalizer is ERC1155, IERC721Receiver {
         return output;
     }
 
-    function fractionalize(uint256 tokenId) public {
+    function unravel(uint256 tokenId) public {
         ITreasure(TREASURE).safeTransferFrom(
             msg.sender,
             address(this),

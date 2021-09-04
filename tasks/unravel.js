@@ -1,6 +1,6 @@
 const deployments = require('../data/deployments');
 
-task('fractionalize')
+task('unravel')
   .addParam('id')
   .setAction(async function ({ id }) {
     const [sender] = await ethers.getSigners();
@@ -11,8 +11,8 @@ task('fractionalize')
     );
 
     const instance = await ethers.getContractAt(
-      'TreasureFractionalizer',
-      deployments.treasureFractionalizer,
+      'TreasureUnraveler',
+      deployments.treasureUnraveler,
     );
 
     if (
@@ -27,6 +27,6 @@ task('fractionalize')
       await approveTx.wait();
     }
 
-    const tx = await instance.connect(sender).fractionalize(id);
+    const tx = await instance.connect(sender).unravel(id);
     await tx.wait();
   });

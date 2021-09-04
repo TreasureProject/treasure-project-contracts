@@ -9,6 +9,7 @@ task('magic-set-whitelist').setAction(async function () {
   const whitelist = [
     deployments.agldFarm,
     deployments.lootFarm,
+    deployments.nFarm,
     deployments.treasureFarm,
   ];
 
