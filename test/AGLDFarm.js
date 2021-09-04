@@ -52,10 +52,10 @@ describe('AGLDFarm', function () {
       .approve(instance.address, ethers.constants.MaxUint256);
   });
 
-  describe('#calculateReward', function () {
+  describe('#calculateRewards', function () {
     it('returns pending rewards for given user and token', async function () {
       expect(
-        await instance.callStatic.calculateReward(signer.address),
+        await instance.callStatic.calculateRewards(signer.address),
       ).to.equal(ethers.constants.Zero);
 
       await instance.connect(signer).deposit(ethers.constants.One);
@@ -63,7 +63,7 @@ describe('AGLDFarm', function () {
       await mineBlocks(7);
 
       expect(
-        await instance.callStatic.calculateReward(signer.address),
+        await instance.callStatic.calculateRewards(signer.address),
       ).to.equal(RATE.mul(ethers.BigNumber.from('7')));
     });
   });
@@ -75,7 +75,7 @@ describe('AGLDFarm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateReward(signer.address)
+        await instance.callStatic.calculateRewards(signer.address)
       ).add(RATE);
 
       await expect(() =>
@@ -89,11 +89,11 @@ describe('AGLDFarm', function () {
       await mineBlocks(1);
 
       expect(
-        await instance.callStatic.calculateReward(signer.address),
+        await instance.callStatic.calculateRewards(signer.address),
       ).not.to.equal(ethers.constants.Zero);
       await instance.connect(signer).claimRewards();
       expect(
-        await instance.callStatic.calculateReward(signer.address),
+        await instance.callStatic.calculateRewards(signer.address),
       ).to.equal(ethers.constants.Zero);
     });
   });
@@ -115,7 +115,7 @@ describe('AGLDFarm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateReward(signer.address)
+        await instance.callStatic.calculateRewards(signer.address)
       ).add(RATE);
 
       await expect(() =>
@@ -165,7 +165,7 @@ describe('AGLDFarm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateReward(signer.address)
+        await instance.callStatic.calculateRewards(signer.address)
       ).add(RATE);
 
       await expect(() =>

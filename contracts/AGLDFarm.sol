@@ -31,7 +31,7 @@ contract AGLDFarm {
         EXPIRATION = block.number + expiration;
     }
 
-    function calculateReward(address account)
+    function calculateRewards(address account)
         public
         view
         returns (uint256 reward)
@@ -43,7 +43,7 @@ contract AGLDFarm {
     }
 
     function claimRewards() public {
-        uint256 reward = calculateReward(msg.sender);
+        uint256 reward = calculateRewards(msg.sender);
 
         if (reward > 0) {
             IMagic(MAGIC).mint(msg.sender, reward);

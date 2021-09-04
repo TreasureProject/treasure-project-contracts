@@ -1,6 +1,6 @@
 [
   "function EXPIRATION() view returns (uint256)",
-  "function calculateReward(address account) view returns (uint256 reward)",
+  "function calculateRewards(address account) view returns (uint256 reward)",
   "function claimRewards()",
   "function deposit(uint256 amount)",
   "function depositBalances(address) view returns (uint256)",
