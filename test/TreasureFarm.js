@@ -110,24 +110,36 @@ describe('TreasureFarm', function () {
   });
 
   describe('#depositsOf', function () {
-    it('returns list of deposited token ids for given user', async function () {
+    it('returns list of deposited token ids and list of amountsfor given user', async function () {
       const [itemId] = itemIds;
 
-      expect(
-        await instance.callStatic.depositsOf(signer.address),
-      ).to.deep.have.members([]);
+      let [tokenIds, amounts] = await instance.callStatic.depositsOf(
+        signer.address,
+      );
+
+      expect(tokenIds).to.deep.have.members([]);
+
+      expect(amounts).to.deep.have.members([]);
 
       await instance.connect(signer).deposit([itemId], [ethers.constants.One]);
 
-      expect(
-        await instance.callStatic.depositsOf(signer.address),
-      ).to.deep.have.members([itemId]);
+      [tokenIds, amounts] = await instance.callStatic.depositsOf(
+        signer.address,
+      );
+
+      expect(tokenIds).to.deep.have.members([itemId]);
+
+      expect(amounts).to.deep.have.members([ethers.constants.One]);
 
       await instance.connect(signer).withdraw([itemId], [ethers.constants.One]);
 
-      expect(
-        await instance.callStatic.depositsOf(signer.address),
-      ).to.deep.have.members([]);
+      [tokenIds, amounts] = await instance.callStatic.depositsOf(
+        signer.address,
+      );
+
+      expect(tokenIds).to.deep.have.members([]);
+
+      expect(amounts).to.deep.have.members([]);
     });
   });
 

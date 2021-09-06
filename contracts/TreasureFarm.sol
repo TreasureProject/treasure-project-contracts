@@ -68,16 +68,16 @@ contract TreasureFarm is ERC1155Receiver {
     function depositsOf(address account)
         external
         view
-        returns (uint256[] memory)
+        returns (uint256[] memory tokenIds, uint256[] memory amounts)
     {
         EnumerableSet.UintSet storage depositSet = _deposits[account];
-        uint256[] memory tokenIds = new uint256[](depositSet.length());
+        tokenIds = new uint256[](depositSet.length());
+        amounts = new uint256[](depositSet.length());
 
         for (uint256 i; i < depositSet.length(); i++) {
             tokenIds[i] = depositSet.at(i);
+            amounts[i] = depositBalances[account][tokenIds[i]];
         }
-
-        return tokenIds;
     }
 
     function calculateTotalRewards(address account, uint256[] calldata tokenIds)
