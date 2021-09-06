@@ -13,6 +13,5 @@
   "function setApprovalForAll(address operator, bool approved)",
   "function supportsInterface(bytes4 interfaceId) view returns (bool)",
   "function unravel(uint256 tokenId)",
-  "function unravelNames(uint256 tokenId) view returns (uint256[])",
   "function uri(uint256 tokenId) view returns (string)"
 ]

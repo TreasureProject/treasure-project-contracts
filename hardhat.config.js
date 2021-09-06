@@ -18,7 +18,6 @@ require('./tasks/deploy_treasure_farm');
 require('./tasks/claim');
 require('./tasks/unravel');
 require('./tasks/read');
-require('./tasks/unravel_view.js');
 require('./tasks/magic_set_whitelist');
 
 module.exports = {

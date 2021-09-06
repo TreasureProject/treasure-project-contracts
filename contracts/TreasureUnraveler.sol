@@ -90,24 +90,6 @@ contract TreasureUnraveler is ERC1155, IERC721Receiver {
         _mintForSenderByAttribute(ITreasure(TREASURE).getAsset8(tokenId));
     }
 
-    function unravelNames(uint256 tokenId)
-        public
-        view
-        returns (uint256[] memory)
-    {
-        uint256[] memory resultantIds = new uint256[](8);
-        resultantIds[0] = _nameToId(ITreasure(TREASURE).getAsset1(tokenId));
-        resultantIds[1] = _nameToId(ITreasure(TREASURE).getAsset2(tokenId));
-        resultantIds[2] = _nameToId(ITreasure(TREASURE).getAsset3(tokenId));
-        resultantIds[3] = _nameToId(ITreasure(TREASURE).getAsset4(tokenId));
-        resultantIds[4] = _nameToId(ITreasure(TREASURE).getAsset5(tokenId));
-        resultantIds[5] = _nameToId(ITreasure(TREASURE).getAsset6(tokenId));
-        resultantIds[6] = _nameToId(ITreasure(TREASURE).getAsset7(tokenId));
-        resultantIds[7] = _nameToId(ITreasure(TREASURE).getAsset8(tokenId));
-
-        return resultantIds;
-    }
-
     function _nameToId(string memory name) private pure returns (uint256 id) {
         id = uint256(keccak256(abi.encodePacked(name)));
         if (id == ERR_1) id = FIX_1;
