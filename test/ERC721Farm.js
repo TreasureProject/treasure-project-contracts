@@ -112,10 +112,10 @@ describe('ERC721Farm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateTotalRewards(signer.address, [
-          tokenId,
-        ])
-      ).add(RATE);
+        await instance.callStatic.calculateRewards(signer.address, [tokenId])
+      )
+        .reduce((acc, r) => acc.add(r), ethers.constants.Zero)
+        .add(RATE);
 
       await expect(() =>
         instance.connect(signer).claimRewards([tokenId]),
@@ -128,15 +128,15 @@ describe('ERC721Farm', function () {
       await mineBlocks(1);
 
       expect(
-        await instance.callStatic.calculateTotalRewards(signer.address, [
-          tokenId,
-        ]),
+        (
+          await instance.callStatic.calculateRewards(signer.address, [tokenId])
+        ).reduce((acc, r) => acc.add(r), ethers.constants.Zero),
       ).not.to.equal(ethers.constants.Zero);
       await instance.connect(signer).claimRewards([tokenId]);
       expect(
-        await instance.callStatic.calculateTotalRewards(signer.address, [
-          tokenId,
-        ]),
+        (
+          await instance.callStatic.calculateRewards(signer.address, [tokenId])
+        ).reduce((acc, r) => acc.add(r), ethers.constants.Zero),
       ).to.equal(ethers.constants.Zero);
     });
   });
@@ -198,10 +198,10 @@ describe('ERC721Farm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateTotalRewards(signer.address, [
-          tokenId,
-        ])
-      ).add(RATE);
+        await instance.callStatic.calculateRewards(signer.address, [tokenId])
+      )
+        .reduce((acc, r) => acc.add(r), ethers.constants.Zero)
+        .add(RATE);
 
       await expect(() =>
         instance.connect(signer).withdraw([tokenId]),

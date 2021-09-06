@@ -187,10 +187,10 @@ describe('TreasureFarm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateTotalRewards(signer.address, [
-          itemId,
-        ])
-      ).add(itemValue);
+        await instance.callStatic.calculateRewards(signer.address, [itemId])
+      )
+        .reduce((acc, r) => acc.add(r), ethers.constants.Zero)
+        .add(itemValue);
 
       await expect(() =>
         instance.connect(signer).claimRewards([itemId]),
@@ -205,15 +205,15 @@ describe('TreasureFarm', function () {
       await mineBlocks(1);
 
       expect(
-        await instance.callStatic.calculateTotalRewards(signer.address, [
-          itemId,
-        ]),
+        (
+          await instance.callStatic.calculateRewards(signer.address, [itemId])
+        ).reduce((acc, r) => acc.add(r), ethers.constants.Zero),
       ).not.to.equal(ethers.constants.Zero);
       await instance.connect(signer).claimRewards([itemId]);
       expect(
-        await instance.callStatic.calculateTotalRewards(signer.address, [
-          itemId,
-        ]),
+        (
+          await instance.callStatic.calculateRewards(signer.address, [itemId])
+        ).reduce((acc, r) => acc.add(r), ethers.constants.Zero),
       ).to.equal(ethers.constants.Zero);
     });
   });
@@ -255,10 +255,10 @@ describe('TreasureFarm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateTotalRewards(signer.address, [
-          itemId,
-        ])
-      ).add(itemValue);
+        await instance.callStatic.calculateRewards(signer.address, [itemId])
+      )
+        .reduce((acc, r) => acc.add(r), ethers.constants.Zero)
+        .add(itemValue);
 
       await expect(() =>
         instance.connect(signer).deposit([itemId], [ethers.constants.Zero]),
@@ -331,10 +331,10 @@ describe('TreasureFarm', function () {
       await mineBlocks(7);
 
       const expected = (
-        await instance.callStatic.calculateTotalRewards(signer.address, [
-          itemId,
-        ])
-      ).add(itemValue);
+        await instance.callStatic.calculateRewards(signer.address, [itemId])
+      )
+        .reduce((acc, r) => acc.add(r), ethers.constants.Zero)
+        .add(itemValue);
 
       await expect(() =>
         instance.connect(signer).withdraw([itemId], [ethers.constants.One]),
