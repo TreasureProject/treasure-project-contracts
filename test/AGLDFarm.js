@@ -162,6 +162,18 @@ describe('AGLDFarm', function () {
           instance.connect(signer).deposit(ethers.utils.parseUnits('1', 18)),
         ).to.be.revertedWith('ERC20: transfer amount exceeds allowance');
       });
+
+      it('total deposits exceed 50 million', async function () {
+        await expect(
+          instance
+            .connect(signer)
+            .deposit(ethers.utils.parseUnits('50000000', 18)),
+        ).not.to.be.reverted;
+
+        await expect(
+          instance.connect(signer).deposit(ethers.constants.One),
+        ).to.be.revertedWith('AGLDFarm: deposit cap reached');
+      });
     });
   });
 
