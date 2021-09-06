@@ -80,7 +80,7 @@ contract ERC721Farm is IERC721Receiver {
 
             rewards[i] =
                 RATE *
-                (_deposits[msg.sender].contains(tokenId) ? 1 : 0) *
+                (_deposits[account].contains(tokenId) ? 1 : 0) *
                 (Math.min(block.number, EXPIRATION) -
                     depositBlocks[account][tokenId]);
         }
