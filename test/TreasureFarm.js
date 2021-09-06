@@ -143,10 +143,6 @@ describe('TreasureFarm', function () {
     });
   });
 
-  describe('#calculateTotalRewards', function () {
-    it('returns total pending rewards for given user and tokens');
-  });
-
   describe('#calculateRewards', function () {
     it('returns pending rewards for given user and token', async function () {
       const [itemId] = itemIds;

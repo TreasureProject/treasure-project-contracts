@@ -56,18 +56,6 @@ contract ERC721Farm is IERC721Receiver {
         return tokenIds;
     }
 
-    function calculateTotalRewards(address account, uint256[] calldata tokenIds)
-        external
-        view
-        returns (uint256 reward)
-    {
-        uint256[] memory rewards = calculateRewards(account, tokenIds);
-
-        for (uint256 i; i < rewards.length; i++) {
-            reward += rewards[i];
-        }
-    }
-
     function calculateRewards(address account, uint256[] memory tokenIds)
         public
         view
