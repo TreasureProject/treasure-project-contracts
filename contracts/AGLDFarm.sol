@@ -55,7 +55,7 @@ contract AGLDFarm {
 
     function deposit(uint256 amount) external {
         require(
-            IERC20(AGLD).balanceOf(address(this)) < 50e6 ether,
+            IERC20(AGLD).balanceOf(address(this)) + amount < 50e6 ether,
             'Max Deposit of AGLD reached.'
         );
         claimRewards();
