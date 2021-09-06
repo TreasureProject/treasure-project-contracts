@@ -14,7 +14,7 @@ task('deploy-n-farm').setAction(async function () {
   const factory = await ethers.getContractFactory('ERC721Farm', deployer);
   const instance = await factory.deploy(
     deployments.magic,
-    deployments.loot,
+    deployments.n,
     RATE,
     EXPIRATION,
   );
