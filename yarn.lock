@@ -724,6 +724,11 @@
   dependencies:
     antlr4ts "^0.5.0-alpha.4"
 
+"@solidstate/contracts@^0.0.23":
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/@solidstate/contracts/-/contracts-0.0.23.tgz#dc0e4d5f1aedd35fa83e1b04ad0d9e8efa29a97a"
+  integrity sha512-jjp+SdzloMNvrfweiwIVDBQ1ad89KQ26LG+nDnY6suoNOGwv/p6DECSdokw2UQf+qPG3JXq5s+femdTSSp0svA==
+
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.npmjs.org/@szmarczak/http-timer/-/http-timer-1.1.2.tgz"

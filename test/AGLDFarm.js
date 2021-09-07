@@ -31,9 +31,29 @@ describe('AGLDFarm', function () {
     agld = await agldFactory.deploy();
     await agld.deployed();
 
-    const magicFactory = await ethers.getContractFactory('Magic');
+    const magicFactory = await ethers.getContractFactory('MagicProxy');
     magic = await magicFactory.deploy();
     await magic.deployed();
+
+    const magicImplementationFactory = await ethers.getContractFactory('Magic');
+    const magicImplementation = await magicImplementationFactory.deploy();
+    await magicImplementation.deployed();
+
+    const facetCuts = [
+      {
+        target: magicImplementation.address,
+        action: 0,
+        selectors: Object.keys(magicImplementation.interface.functions).map(
+          (fn) => magicImplementation.interface.getSighash(fn),
+        ),
+      },
+    ];
+
+    await magic
+      .connect(signer)
+      .diamondCut(facetCuts, ethers.constants.AddressZero, '0x');
+
+    magic = await ethers.getContractAt('Magic', magic.address);
 
     const factory = await ethers.getContractFactory('AGLDFarm');
     instance = await factory.deploy(

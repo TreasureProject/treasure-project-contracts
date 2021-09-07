@@ -2,16 +2,14 @@
 
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
+import '@solidstate/contracts/access/OwnableInternal.sol';
+import '@solidstate/contracts/token/ERC20/ERC20.sol';
 
 import './IMagic.sol';
 
-contract Magic is IMagic, ERC20, Ownable {
+contract Magic is IMagic, ERC20, OwnableInternal {
     uint256 public teamMintAmount;
     mapping(address => bool) private whitelist;
-
-    constructor() ERC20('MAGIC', 'MAGIC') {}
 
     function setWhitelist(address[] calldata minters) external onlyOwner {
         require(!whitelist[address(this)], 'Magic: whitelist already set');

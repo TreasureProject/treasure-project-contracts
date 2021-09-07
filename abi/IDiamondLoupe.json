@@ -1,0 +1,6 @@
+[
+  "function facetAddress(bytes4 selector) view returns (address facet)",
+  "function facetAddresses() view returns (address[] addresses)",
+  "function facetFunctionSelectors(address facet) view returns (bytes4[] selectors)",
+  "function facets() view returns (tuple[] diamondFacets)"
+]

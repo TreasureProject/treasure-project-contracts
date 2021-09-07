@@ -1,0 +1,16 @@
+[
+  "event DiamondCut(tuple[] facetCuts, address target, bytes data)",
+  "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+  "function acceptOwnership()",
+  "function diamondCut(tuple[] facetCuts, address target, bytes data)",
+  "function facetAddress(bytes4 selector) view returns (address facet)",
+  "function facetAddresses() view returns (address[] addresses)",
+  "function facetFunctionSelectors(address facet) view returns (bytes4[] selectors)",
+  "function facets() view returns (tuple[] diamondFacets)",
+  "function getFallbackAddress() view returns (address)",
+  "function nomineeOwner() view returns (address)",
+  "function owner() view returns (address)",
+  "function setFallbackAddress(address fallbackAddress)",
+  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+  "function transferOwnership(address account)"
+]

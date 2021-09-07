@@ -1,0 +1,4 @@
+[
+  "event DiamondCut(tuple[] facetCuts, address target, bytes data)",
+  "function diamondCut(tuple[] facetCuts, address target, bytes data)"
+]

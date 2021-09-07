@@ -24,9 +24,29 @@ describe('Magic', function () {
   });
 
   beforeEach(async function () {
-    const factory = await ethers.getContractFactory('Magic');
-    instance = await factory.deploy();
-    await instance.deployed();
+    const magicFactory = await ethers.getContractFactory('MagicProxy');
+    const magic = await magicFactory.deploy();
+    await magic.deployed();
+
+    const magicImplementationFactory = await ethers.getContractFactory('Magic');
+    const magicImplementation = await magicImplementationFactory.deploy();
+    await magicImplementation.deployed();
+
+    const facetCuts = [
+      {
+        target: magicImplementation.address,
+        action: 0,
+        selectors: Object.keys(magicImplementation.interface.functions).map(
+          (fn) => magicImplementation.interface.getSighash(fn),
+        ),
+      },
+    ];
+
+    await magic
+      .connect(signer)
+      .diamondCut(facetCuts, ethers.constants.AddressZero, '0x');
+
+    instance = await ethers.getContractAt('Magic', magic.address);
   });
 
   describe('#setWhitelist', function () {
@@ -46,7 +66,7 @@ describe('Magic', function () {
       it('sender is not owner', async function () {
         await expect(
           instance.connect(nobody).setWhitelist([]),
-        ).to.be.revertedWith('Ownable: caller is not the owner');
+        ).to.be.revertedWith('Ownable: sender must be owner');
       });
 
       it('function has already been called', async function () {
@@ -96,7 +116,7 @@ describe('Magic', function () {
           instance
             .connect(nobody)
             .teamMint(nobody.address, ethers.constants.One),
-        ).to.be.revertedWith('Ownable: caller is not the owner');
+        ).to.be.revertedWith('Ownable: sender must be owner');
       });
 
       it('total team mint amount exceeds 10% of supply', async function () {
