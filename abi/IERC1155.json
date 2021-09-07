@@ -8,6 +8,6 @@
   "function isApprovedForAll(address account, address operator) view returns (bool)",
   "function safeBatchTransferFrom(address from, address to, uint256[] ids, uint256[] amounts, bytes data)",
   "function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data)",
-  "function setApprovalForAll(address operator, bool approved)",
+  "function setApprovalForAll(address operator, bool status)",
   "function supportsInterface(bytes4 interfaceId) view returns (bool)"
 ]

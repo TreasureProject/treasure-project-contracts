@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/interfaces/IERC1155.sol';
-import '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
-import '@openzeppelin/contracts/utils/structs/EnumerableSet.sol';
+import { IERC1155Receiver, ERC1155Receiver } from '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol';
+import '@solidstate/contracts/token/ERC1155/IERC1155.sol';
+import '@solidstate/contracts/utils/EnumerableSet.sol';
 
 import '../token/IMagic.sol';
 

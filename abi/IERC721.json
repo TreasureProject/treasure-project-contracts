@@ -1,15 +1,15 @@
 [
-  "event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId)",
+  "event Approval(address indexed owner, address indexed operator, uint256 indexed tokenId)",
   "event ApprovalForAll(address indexed owner, address indexed operator, bool approved)",
   "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
-  "function approve(address to, uint256 tokenId)",
-  "function balanceOf(address owner) view returns (uint256 balance)",
+  "function approve(address operator, uint256 tokenId) payable",
+  "function balanceOf(address account) view returns (uint256 balance)",
   "function getApproved(uint256 tokenId) view returns (address operator)",
-  "function isApprovedForAll(address owner, address operator) view returns (bool)",
+  "function isApprovedForAll(address account, address operator) view returns (bool status)",
   "function ownerOf(uint256 tokenId) view returns (address owner)",
-  "function safeTransferFrom(address from, address to, uint256 tokenId)",
-  "function safeTransferFrom(address from, address to, uint256 tokenId, bytes data)",
-  "function setApprovalForAll(address operator, bool _approved)",
+  "function safeTransferFrom(address from, address to, uint256 tokenId) payable",
+  "function safeTransferFrom(address from, address to, uint256 tokenId, bytes data) payable",
+  "function setApprovalForAll(address operator, bool status)",
   "function supportsInterface(bytes4 interfaceId) view returns (bool)",
-  "function transferFrom(address from, address to, uint256 tokenId)"
+  "function transferFrom(address from, address to, uint256 tokenId) payable"
 ]
