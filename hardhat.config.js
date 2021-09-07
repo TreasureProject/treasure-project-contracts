@@ -19,6 +19,7 @@ require('./tasks/claim');
 require('./tasks/unravel');
 require('./tasks/read');
 require('./tasks/magic_set_whitelist');
+require('./tasks/magic_fix_decimals');
 
 module.exports = {
   solidity: {
