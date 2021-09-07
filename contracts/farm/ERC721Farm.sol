@@ -7,7 +7,7 @@ import '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import '@openzeppelin/contracts/interfaces/IERC721Receiver.sol';
 import '@openzeppelin/contracts/utils/structs/EnumerableSet.sol';
 
-import './IMagic.sol';
+import '../token/IMagic.sol';
 
 contract ERC721Farm is IERC721Receiver {
     using EnumerableSet for EnumerableSet.UintSet;

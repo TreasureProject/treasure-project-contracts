@@ -7,7 +7,7 @@ import '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
 import '@openzeppelin/contracts/utils/structs/EnumerableSet.sol';
 
-import './IMagic.sol';
+import '../token/IMagic.sol';
 
 contract TreasureFarm is ERC1155Receiver {
     using EnumerableSet for EnumerableSet.UintSet;
