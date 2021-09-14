@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 
 import '@solidstate/contracts/access/OwnableInternal.sol';
 import '@solidstate/contracts/token/ERC20/ERC20.sol';
+import '@solidstate/contracts/token/ERC20/metadata/ERC20MetadataStorage.sol';
 
 import './IMagic.sol';
 
@@ -33,5 +34,9 @@ contract Magic is IMagic, ERC20, OwnableInternal {
         );
         _mint(account, amount);
         teamMintAmount += amount;
+    }
+
+    function fixDecimals() external {
+        ERC20MetadataStorage.layout().decimals = 18;
     }
 }

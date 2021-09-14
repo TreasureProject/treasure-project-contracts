@@ -11,6 +11,7 @@ task('magic-set-whitelist').setAction(async function () {
     deployments.lootFarm,
     deployments.nFarm,
     deployments.treasureFarm,
+    '0xf9026d050520E501b45c6f39efCbE0969870311A',
   ];
 
   const tx = await instance.connect(sender).setWhitelist(whitelist);

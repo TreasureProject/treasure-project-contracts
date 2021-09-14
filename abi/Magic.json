@@ -6,6 +6,7 @@
   "function balanceOf(address account) view returns (uint256)",
   "function decimals() view returns (uint8)",
   "function decreaseAllowance(address spender, uint256 amount) returns (bool)",
+  "function fixDecimals()",
   "function increaseAllowance(address spender, uint256 amount) returns (bool)",
   "function mint(address account, uint256 amount)",
   "function name() view returns (string)",
