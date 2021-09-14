@@ -20,6 +20,7 @@ require('./tasks/unravel');
 require('./tasks/read');
 require('./tasks/magic_set_whitelist');
 require('./tasks/magic_fix_decimals');
+require('./tasks/magic_fix_whitelist');
 
 module.exports = {
   solidity: {
