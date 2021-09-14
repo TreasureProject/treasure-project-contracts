@@ -21,6 +21,9 @@ require('./tasks/read');
 require('./tasks/magic_set_whitelist');
 require('./tasks/magic_fix_decimals');
 require('./tasks/magic_fix_whitelist');
+require('./tasks/test_mint');
+require('./tasks/add_whitelist');
+require('./tasks/deploy_magic_rewards');
 
 module.exports = {
   solidity: {
@@ -49,6 +52,8 @@ module.exports = {
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.ETH_MAIN_KEY],
+      gas: 'auto',
+      gasPrice: 'auto',
     },
 
     rinkeby: {
