@@ -9,6 +9,7 @@ import './IMagic.sol';
 
 contract Magic is IMagic, ERC20, OwnableInternal {
     uint256 public teamMintAmount;
+    // DEPRECATED
     mapping(address => bool) private whitelist;
 
     function setWhitelist(address[] calldata minters) external onlyOwner {
