@@ -11,9 +11,7 @@ task('reward-params')
       deployments.magicFarm,
     );
 
-    // duration should be: 118125 blocks
-    // COMMENT: @NickBarry do I need to do anything special to this amount? I would like to make sure we are emitting 166k tokens in the first week.
-    // Does it need to be passed as a big number?
+    // duration should be: 585000 blocks
     const tx = await instance
       .connect(sender)
       .setRewardParams(ethers.utils.parseUnits(amount, 18), duration);
