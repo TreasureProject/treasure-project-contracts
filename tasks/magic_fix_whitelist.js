@@ -51,7 +51,6 @@ task('magic-fix-whitelist').setAction(async function () {
     deployments.magic,
   );
 
-  console.log(deployments.agldFarm);
   await Promise.all([
     await magicWhitelist.connect(deployer).addToWhitelist(deployments.agldFarm),
     await magicWhitelist.connect(deployer).addToWhitelist(deployments.lootFarm),
