@@ -1,0 +1,9 @@
+[
+  "event Staked(address indexed user, uint256 amount)",
+  "event Withdrawn(address indexed user, uint256 amount)",
+  "function balanceOf(address account) view returns (uint256)",
+  "function stakeFor(address forWhom, uint128 amount) payable",
+  "function stakedToken() view returns (address)",
+  "function totalSupply() view returns (uint256)",
+  "function withdraw(uint128 amount)"
+]
