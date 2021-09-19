@@ -27,6 +27,10 @@ require('./tasks/deploy_magic_rewards');
 require('./tasks/set_reward_params');
 require('./tasks/read_reward_rate');
 require('./tasks/withdraw_reward');
+require('./tasks/deploy_loot');
+require('./tasks/claim_loot');
+require('./tasks/deploy_n');
+require('./tasks/claim_n');
 
 module.exports = {
   solidity: {
