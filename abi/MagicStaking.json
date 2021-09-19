@@ -1,0 +1,17 @@
+[
+  "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+  "event Staked(address indexed user, uint256 amount)",
+  "event TimelockEnd(uint256 timeStamp)",
+  "event Withdrawn(address indexed user, uint256 amount)",
+  "function balanceOf(address account) view returns (uint256)",
+  "function owner() view returns (address)",
+  "function renounceOwnership()",
+  "function stake(uint128 amount) payable",
+  "function stakeFor(address forWhom, uint128 amount) payable",
+  "function stakedToken() view returns (address)",
+  "function totalStaked() view returns (uint256)",
+  "function totalSupply() view returns (uint256)",
+  "function transferOwnership(address newOwner)",
+  "function unlockTime() view returns (uint256)",
+  "function withdraw(uint128 amount)"
+]
