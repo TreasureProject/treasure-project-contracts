@@ -24,6 +24,9 @@ require('./tasks/magic_fix_whitelist');
 require('./tasks/test_mint');
 require('./tasks/add_whitelist');
 require('./tasks/deploy_magic_rewards');
+require('./tasks/set_reward_params');
+require('./tasks/read_reward_rate');
+require('./tasks/withdraw_reward');
 
 module.exports = {
   solidity: {
@@ -52,8 +55,6 @@ module.exports = {
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.ETH_MAIN_KEY],
-      gas: 'auto',
-      gasPrice: 'auto',
     },
 
     rinkeby: {
@@ -74,7 +75,7 @@ module.exports = {
   },
 
   etherscan: {
-    apiKey: process.env.ETHERSCAN_KEY,
+    apiKey: process.env.API_KEY,
   },
 
   gasReporter: {
