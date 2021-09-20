@@ -36,6 +36,8 @@ require('./tasks/lock_magic');
 require('./tasks/withdraw_locked');
 require('./tasks/locked_amount');
 require('./tasks/alter_timelock');
+require('./tasks/deploy_magic_staking_test');
+require('./tasks/deposit_test');
 
 module.exports = {
   solidity: {

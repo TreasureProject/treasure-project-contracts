@@ -3,6 +3,7 @@
   "event Staked(address indexed user, uint256 amount, uint256 timeStamp)",
   "event TimelockEnd(uint256 timeStamp)",
   "event Withdrawn(address indexed user, uint256 amount)",
+  "function alterTimelock(uint256 _timeStamp)",
   "function balanceOf(address account) view returns (uint256)",
   "function depositBalances(address) view returns (uint256)",
   "function owner() view returns (address)",

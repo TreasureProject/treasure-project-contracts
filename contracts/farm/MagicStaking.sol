@@ -27,7 +27,7 @@ contract MagicStaking is Ownable, ReentrancyGuard {
         return stakedToken.balanceOf(address(this));
     }
 
-    function alterTimelock(uint256 _timeStamp) private onlyOwner {
+    function alterTimelock(uint256 _timeStamp) public onlyOwner {
         unlockTime = _timeStamp;
     }
 
@@ -62,6 +62,7 @@ contract MagicStaking is Ownable, ReentrancyGuard {
     }
 
     function stake(uint256 amount) external payable {
+        require(msg.sender == tx.origin, 'humans only please.');
         stakeFor(msg.sender, amount);
     }
 
