@@ -31,6 +31,11 @@ require('./tasks/deploy_loot');
 require('./tasks/claim_loot');
 require('./tasks/deploy_n');
 require('./tasks/claim_n');
+require('./tasks/deploy_magic_staking');
+require('./tasks/lock_magic');
+require('./tasks/withdraw_locked');
+require('./tasks/locked_amount');
+require('./tasks/alter_timelock');
 
 module.exports = {
   solidity: {

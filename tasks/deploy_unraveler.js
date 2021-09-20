@@ -10,13 +10,13 @@ task('deploy-unraveler').setAction(async function () {
     deployer,
   );
   const instance = await factory.deploy(
-    deployments.treasure,
+    deployments.treasureRink,
     items.map((i) => i.name),
   );
   await instance.deployed();
 
-  console.log(`Deployed TreasureUnraveler to: ${instance.address}`);
-  deployments.treasureUnraveler = instance.address;
+  console.log(`Deployed TreasureUnraveler (Rink) to: ${instance.address}`);
+  deployments.treasureUnravelerRink = instance.address;
 
   const json = JSON.stringify(deployments, null, 2);
   fs.writeFileSync(`${__dirname}/../data/deployments.json`, `${json}\n`, {

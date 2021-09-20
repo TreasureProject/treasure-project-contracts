@@ -14,14 +14,14 @@ task('deploy-n-farm').setAction(async function () {
   const factory = await ethers.getContractFactory('ERC721Farm', deployer);
   const instance = await factory.deploy(
     deployments.magic,
-    deployments.n,
+    deployments.nRink,
     RATE,
     EXPIRATION,
   );
   await instance.deployed();
 
-  console.log(`Deployed NFarm (ERC721Farm) to: ${instance.address}`);
-  deployments.nFarm = instance.address;
+  console.log(`Deployed NFarmRink (ERC721Farm) to: ${instance.address}`);
+  deployments.nFarmRink = instance.address;
 
   const json = JSON.stringify(deployments, null, 2);
   fs.writeFileSync(`${__dirname}/../data/deployments.json`, `${json}\n`, {

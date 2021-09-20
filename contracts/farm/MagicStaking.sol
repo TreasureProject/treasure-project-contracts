@@ -4,47 +4,47 @@ pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 
-contract MagicStaking is Ownable {
-    mapping(address => uint256) timeStaked;
-    mapping(address => uint256) private _balances;
+contract MagicStaking is Ownable, ReentrancyGuard {
+    //Total deposit balance
+    mapping(address => uint256) public depositBalances;
 
     IERC20 public stakedToken;
 
     uint256 public totalSupply;
     uint256 public unlockTime;
 
-    event Staked(address indexed user, uint256 amount);
+    event Staked(address indexed user, uint256 amount, uint256 timeStamp);
     event Withdrawn(address indexed user, uint256 amount);
     event TimelockEnd(uint256 timeStamp);
 
     function balanceOf(address account) public view returns (uint256) {
-        return _balances[account];
+        return depositBalances[account];
     }
 
     function totalStaked() public view returns (uint256) {
         return stakedToken.balanceOf(address(this));
     }
 
-    string constant _transferErrorMessage = 'staked token transfer failed';
-
-    struct UserDeposits {
-        uint256 depositAmount;
-        uint256 depositTime;
+    function alterTimelock(uint256 _timeStamp) private onlyOwner {
+        unlockTime = _timeStamp;
     }
+
+    string constant _transferErrorMessage = 'staked token transfer failed';
 
     constructor(IERC20 _stakedToken, uint256 _unlockTime) {
         stakedToken = _stakedToken;
         unlockTime = _unlockTime;
     }
 
-    function stakeFor(address forWhom, uint128 amount) public payable {
+    function stakeFor(address forWhom, uint256 amount) public payable {
         IERC20 st = stakedToken;
-        timeStaked[msg.sender] = uint256(block.timestamp);
+
         if (st == IERC20(address(0))) {
             unchecked {
                 totalSupply += msg.value;
-                _balances[forWhom] += msg.value;
+                depositBalances[forWhom] += msg.value;
             }
         } else {
             require(msg.value == 0, 'non-zero eth');
@@ -55,24 +55,27 @@ contract MagicStaking is Ownable {
             );
             unchecked {
                 totalSupply += amount;
-                _balances[forWhom] += amount;
+                depositBalances[forWhom] += amount;
             }
         }
-        emit Staked(forWhom, amount);
+        emit Staked(forWhom, amount, uint256(block.timestamp));
     }
 
-    function stake(uint128 amount) external payable {
+    function stake(uint256 amount) external payable {
         stakeFor(msg.sender, amount);
     }
 
-    function withdraw(uint128 amount) public {
-        require(amount <= _balances[msg.sender], 'withdraw: balance is lower');
+    function withdraw(uint256 amount) public nonReentrant {
+        require(
+            amount <= depositBalances[msg.sender],
+            'withdraw: balance is lower'
+        );
         require(
             block.timestamp >= unlockTime,
             'withdraw: timelock has not expired'
         );
         unchecked {
-            _balances[msg.sender] -= amount;
+            depositBalances[msg.sender] -= amount;
             totalSupply = totalSupply - amount;
         }
         IERC20 st = stakedToken;
