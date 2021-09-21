@@ -1,0 +1,5 @@
+[
+  "function MagicStakingContract() view returns (address)",
+  "function MagicToken() view returns (address)",
+  "function deposit(uint256 amount)"
+]

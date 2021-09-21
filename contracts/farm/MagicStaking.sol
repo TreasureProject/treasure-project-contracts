@@ -31,6 +31,10 @@ contract MagicStaking is Ownable, ReentrancyGuard {
         unlockTime = _timeStamp;
     }
 
+    function _timeLock() public view returns (uint256) {
+        return unlockTime;
+    }
+
     string constant _transferErrorMessage = 'staked token transfer failed';
 
     constructor(IERC20 _stakedToken, uint256 _unlockTime) {
