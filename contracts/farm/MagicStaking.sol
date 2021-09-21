@@ -27,6 +27,7 @@ contract MagicStaking is Ownable, ReentrancyGuard {
         return stakedToken.balanceOf(address(this));
     }
 
+    // for emergencies
     function alterTimelock(uint256 _timeStamp) public onlyOwner {
         unlockTime = _timeStamp;
     }

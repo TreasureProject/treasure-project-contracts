@@ -64,7 +64,7 @@ module.exports = {
     },
 
     mainnet: {
-      url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
+      url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_MAINNET_KEY}`,
       accounts: [process.env.ETH_MAIN_KEY],
     },
 
