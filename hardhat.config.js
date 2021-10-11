@@ -25,6 +25,7 @@ require('./tasks/magic_fix_reentrancy');
 require('./tasks/test_mint');
 require('./tasks/add_whitelist');
 require('./tasks/deploy_magic_rewards');
+require('./tasks/deploy_treasure_arbitrum');
 
 module.exports = {
   solidity: {
