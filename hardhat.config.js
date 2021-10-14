@@ -22,6 +22,7 @@ require('./tasks/magic_set_whitelist');
 require('./tasks/magic_fix_decimals');
 require('./tasks/magic_fix_whitelist');
 require('./tasks/magic_fix_reentrancy');
+require('./tasks/magic_fix_mint');
 require('./tasks/test_mint');
 require('./tasks/add_whitelist');
 require('./tasks/deploy_magic_rewards');
