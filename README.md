@@ -1,4 +1,4 @@
-# Treasure (for Loot)
+# Treasure Project
 
 ## Development
 
