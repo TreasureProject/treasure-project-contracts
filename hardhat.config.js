@@ -26,6 +26,7 @@ require('./tasks/magic_fix_mint');
 require('./tasks/test_mint');
 require('./tasks/add_whitelist');
 require('./tasks/deploy_magic_rewards');
+require('./tasks/deploy_magic_claim');
 
 module.exports = {
   solidity: {
