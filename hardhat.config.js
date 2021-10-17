@@ -62,6 +62,11 @@ module.exports = {
       url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.ETH_TEST_KEY],
     },
+
+    arbitrum: {
+      url: `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY_ARBITRUM}`,
+      accounts: [process.env.ETH_MAIN_KEY],
+    },
   },
 
   abiExporter: {
