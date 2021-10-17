@@ -1,7 +1,7 @@
 const fs = require('fs');
 const deployments = require('../data/deployments');
 
-task('deploy').setAction(async function () {
+task('deploy-treasure').setAction(async function () {
   const [deployer] = await ethers.getSigners();
 
   const factory = await ethers.getContractFactory('Treasure', deployer);

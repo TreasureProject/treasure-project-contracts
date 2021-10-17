@@ -8,7 +8,7 @@ require('hardhat-gas-reporter');
 require('hardhat-spdx-license-identifier');
 require('solidity-coverage');
 
-require('./tasks/deploy');
+require('./tasks/deploy_treasure');
 require('./tasks/deploy_unraveler');
 require('./tasks/deploy_magic');
 require('./tasks/deploy_agld_farm');
