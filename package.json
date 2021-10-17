@@ -39,6 +39,7 @@
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-spdx-license-identifier": "^2.0.3",
     "husky": "^7.0.2",
+    "keccak256": "^1.0.3",
     "lint-staged": "^11.2.3",
     "merkletreejs": "^0.2.24",
     "prettier": "^2.4.1",
