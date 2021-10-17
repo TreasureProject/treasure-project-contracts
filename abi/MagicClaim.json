@@ -1,0 +1,12 @@
+[
+  "event Claim(address account, uint256 amount)",
+  "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+  "function acceptOwnership()",
+  "function claim(address account, uint256 amount, bytes32[] proof)",
+  "function hasClaimed(address account) view returns (bool)",
+  "function nomineeOwner() view returns (address)",
+  "function owner() view returns (address)",
+  "function transferOwnership(address account)",
+  "function validateClaim(address account, uint256 amount, bytes32[] proof) view returns (bool)",
+  "function withdraw(uint256 amount)"
+]
