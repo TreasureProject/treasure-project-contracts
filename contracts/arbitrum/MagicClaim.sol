@@ -52,7 +52,7 @@ contract MagicClaim is SafeOwnable {
         emit Claim(account, amount);
     }
 
-    function withdraw(uint256 amount) external onlyOwner {
-        IERC20(TOKEN).safeTransfer(msg.sender, amount);
+    function withdraw(address token, uint256 amount) external onlyOwner {
+        IERC20(token).safeTransfer(msg.sender, amount);
     }
 }
