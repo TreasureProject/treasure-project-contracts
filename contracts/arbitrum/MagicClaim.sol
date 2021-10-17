@@ -24,6 +24,15 @@ contract MagicClaim is SafeOwnable {
         return _claimed[account];
     }
 
+    function validateClaim(
+        address account,
+        uint256 amount,
+        bytes32[] calldata proof
+    ) public view returns (bool) {
+        bytes32 leaf = keccak256(abi.encodePacked(account, amount));
+        return MerkleProof.verify(proof, ROOT, leaf);
+    }
+
     function claim(
         address account,
         uint256 amount,
@@ -31,9 +40,8 @@ contract MagicClaim is SafeOwnable {
     ) external {
         require(!hasClaimed(account), 'MagicClaim: already claimed');
 
-        bytes32 leaf = keccak256(abi.encodePacked(account, amount));
         require(
-            MerkleProof.verify(proof, ROOT, leaf),
+            validateClaim(account, amount, proof),
             'MagicClaim: invalid proof'
         );
 

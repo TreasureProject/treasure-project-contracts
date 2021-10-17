@@ -7,5 +7,6 @@
   "function nomineeOwner() view returns (address)",
   "function owner() view returns (address)",
   "function transferOwnership(address account)",
+  "function validateClaim(address account, uint256 amount, bytes32[] proof) view returns (bool)",
   "function withdraw(uint256 amount)"
 ]
