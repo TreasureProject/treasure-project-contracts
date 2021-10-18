@@ -18,6 +18,7 @@ contract MagicClaim is SafeOwnable {
     constructor(address token, bytes32 root) {
         TOKEN = token;
         ROOT = root;
+        OwnableStorage.layout().owner = msg.sender;
     }
 
     function hasClaimed(address account) public view returns (bool) {
