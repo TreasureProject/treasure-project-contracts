@@ -1,0 +1,6 @@
+[
+  "function accountsByToken(uint256 id) view returns (address[])",
+  "function tokensByAccount(address account) view returns (uint256[])",
+  "function totalHolders(uint256 id) view returns (uint256)",
+  "function totalSupply(uint256 id) view returns (uint256)"
+]

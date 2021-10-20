@@ -1,0 +1,13 @@
+[
+  "event Claim(address account, uint256 tokenId, uint256 amount)",
+  "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+  "function acceptOwnership()",
+  "function claimMigratedCards(address account, uint256 id, uint256 amount, bytes32[] proof)",
+  "function hasClaimedMigratedCards(address account, uint256 id) view returns (bool)",
+  "function nomineeOwner() view returns (address)",
+  "function owner() view returns (address)",
+  "function setIdCollections(uint256[] ids, address[] collections)",
+  "function setMigratedCardsClaimRoot(bytes32 root)",
+  "function transferOwnership(address account)",
+  "function validateMigratedCardsClaim(address account, uint256 id, uint256 amount, bytes32[] proof) view returns (bool)"
+]
