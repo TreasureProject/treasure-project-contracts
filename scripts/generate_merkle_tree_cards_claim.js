@@ -2,7 +2,7 @@ const fs = require('fs');
 const { MerkleTree } = require('merkletreejs');
 const keccak256 = require('keccak256');
 
-const inputs = require('../data/treasure_claim_source');
+const inputs = require('../data/cards_claim_source');
 
 async function main() {
   const leaves = inputs.map(function (entry) {
@@ -35,7 +35,7 @@ async function main() {
   output.root = tree.getHexRoot();
 
   fs.writeFileSync(
-    `${__dirname}/../data/treasure_claim_tree.json`,
+    `${__dirname}/../data/cards_claim_tree.json`,
     `${JSON.stringify(output, null, 2)}\n`,
     {
       flag: 'w',
