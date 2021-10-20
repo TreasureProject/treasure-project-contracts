@@ -11,6 +11,10 @@ import './CardsMerkleProofClaimStorage.sol';
 contract CardsMerkleProofClaim is SafeOwnable {
     event Claim(address account, uint256 tokenId, uint256 amount);
 
+    constructor() {
+        OwnableStorage.layout().owner = msg.sender;
+    }
+
     function setIdCollections(
         uint256[] calldata ids,
         address[] calldata collections
