@@ -1,6 +1,5 @@
 [
   "event ApprovalForAll(address indexed account, address indexed operator, bool approved)",
   "event TransferBatch(address indexed operator, address indexed from, address indexed to, uint256[] ids, uint256[] values)",
-  "event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)",
-  "event URI(string value, uint256 indexed id)"
+  "event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)"
 ]
