@@ -6,7 +6,7 @@ const source = require('../data/cards_claim_source');
 
 async function main() {
   const reduction = source.reduce(function (acc, { address, id, amount }) {
-    const identifier = `${address},${id}`;
+    const identifier = `${ethers.utils.getAddress(address)},${id}`;
     if (!acc[identifier]) acc[identifier] = 0;
     acc[identifier] += parseInt(amount);
     return acc;
