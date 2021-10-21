@@ -2,9 +2,24 @@ const fs = require('fs');
 const { MerkleTree } = require('merkletreejs');
 const keccak256 = require('keccak256');
 
-const inputs = require('../data/cards_claim_source');
+const source = require('../data/cards_claim_source');
 
 async function main() {
+  const reduction = source.reduce(function (acc, { address, id, amount }) {
+    const identifier = `${address},${id}`;
+    if (!acc[identifier]) acc[identifier] = 0;
+    acc[identifier] += parseInt(amount);
+    return acc;
+  }, {});
+
+  const inputs = [];
+
+  for (var identifier in reduction) {
+    const [address, id] = identifier.split(',');
+    const amount = reduction[identifier].toString();
+    inputs.push({ address, id, amount });
+  }
+
   const leaves = inputs.map(function (entry) {
     const address = entry.address;
     const id = ethers.BigNumber.from(entry.id);
