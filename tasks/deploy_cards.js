@@ -62,7 +62,7 @@ task('deploy-cards').setAction(async function () {
     },
     {
       baseName: 'extraLife',
-      ipfsBase: 'QmNaaRyyGK76iBqGenXVToGpozfAfeCfD64Hukwqr3y3VV',
+      ipfsBase: 'QmYX3wDGawC2sBHW9GMuBkiE8UmaEqJu4hDwmFeKwQMZYj',
     },
   ];
 
@@ -72,7 +72,10 @@ task('deploy-cards').setAction(async function () {
   const cardsFactory = await ethers.getContractFactory('CardsProxy');
 
   for (let collection of collectionData) {
-    const instance = await cardsFactory.deploy(cardsMerkleProofClaim.address);
+    const instance = await cardsFactory.deploy(
+      cardsMerkleProofClaim.address,
+      `https://gateway.pinata.cloud/ipfs/${collection.ipfsBase}/`,
+    );
     await instance.deployed();
 
     await instance
