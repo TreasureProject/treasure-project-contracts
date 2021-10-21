@@ -726,10 +726,10 @@
   dependencies:
     antlr4ts "^0.5.0-alpha.4"
 
-"@solidstate/contracts@^0.0.26":
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/@solidstate/contracts/-/contracts-0.0.26.tgz#1093ee8c13561b1e5b07ffe1c1300c245ce3e3d5"
-  integrity sha512-FolEPl/u4m+yVz5jgCH0kHojISwGs/YeeDKyYncD+vA6ehP/0/O7nxSevvYsM91zSUBs1Vp1Tyv4uVwBc05nqg==
+"@solidstate/contracts@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@solidstate/contracts/-/contracts-0.0.27.tgz#73d2ea7cb4d0e3df3e00439233acea3048f2e619"
+  integrity sha512-VsbZ6d3MM7J22oHeJD5Ov+4FWrLjm+WsrNI6GInHJcKNMhE0cx/NMPlEkizL1IvuekKXjcljGUn5ARmX2vRbuw==
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
