@@ -74,7 +74,7 @@ contract CardsMerkleProofClaim is SafeOwnable {
 
         require(
             validateMigratedCardsClaim(account, id, amount, proof),
-            'MagicClaim: invalid proof'
+            'CardsMerkleProofClaim: invalid proof'
         );
 
         CardsMerkleProofClaimStorage.Layout
