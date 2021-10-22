@@ -7,10 +7,7 @@ const inputs = require('../data/magic_claim_source');
 async function main() {
   const leaves = inputs.map(function (entry) {
     const address = entry.address;
-    // add one extra token to fix rounding errors
-    const amount = ethers.utils.parseEther(
-      (parseInt(entry.amount.split('.')[0]) + 1).toString(),
-    );
+    const amount = ethers.utils.parseEther(entry.amount);
     const leaf = ethers.utils.solidityKeccak256(
       ['address', 'uint256'],
       [address, amount],
