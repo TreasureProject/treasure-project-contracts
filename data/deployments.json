@@ -20,5 +20,6 @@
   "legionsArbitrum": "0x658365026D06F00965B5bb570727100E821e6508",
   "legionsGenesisArbitrum": "0xE83c0200E93Cb1496054e387BDdaE590C07f0194",
   "keysArbitrum": "0xf0a35bA261ECE4FC12870e5B7b9E7790202EF9B5",
-  "extraLifeArbitrum": "0x21e1969884D477afD2Afd4Ad668864a0EebD644c"
+  "extraLifeArbitrum": "0x21e1969884D477afD2Afd4Ad668864a0EebD644c",
+  "frozenMagicClaim": "0x1eFe3b39b6032F360C454f5dac0d18cf36592EC5"
 }

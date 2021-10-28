@@ -29,6 +29,7 @@ require('./tasks/add_whitelist');
 require('./tasks/deploy_magic_rewards');
 require('./tasks/deploy_magic_claim');
 require('./tasks/deploy_cards');
+require('./tasks/deploy_frozen_magic_claim');
 
 module.exports = {
   solidity: {
