@@ -87,10 +87,14 @@ contract TreasureFarm is ERC1155Receiver {
     {
         rewards = new uint256[](tokenIds.length);
 
-        for (uint256 i; i < tokenIds.length; i++) {
-            uint256 tokenId = tokenIds[i];
+        uint256 last = type(uint256).max;
 
-            rewards[i] =
+        for (uint256 i = tokenIds.length; i > 0; i--) {
+            uint256 tokenId = tokenIds[i - 1];
+            require(tokenId < last);
+            last = tokenId;
+
+            rewards[i - 1] =
                 itemValues[tokenId] *
                 depositBalances[account][tokenId] *
                 (Math.min(block.number, EXPIRATION) -

@@ -63,10 +63,14 @@ contract ERC721Farm is IERC721Receiver {
     {
         rewards = new uint256[](tokenIds.length);
 
-        for (uint256 i; i < tokenIds.length; i++) {
-            uint256 tokenId = tokenIds[i];
+        uint256 last = type(uint256).max;
 
-            rewards[i] =
+        for (uint256 i = tokenIds.length; i > 0; i--) {
+            uint256 tokenId = tokenIds[i - 1];
+            require(tokenId < last);
+            last = tokenId;
+
+            rewards[i - 1] =
                 RATE *
                 (_deposits[account].contains(tokenId) ? 1 : 0) *
                 (Math.min(block.number, EXPIRATION) -
