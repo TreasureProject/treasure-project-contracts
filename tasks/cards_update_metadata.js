@@ -36,6 +36,7 @@ task('cards-update-metadata').setAction(async function () {
     },
     {
       baseName: 'keys',
+      ipfsBase: 'QmVbjhFCQX1vbsjwZHM3z93sDTQBY57ogKz1XoGTV7MD4F',
     },
     {
       baseName: 'extraLife',
