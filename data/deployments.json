@@ -22,5 +22,6 @@
   "keysArbitrum": "0xf0a35bA261ECE4FC12870e5B7b9E7790202EF9B5",
   "extraLifeArbitrum": "0x21e1969884D477afD2Afd4Ad668864a0EebD644c",
   "frozenMagicClaim": "0x1eFe3b39b6032F360C454f5dac0d18cf36592EC5",
-  "cardsMerkleProofClaim2": "0xCe2Dc1414c45604420dcEE3794269a54E5D1c1cA"
+  "cardsMerkleProofClaim2": "0xCe2Dc1414c45604420dcEE3794269a54E5D1c1cA",
+  "cardsMerkleProofClaim3": "0xD5E42a1f2439333cb507eb5Bcc8ed2eC368a180c"
 }
