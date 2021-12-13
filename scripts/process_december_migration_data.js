@@ -76,7 +76,7 @@ async function main() {
       output.push({
         address,
         name: nameReplacements[name] || name,
-        amount: held[address][name],
+        amount: held[address][name].toString(),
       });
     }
   }
