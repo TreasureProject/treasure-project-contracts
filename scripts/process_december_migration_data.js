@@ -3,6 +3,7 @@ const fs = require('fs');
 const items = require('../data/items.json');
 const inputs721 = require('../data/december_migration/721.json');
 const inputs1155 = require('../data/december_migration/1155.json');
+const extras = require('../data/december_migration/extras.json');
 const collections = require('../data/cards_collections.json');
 
 const getItemNames = async function (treasure, tokenId) {
@@ -41,6 +42,14 @@ async function main() {
     }
   }
 
+  const nameToL2Id = {};
+  const l2IdToName = {};
+
+  for (const { name, tokenId } of collections) {
+    nameToL2Id[name] = tokenId;
+    l2IdToName[tokenId] = name;
+  }
+
   const held = {};
 
   for (const { address, id } of inputs721) {
@@ -56,6 +65,14 @@ async function main() {
 
   for (const { address, id, amount } of inputs1155) {
     const name = idToName[id];
+    if (!held[address]) held[address] = {};
+    if (!held[address][name]) held[address][name] = 0;
+
+    held[address][name] += parseInt(amount);
+  }
+
+  for (const { address, id, amount } of extras) {
+    const name = l2IdToName[id];
     if (!held[address]) held[address] = {};
     if (!held[address][name]) held[address][name] = 0;
 
@@ -79,12 +96,6 @@ async function main() {
         amount: held[address][name].toString(),
       });
     }
-  }
-
-  const nameToL2Id = {};
-
-  for (const { name, tokenId } of collections) {
-    nameToL2Id[name] = tokenId;
   }
 
   for (const out of output) {

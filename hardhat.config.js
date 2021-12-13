@@ -32,6 +32,7 @@ require('./tasks/deploy_cards');
 require('./tasks/deploy_frozen_magic_claim');
 require('./tasks/cards_update_metadata');
 require('./tasks/deploy_cards_claim_2');
+require('./tasks/deploy_cards_claim_3');
 
 module.exports = {
   solidity: {
