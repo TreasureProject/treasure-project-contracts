@@ -38,6 +38,14 @@ require('./tasks/locked_amount');
 require('./tasks/alter_timelock');
 require('./tasks/deploy_magic_staking_test');
 require('./tasks/deposit_test');
+require('./tasks/deploy_magic_treasure_staking');
+require('./tasks/stake_treasure');
+require('./tasks/get_assets');
+require('./tasks/deploy_magic_rewards_arbi');
+require('./tasks/deploy_magic_test');
+require('./tasks/deploy_treasure_test');
+require('./tasks/magic_gohm_setup');
+require('./tasks/deploy_otc_escrow');
 
 module.exports = {
   solidity: {
@@ -45,7 +53,7 @@ module.exports = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200,
+        runs: 10,
       },
     },
   },
@@ -66,11 +74,18 @@ module.exports = {
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_MAINNET_KEY}`,
       accounts: [process.env.ETH_MAIN_KEY],
+      gas: 2900000,
+      gasPrice: 120000000000,
     },
 
     rinkeby: {
       url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
       accounts: [process.env.ETH_TEST_KEY],
+    },
+
+    arbitrum: {
+      url: `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY_ARBITRUM}`,
+      accounts: [process.env.ETH_MAIN_KEY],
     },
   },
 

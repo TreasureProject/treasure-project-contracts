@@ -6,13 +6,13 @@ import '@openzeppelin/contracts/utils/math/Math.sol';
 import '@solidstate/contracts/token/ERC721/IERC721.sol';
 import '@solidstate/contracts/token/ERC721/IERC721Receiver.sol';
 import '@solidstate/contracts/utils/EnumerableSet.sol';
-
+import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '../token/IMagic.sol';
 
 contract ERC721Farm is IERC721Receiver {
     using EnumerableSet for EnumerableSet.UintSet;
 
-    address private immutable MAGIC;
+    IERC20 public BRAINZ;
     address private immutable ERC721_CONTRACT;
     uint256 public immutable EXPIRATION;
     uint256 private immutable RATE;
@@ -26,7 +26,7 @@ contract ERC721Farm is IERC721Receiver {
         uint256 rate,
         uint256 expiration
     ) {
-        MAGIC = magic;
+        BRAINZ = brainz;
         ERC721_CONTRACT = erc721;
         RATE = rate;
         EXPIRATION = block.number + expiration;

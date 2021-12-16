@@ -6,12 +6,7 @@ task('magic-set-whitelist').setAction(async function () {
 
   const instance = await ethers.getContractAt('Magic', deployments.magic);
 
-  const whitelist = [
-    deployments.agldFarm,
-    deployments.lootFarm,
-    deployments.nFarm,
-    deployments.treasureFarm,
-  ];
+  const whitelist = ['0x9f43d5d6d3A96C98816bD7e4d224ad6a33F19276'];
 
   const tx = await instance.connect(sender).setWhitelist(whitelist);
   await tx.wait();

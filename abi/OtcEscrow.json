@@ -1,0 +1,15 @@
+[
+  "event VestingDeployed(address vesting)",
+  "function beneficiary() view returns (address)",
+  "function magic() view returns (address)",
+  "function magicAmount() view returns (uint256)",
+  "function magicGov() view returns (address)",
+  "function recoverUsdc()",
+  "function revoke()",
+  "function swap()",
+  "function usdc() view returns (address)",
+  "function usdcAmount() view returns (uint256)",
+  "function vestingCliff() view returns (uint256)",
+  "function vestingEnd() view returns (uint256)",
+  "function vestingStart() view returns (uint256)"
+]

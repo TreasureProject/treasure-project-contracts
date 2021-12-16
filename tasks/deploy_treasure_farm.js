@@ -14,8 +14,8 @@ task('deploy-treasure-farm').setAction(async function () {
 
   const factory = await ethers.getContractFactory('TreasureFarm', deployer);
   const instance = await factory.deploy(
-    deployments.magic,
-    deployments.treasureUnraveler,
+    deployments.magicRink,
+    deployments.treasureUnravelerRink,
     EXPIRATION,
     items.map((i) => [
       i.name,
@@ -25,7 +25,7 @@ task('deploy-treasure-farm').setAction(async function () {
   await instance.deployed();
 
   console.log(`Deployed TreasureFarm to: ${instance.address}`);
-  deployments.treasureFarm = instance.address;
+  deployments.treasureFarmRink = instance.address;
 
   const json = JSON.stringify(deployments, null, 2);
   fs.writeFileSync(`${__dirname}/../data/deployments.json`, `${json}\n`, {

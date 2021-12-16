@@ -1,0 +1,18 @@
+[
+  "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+  "event Staked(address indexed user, uint256 amount, uint256 timeStamp)",
+  "event StakedTreasure(address indexed user, uint256[] tokenIds)",
+  "function ERC721_CONTRACT() view returns (address)",
+  "function balanceOf(address account) view returns (uint256)",
+  "function depositBalances(address) view returns (uint256)",
+  "function onERC721Received(address, address, uint256, bytes) pure returns (bytes4)",
+  "function owner() view returns (address)",
+  "function renounceOwnership()",
+  "function stake(uint256 amount) payable",
+  "function stakeFor(address forWhom, uint256 amount) payable",
+  "function stakeTreasure(uint256[] _tokenIds)",
+  "function stakedToken() view returns (address)",
+  "function totalStaked() view returns (uint256)",
+  "function totalSupply() view returns (uint256)",
+  "function transferOwnership(address newOwner)"
+]

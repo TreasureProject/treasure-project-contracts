@@ -1,0 +1,11 @@
+[
+  "function claim()",
+  "function lastUpdate() view returns (uint256)",
+  "function magic() view returns (address)",
+  "function recipient() view returns (address)",
+  "function setRecipient(address recipient_)",
+  "function vestingAmount() view returns (uint256)",
+  "function vestingBegin() view returns (uint256)",
+  "function vestingCliff() view returns (uint256)",
+  "function vestingEnd() view returns (uint256)"
+]
